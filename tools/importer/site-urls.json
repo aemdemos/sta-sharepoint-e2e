@@ -1,0 +1,28 @@
+{
+  "originUrl": "https://main--aem-boilerplate--adobe.aem.live",
+  "lastCrawled": "https://main--aem-boilerplate--adobe.aem.live",
+  "urls": [
+    {
+      "url": "https://main--aem-boilerplate--adobe.aem.live/",
+      "source": "SITEMAPS",
+      "targetPath": "/index",
+      "id": "a4974177e9a043a03bbeb14af15161d13fe20600"
+    }
+  ],
+  "crawlOptions": {
+    "timeout": 64800000,
+    "inclusionPatterns": [],
+    "exclusionPatterns": [],
+    "limit": -1,
+    "sameDomain": true,
+    "keepHash": false,
+    "strategy": "SITEMAPS",
+    "logger": {}
+  },
+  "extractionErrors": [
+    {
+      "url": "https://main--aem-boilerplate--adobe.aem.live/test-page",
+      "status": "404 Not Found"
+    }
+  ]
+}
