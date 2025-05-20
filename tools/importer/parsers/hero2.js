@@ -1,36 +1,35 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Helper function to extract anchor links
-  const extractLinks = (container) => {
-    return Array.from(container.querySelectorAll('a')).map((link) => {
-      const a = document.createElement('a');
-      a.href = link.href;
-      a.title = link.title;
-      a.textContent = link.textContent;
-      return a;
-    });
-  };
+  // Ensure header matches example requirements
+  const headerRow = ['Hero']; // EXACTLY matching the example header
 
-  // Extract copyright information
-  const copyrightElement = element.querySelector('p');
-  const copyrightText = copyrightElement ? copyrightElement.textContent : '';
+  // Extract image element, handling missing data
+  const pictureElement = element.querySelector('picture') || element.querySelector('img');
+  let imageElement = null;
+  if (pictureElement) {
+    const imgTag = pictureElement.querySelector('img');
+    imageElement = imgTag || pictureElement;
+  }
 
-  // Extract privacy and other links
-  const linksContainer = element.querySelectorAll('p')[1];
-  const links = linksContainer ? extractLinks(linksContainer) : [];
+  // Extract heading text, ensuring proper handling of missing data
+  const headingElement = element.querySelector('h1');
+  const headingText = headingElement ? headingElement.textContent.trim() : '';
 
-  // Create table content
-  const tableContent = [
-    ['Footer'], // Corrected header row to match the example markdown
-    [
-      document.createTextNode(copyrightText),
-      links,
-    ],
-  ];
+  // Create content row dynamically based on extracted data
+  const contentRow = [];
+  if (imageElement) contentRow.push(imageElement);
+  if (headingText) contentRow.push(headingText);
 
-  // Create block table
-  const block = WebImporter.DOMUtils.createTable(tableContent, document);
+  // Ensure no empty rows are created
+  if (contentRow.length === 0) {
+    console.warn('No valid content found for Hero block');
+    return;
+  }
 
-  // Replace original element with new block
-  element.replaceWith(block);
+  // Create the block table
+  const cells = [headerRow, contentRow];
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element with the new table
+  element.replaceWith(table);
 }
