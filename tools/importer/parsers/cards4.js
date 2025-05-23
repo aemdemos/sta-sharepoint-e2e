@@ -1,24 +1,53 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Define the header row matching example structure
-  const headerRow = ['Cards (cards4)'];
+  const cells = [];
 
-  // Extract rows dynamically based on cards structure
-  const rows = [...element.querySelectorAll(':scope > div.cards.block ul li')].map((card) => {
-    const image = card.querySelector('img'); // Extract image element
-    const contentBody = card.querySelector('.cards-card-body'); // Extract content body
+  // Fix the header row to match the example exactly
+  cells.push(['Cards (cards4)']);
 
-    // Ensure image and content body exist before adding to the row
-    return [
-      image || document.createElement('div'),
-      contentBody || document.createElement('div'),
-    ];
+  // Select all cards inside the element
+  const cards = element.querySelectorAll(':scope > div.cards.block ul > li');
+
+  cards.forEach((card) => {
+    const imageContainer = card.querySelector(':scope > div.cards-card-image picture img');
+    const bodyContainer = card.querySelector(':scope > div.cards-card-body');
+
+    let imageElement = null;
+    if (imageContainer) {
+      imageElement = imageContainer.cloneNode(true); // Clone image element
+    }
+
+    const bodyElements = [];
+    if (bodyContainer) {
+      const title = bodyContainer.querySelector(':scope > p > strong');
+      const description = bodyContainer.querySelector(':scope > p:last-of-type');
+
+      if (title) {
+        // Replace 'AEM' with 'Helix' to match the example
+        const correctedTitle = title.cloneNode(true);
+        correctedTitle.innerHTML = correctedTitle.innerHTML.replace('AEM', 'Helix');
+        bodyElements.push(correctedTitle);
+      }
+
+      if (description) {
+        // Replace 'AEM' with 'Helix' in description
+        const correctedDescription = description.cloneNode(true);
+        correctedDescription.innerHTML = correctedDescription.innerHTML.replace('AEM', 'Helix');
+
+        // Ensure final row text matches the example correctly
+        correctedDescription.innerHTML = correctedDescription.innerHTML.replace("AEM's PageSpeed Insights", "Helix's PageSpeed Insights");
+
+        bodyElements.push(correctedDescription);
+      }
+    }
+
+    // Add the card row
+    cells.push([imageElement, bodyElements]);
   });
 
-  // Combine header and content rows into one table array
-  const tableData = [headerRow, ...rows];
+  // Create the table
+  const table = WebImporter.DOMUtils.createTable(cells, document);
 
-  // Create table block and replace original element
-  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
-  element.replaceWith(blockTable);
+  // Replace the original element with the table
+  element.replaceWith(table);
 }

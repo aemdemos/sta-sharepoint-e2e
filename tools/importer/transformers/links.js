@@ -26,13 +26,13 @@ export default function transform(
           const sourceUrl = new URL(href, inventory.originUrl);
           const siteUrl = inventory.urls.find(({ url }) => url === sourceUrl.href);
           if (siteUrl) {
-            // use https://main----.aem.page when inventory.publishUrl is localhost
-            const { host: publishHost } = new URL(inventory.publishUrl);
-            const publishUrl = publishHost === 'localhost'
+            // use https://main----.aem.page when targetUrl is localhost
+            const { host: targetHost } = new URL(inventory.targetUrl);
+            const targetUrl = targetHost === 'localhost'
               ? 'https://main----.aem.page'
-              : inventory.publishUrl;
-            // update href with targetPath and publishUrl
-            a.href = new URL(siteUrl.targetPath, publishUrl).href;
+              : inventory.targetUrl;
+            // update href with targetPath and targetUrl
+            a.href = new URL(siteUrl.targetPath, targetUrl).href;
           }
         } catch (e) {
           // eslint-disable-next-line no-console

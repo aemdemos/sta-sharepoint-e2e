@@ -1,44 +1,57 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-    const headerRow = ['Columns']; // Corrected header row
+  // Extract relevant columns from the element
+  const columns = Array.from(element.querySelectorAll(':scope > div'));
 
-    const rows = [];
+  // Define table header row
+  const headerRow = ['Columns (columns3)'];
 
-    // Process immediate children of the block
-    const columns = element.querySelectorAll(':scope > div > div');
+  const rows = columns.map((column) => {
+    const cells = Array.from(column.querySelectorAll(':scope > div')).map((content) => {
+      const elements = [];
 
-    columns.forEach((column) => {
-        const cellContent = []; // Consolidate content for single-cell rows
+      // Extract heading or block title
+      const heading = content.querySelector('p:first-of-type');
+      if (heading) {
+        elements.push(heading);
+      }
 
-        // Add text-based content (paragraphs, lists, etc.)
-        const textContent = column.querySelector('p, ul');
-        if (textContent) {
-            cellContent.push(textContent);
-        }
+      // Extract list items
+      const lists = content.querySelector('ul');
+      if (lists) {
+        elements.push(lists);
+      }
 
-        // Add images
-        const pictureElement = column.querySelector('picture');
-        if (pictureElement) {
-            const imgElement = pictureElement.querySelector('img');
-            if (imgElement) {
-                cellContent.push(imgElement);
-            }
-        }
+      // Extract images
+      const images = Array.from(content.querySelectorAll('img'));
+      elements.push(...images);
 
-        // Add links and ensure they're part of the same cell
-        const linkElement = column.querySelector('a');
-        if (linkElement && linkElement.href) {
-            const link = document.createElement('a');
-            link.href = linkElement.href;
-            link.textContent = linkElement.title || 'Link';
-            cellContent.push(link);
-        }
+      // Extract links
+      const links = Array.from(content.querySelectorAll('a[href]'));
+      elements.push(...links);
 
-        rows.push([cellContent]); // Single cell per row
+      // Extract paragraphs
+      const paragraphs = Array.from(content.querySelectorAll('p:not(:first-of-type)')); 
+      elements.push(...paragraphs);
+
+      return elements;
     });
+    return cells;
+  });
 
-    const tableData = [headerRow, ...rows];
-    const table = WebImporter.DOMUtils.createTable(tableData, document);
+  // Create table structure ensuring two columns per row
+  const table = [
+    headerRow,
+    ...rows.map((row) => {
+      const firstColumn = row[0] || [];
+      const secondColumn = row[1] || [];
+      return [firstColumn, secondColumn];
+    })
+  ];
 
-    element.replaceWith(table); // Replace the original element with the generated table
+  // Create block table using WebImporter.DOMUtils.createTable
+  const blockTable = WebImporter.DOMUtils.createTable(table, document);
+
+  // Replace the original element with the new block table
+  element.replaceWith(blockTable);
 }

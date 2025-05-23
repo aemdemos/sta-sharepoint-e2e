@@ -165,9 +165,13 @@ function reduceInstances(instances) {
  * Merges site-urls into inventory with an optimized format
  * @param {Object} siteUrls - The contents of site-urls.json
  * @param {Object} inventory - The contents of inventory.json
+ * @param {string} publishUrl - The publish URL to use if targetUrl is not provided
  * @returns {Object} The merged inventory data in the new format
  */
 export function mergeInventory(siteUrls, inventory, publishUrl) {
+  // Extract originUrl and targetUrl from siteUrls
+  const { originUrl, targetUrl } = siteUrls;
+
   // Transform URLs array to remove source property
   const urls = siteUrls.urls.map(({ url, targetPath, id }) => ({
     url,
@@ -191,8 +195,8 @@ export function mergeInventory(siteUrls, inventory, publishUrl) {
   const outliers = reduceInstances(inventory.outliers);
 
   return {
-    originUrl: siteUrls.originUrl,
-    publishUrl,
+    originUrl,
+    targetUrl: targetUrl || publishUrl,
     urls,
     fragments,
     blocks,
