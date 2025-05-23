@@ -1,36 +1,35 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Helper function to extract anchor links
-  const extractLinks = (container) => {
-    return Array.from(container.querySelectorAll('a')).map((link) => {
-      const a = document.createElement('a');
-      a.href = link.href;
-      a.title = link.title;
-      a.textContent = link.textContent;
-      return a;
-    });
+  // Helper function for extracting src from <picture> or <img>
+  const getImageElement = (parentElement) => {
+    const pictureOrImg = parentElement.querySelector(':scope picture, :scope img');
+    return pictureOrImg;
   };
 
-  // Extract copyright information
-  const copyrightElement = element.querySelector('p');
-  const copyrightText = copyrightElement ? copyrightElement.textContent : '';
+  // Helper function for extracting text from headings
+  const getHeadingText = (parentElement) => {
+    const heading = parentElement.querySelector(':scope h1, :scope h2, :scope h3, :scope h4, :scope h5, :scope h6');
+    return heading;
+  };
 
-  // Extract privacy and other links
-  const linksContainer = element.querySelectorAll('p')[1];
-  const links = linksContainer ? extractLinks(linksContainer) : [];
+  // Extract relevant parts from the element
+  const imageElement = getImageElement(element);
+  const headingElement = getHeadingText(element);
 
-  // Create table content
-  const tableContent = [
-    ['Footer'], // Corrected header row to match the example markdown
-    [
-      document.createTextNode(copyrightText),
-      links,
-    ],
+  // Construct structured table data
+  const headerRow = ['Hero (hero2)'];
+  const contentRow = [
+    [imageElement, headingElement],
   ];
 
-  // Create block table
-  const block = WebImporter.DOMUtils.createTable(tableContent, document);
+  const tableData = [
+    headerRow,
+    contentRow,
+  ];
 
-  // Replace original element with new block
-  element.replaceWith(block);
+  // Create table using WebImporter.DOMUtils
+  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
+
+  // Replace the original element with the new block table
+  element.replaceWith(blockTable);
 }

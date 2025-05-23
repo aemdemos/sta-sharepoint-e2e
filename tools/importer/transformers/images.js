@@ -16,11 +16,15 @@ function adjustImageUrls(main, url, current) {
   [...main.querySelectorAll('img')].forEach((img) => {
     let src = img.getAttribute('src');
     if (src) {
+      // handle relative URLs that are not starting with ./ or / or ../
       try {
         /* eslint-disable no-new */
         new URL(src);
       } catch (e) {
-        src = `./${src}`;
+        if (!src.startsWith('/')) {
+          // enforce transform image url to relative url
+          src = `./${src}`;
+        }
       }
 
       try {
