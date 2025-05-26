@@ -93,15 +93,22 @@ export async function handleOnLoad({ document }) {
  * @param {string} url
  * @returns {string}
 */
-export function generateDocumentPath({ url }) {
-  let p = new URL(url).pathname;
-  if (p.endsWith('/')) {
-    p = `${p}index`;
+export function generateDocumentPath({ params: { originalURL } }, inventory) {
+  let p;
+  const urlEntry = inventory.urls?.find(({ url }) => url === originalURL);
+  if (urlEntry?.targetPath) {
+    p = urlEntry.targetPath;
+  } else {
+    // fallback to original URL pathname
+    p = new URL(originalURL).pathname;
+    if (p.endsWith('/')) {
+      p = `${p}index`;
+    }
+    p = decodeURIComponent(p)
+      .toLowerCase()
+      .replace(/\.html$/, '')
+      .replace(/[^a-z0-9/]/gm, '-');
   }
-  p = decodeURIComponent(p)
-    .toLowerCase()
-    .replace(/\.html$/, '')
-    .replace(/[^a-z0-9/]/gm, '-');
   return WebImporter.FileUtils.sanitizePath(p);
 }
 
