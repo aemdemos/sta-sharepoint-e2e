@@ -1,12 +1,12 @@
 {
-  "originUrl": "https://main--aem-boilerplate--adobe.hlx.page",
-  "lastCrawled": "https://main--aem-boilerplate--adobe.hlx.page/",
+  "originUrl": "https://main--aem-boilerplate--adobe.aem.page",
+  "lastCrawled": "https://main--aem-boilerplate--adobe.aem.page/",
   "urls": [
     {
-      "url": "https://main--aem-boilerplate--adobe.hlx.page/",
+      "url": "https://main--aem-boilerplate--adobe.aem.page/",
       "source": "SITEMAPS",
       "targetPath": "/index",
-      "id": "fe2ef209014984811ae9d28dbb2e0e16ea8e6f23"
+      "id": "3e001f8e061719b5b648a04afeb2d041bf93d5fd"
     }
   ],
   "crawlOptions": {
@@ -21,7 +21,7 @@
   },
   "extractionErrors": [
     {
-      "url": "https://main--aem-boilerplate--adobe.hlx.page/test-page",
+      "url": "https://main--aem-boilerplate--adobe.aem.page/test-page",
       "status": "404 Not Found"
     }
   ]
