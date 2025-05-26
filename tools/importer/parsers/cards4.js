@@ -1,53 +1,32 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  const cells = [];
+  // Extract the cards list from the element
+  const cardsList = element.querySelectorAll(':scope > .cards > ul > li');
 
-  // Fix the header row to match the example exactly
-  cells.push(['Cards (cards4)']);
+  // Prepare the table header row
+  const headerRow = ['Cards (cards4)'];
 
-  // Select all cards inside the element
-  const cards = element.querySelectorAll(':scope > div.cards.block ul > li');
+  // Process each card and create rows for the table
+  const rows = Array.from(cardsList).map((card) => {
+    const imageContainer = card.querySelector('.cards-card-image picture');
+    const image = imageContainer.querySelector('img');
 
-  cards.forEach((card) => {
-    const imageContainer = card.querySelector(':scope > div.cards-card-image picture img');
-    const bodyContainer = card.querySelector(':scope > div.cards-card-body');
+    const bodyContainer = card.querySelector('.cards-card-body');
+    const paragraphs = Array.from(bodyContainer.querySelectorAll('p'));
 
-    let imageElement = null;
-    if (imageContainer) {
-      imageElement = imageContainer.cloneNode(true); // Clone image element
-    }
+    // Build content cells
+    const imageCell = image;
+    const textCell = paragraphs;
 
-    const bodyElements = [];
-    if (bodyContainer) {
-      const title = bodyContainer.querySelector(':scope > p > strong');
-      const description = bodyContainer.querySelector(':scope > p:last-of-type');
-
-      if (title) {
-        // Replace 'AEM' with 'Helix' to match the example
-        const correctedTitle = title.cloneNode(true);
-        correctedTitle.innerHTML = correctedTitle.innerHTML.replace('AEM', 'Helix');
-        bodyElements.push(correctedTitle);
-      }
-
-      if (description) {
-        // Replace 'AEM' with 'Helix' in description
-        const correctedDescription = description.cloneNode(true);
-        correctedDescription.innerHTML = correctedDescription.innerHTML.replace('AEM', 'Helix');
-
-        // Ensure final row text matches the example correctly
-        correctedDescription.innerHTML = correctedDescription.innerHTML.replace("AEM's PageSpeed Insights", "Helix's PageSpeed Insights");
-
-        bodyElements.push(correctedDescription);
-      }
-    }
-
-    // Add the card row
-    cells.push([imageElement, bodyElements]);
+    return [imageCell, textCell];
   });
 
-  // Create the table
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  // Combine header and rows
+  const tableData = [headerRow, ...rows];
 
-  // Replace the original element with the table
-  element.replaceWith(table);
+  // Create the block table
+  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
+
+  // Replace original element with the block table
+  element.replaceWith(blockTable);
 }
