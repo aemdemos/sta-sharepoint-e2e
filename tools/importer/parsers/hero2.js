@@ -1,22 +1,20 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Verify and extract the image
-  const imageElement = element.querySelector('picture img');
-  const image = imageElement ? imageElement : null;
-
-  // Verify and extract the heading
-  const headingElement = element.querySelector('h1');
-  const heading = headingElement ? headingElement : null;
-
-  // Create the header row as in the example
   const headerRow = ['Hero (hero2)'];
 
-  // Create the content row by combining extracted elements dynamically
-  const contentRow = [image, heading].filter(Boolean); // Ensure no empty elements are added
+  // Extracting the image
+  const imageWrapper = element.querySelector(':scope img');
+  const headingElement = element.querySelector(':scope h1');
 
-  // Generate the table
-  const table = WebImporter.DOMUtils.createTable([headerRow, [contentRow]], document);
+  // Combine image and heading into one cell for the second row
+  const combinedCell = [imageWrapper, headingElement];
 
-  // Replace the original element with the table
-  element.replaceWith(table);
+  const cells = [
+    headerRow,
+    [combinedCell]
+  ];
+
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+
+  element.replaceWith(block);
 }

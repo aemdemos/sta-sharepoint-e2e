@@ -1,57 +1,32 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Extract relevant columns from the element
-  const columns = Array.from(element.querySelectorAll(':scope > div'));
+    const headerRow = ['Columns (columns3)'];
 
-  // Define table header row
-  const headerRow = ['Columns (columns3)'];
+    const columns = Array.from(element.querySelectorAll(':scope > div > div'));
 
-  const rows = columns.map((column) => {
-    const cells = Array.from(column.querySelectorAll(':scope > div')).map((content) => {
-      const elements = [];
+    const rows = columns.map((col) => {
+        const textContent = []; // Collect text-related content separately
 
-      // Extract heading or block title
-      const heading = content.querySelector('p:first-of-type');
-      if (heading) {
-        elements.push(heading);
-      }
+        // Extract text elements
+        const textElements = col.querySelectorAll(':scope > div:not(.columns-img-col), :scope > p');
+        textElements.forEach((node) => textContent.push(node));
 
-      // Extract list items
-      const lists = content.querySelector('ul');
-      if (lists) {
-        elements.push(lists);
-      }
+        // Extract image elements
+        const imageElement = col.querySelector(':scope > .columns-img-col img');
 
-      // Extract images
-      const images = Array.from(content.querySelectorAll('img'));
-      elements.push(...images);
+        // Extract links with 'src' attributes for non-image elements
+        const links = col.querySelectorAll(':scope > p.button-container a');
+        links.forEach((link) => {
+            textContent.push(link);
+        });
 
-      // Extract links
-      const links = Array.from(content.querySelectorAll('a[href]'));
-      elements.push(...links);
-
-      // Extract paragraphs
-      const paragraphs = Array.from(content.querySelectorAll('p:not(:first-of-type)')); 
-      elements.push(...paragraphs);
-
-      return elements;
+        // Return a row with properly separated content (text and images)
+        return imageElement ? [textContent, imageElement] : [textContent];
     });
-    return cells;
-  });
 
-  // Create table structure ensuring two columns per row
-  const table = [
-    headerRow,
-    ...rows.map((row) => {
-      const firstColumn = row[0] || [];
-      const secondColumn = row[1] || [];
-      return [firstColumn, secondColumn];
-    })
-  ];
+    const data = [headerRow, ...rows];
 
-  // Create block table using WebImporter.DOMUtils.createTable
-  const blockTable = WebImporter.DOMUtils.createTable(table, document);
+    const blockTable = WebImporter.DOMUtils.createTable(data, document);
 
-  // Replace the original element with the new block table
-  element.replaceWith(blockTable);
+    element.replaceWith(blockTable);
 }
