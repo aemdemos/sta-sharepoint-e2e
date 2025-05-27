@@ -1,48 +1,42 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Create the header row for the table
-  const headerRow = ['Columns (columns3)'];
+  const headerRow = ['Columns']; // Corrected header row to match the example exactly
 
-  // Extract the two main column blocks
-  const columns = Array.from(element.querySelectorAll(':scope > div > div'));
+  // Extract columns
+  const columnElements = Array.from(element.querySelectorAll(':scope > div > div'));
 
-  // First column
-  const column1Content = columns[0];
-  const column1Text = column1Content.querySelector('p');
-  const column1List = column1Content.querySelector('ul');
-  const column1Button = column1Content.querySelector('a.button');
+  // Map each column to rows containing extracted content
+  const rows = columnElements.map((column) => {
+    const cells = [];
 
-  // Second column image
-  const column1Image = column1Content.querySelector('.columns-img-col picture img');
+    // Extract image if present
+    const imageWrapper = column.querySelector('.columns-img-col picture img');
+    if (imageWrapper) {
+      cells.push(imageWrapper); // Push the image element directly
+    }
 
-  // Create first row
-  const firstRow = [
-    [column1Text, column1List, column1Button],
-    column1Image
-  ];
+    // Extract text content
+    const textWrapper = column.querySelector(':scope > div:not(.columns-img-col)');
+    if (textWrapper) {
+      const list = textWrapper.querySelector('ul');
+      const button = textWrapper.querySelector('.button-container a');
 
-  // Second column
-  const column2Content = columns[1];
-  const column2Image = column2Content.querySelector('.columns-img-col picture img');
-  const column2Text = column2Content.querySelector('p');
-  const column2Button = column2Content.querySelector('a.button.secondary');
+      const textContent = [];
+      if (list) {
+        textContent.push(list); // Preserve semantic structure of the list
+      }
+      if (button) {
+        textContent.push(button); // Include button in the same cell
+      }
 
-  // Create second row
-  const secondRow = [
-    column2Image,
-    [column2Text, column2Button]
-  ];
+      cells.push(textContent); // Push the combined text content into the cell
+    }
 
-  // Combine rows into a table
-  const cells = [
-    headerRow,
-    firstRow,
-    secondRow
-  ];
+    return cells;
+  });
 
-  // Create the table block
-  const tableBlock = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Replace the original element with the table block
-  element.replaceWith(tableBlock);
+  // Create and replace the block table
+  const tableData = [headerRow, ...rows];
+  const block = WebImporter.DOMUtils.createTable(tableData, document);
+  element.replaceWith(block);
 }

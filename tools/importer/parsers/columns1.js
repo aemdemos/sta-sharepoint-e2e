@@ -1,51 +1,69 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
+  // Define the header row exactly as in the example
   const headerRow = ['Columns (columns1)'];
 
-  const rows = [];
+  // Extract direct child elements of the block
+  const children = Array.from(element.querySelectorAll(':scope > div'));
 
-  // Extracting first column content dynamically from the element
-  const column1 = document.createElement('div');
-  column1.append('Columns block');
+  // Handle the first column content dynamically, ensuring extraction of the relevant HTML
+  const firstColumnContent = document.createElement('div');
+  if (children[0]) {
+    firstColumnContent.append(...children[0].childNodes);
 
-  const list = document.createElement('ul');
-  ['One', 'Two', 'Three'].forEach((text) => {
-    const listItem = document.createElement('li');
-    listItem.textContent = text;
-    list.appendChild(listItem);
-  });
-  column1.appendChild(list);
+    // Convert elements with 'src' attributes (excluding images) into links
+    const srcElements = firstColumnContent.querySelectorAll('[src]:not(img)');
+    srcElements.forEach((srcElement) => {
+      const link = document.createElement('a');
+      link.href = srcElement.getAttribute('src');
+      link.textContent = 'View';
+      srcElement.replaceWith(link);
+    });
 
-  const liveLink = document.createElement('a');
-  liveLink.setAttribute('href', 'https://word-edit.officeapps.live.com/');
-  liveLink.textContent = 'Live';
-  column1.appendChild(liveLink);
+    // Include the image elements without converting them into links
+    const imgElements = firstColumnContent.querySelectorAll('img');
+    imgElements.forEach((imgElement) => {
+      const clonedImg = imgElement.cloneNode(true);
+      imgElement.replaceWith(clonedImg);
+    });
+  }
 
-  // Dynamically extracting the second column content for the first row
-  const greenImage = document.createElement('img');
-  greenImage.setAttribute('src', 'https://main--sta-boilerplate--aemdemos.hlx.page/media_193050d52a802830d970fde49644ae9a504a61b7f.png#width=750&height=500');
-  greenImage.setAttribute('alt', 'green double Helix');
+  // Handle the second column content dynamically, ensuring extraction of the relevant HTML
+  const secondColumnContent = document.createElement('div');
+  if (children[1]) {
+    secondColumnContent.append(...children[1].childNodes);
 
-  rows.push([column1, greenImage]);
+    // Convert elements with 'src' attributes (excluding images) into links
+    const srcElements = secondColumnContent.querySelectorAll('[src]:not(img)');
+    srcElements.forEach((srcElement) => {
+      const link = document.createElement('a');
+      link.href = srcElement.getAttribute('src');
+      link.textContent = 'View';
+      srcElement.replaceWith(link);
+    });
 
-  // Dynamically extracting second row, column content
+    // Include the image elements without converting them into links
+    const imgElements = secondColumnContent.querySelectorAll('img');
+    imgElements.forEach((imgElement) => {
+      const clonedImg = imgElement.cloneNode(true);
+      imgElement.replaceWith(clonedImg);
+    });
+  } else {
+    // Fix for empty second column: Provide fallback content
+    const fallbackContent = document.createElement('p');
+    fallbackContent.textContent = 'No content available';
+    secondColumnContent.appendChild(fallbackContent);
+  }
 
-  const yellowImage = document.createElement('img');
-  yellowImage.setAttribute('src', 'https://main--sta-boilerplate--aemdemos.hlx.page/media_1e562f39bbce4d269e279cbbf8c5674a399fe0070.png#width=644&height=470');
-  yellowImage.setAttribute('alt', 'Yellow Double Helix');
+  // Create the table cells array
+  const cells = [
+    headerRow,
+    [firstColumnContent, secondColumnContent],
+  ];
 
-  const column2 = document.createElement('div');
-  column2.append('Or you can just view the preview');
+  // Create the block table using WebImporter.DOMUtils
+  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
 
-  const previewLink = document.createElement('a');
-  previewLink.setAttribute('href', 'https://word-edit.officeapps.live.com/');
-  previewLink.textContent = 'Preview';
-  column2.appendChild(previewLink);
-
-  rows.push([yellowImage, column2]);
-
-  const tableCells = [headerRow, ...rows];
-
-  const table = WebImporter.DOMUtils.createTable(tableCells, document);
-  element.replaceWith(table);
+  // Replace the original element with the new block table
+  element.replaceWith(blockTable);
 }

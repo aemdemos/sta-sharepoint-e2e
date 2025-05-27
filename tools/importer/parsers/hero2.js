@@ -1,19 +1,27 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Define the header row exactly as specified in the example
+  // Define the header row matching the example structure
   const headerRow = ['Hero (hero2)'];
 
-  // Extract required elements from the source HTML
-  const imageElement = element.querySelector('picture img');
+  // Extract the image element dynamically from the input element
+  const imageElement = element.querySelector(':scope img');
 
-  const headingElement = element.querySelector('h1');
+  // Extract the heading element dynamically from the input element
+  const headingElement = element.querySelector(':scope h1');
 
-  // Combine all extracted content into a single cell in the second row
-  const contentRow = [`<div>${imageElement.outerHTML}${headingElement.outerHTML}</div>`];
+  // Handle cases where elements are missing or empty
+  const imageCell = imageElement ? imageElement : document.createTextNode('');
+  const headingCell = headingElement ? headingElement : document.createTextNode('');
 
-  // Create the table with the correct structure
-  const table = WebImporter.DOMUtils.createTable([headerRow, contentRow], document);
+  // Prepare the data for the table based on example structure
+  const cells = [
+    headerRow, // Ensure header row has exactly one column
+    [imageCell, headingCell], // Split into separate columns within the second row
+  ];
 
-  // Replace the original element with the new table
-  element.replaceWith(table);
+  // Create the table using the WebImporter helper function
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element in the document with the new block table
+  element.replaceWith(block);
 }
