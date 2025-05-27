@@ -1,42 +1,31 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  const headerRow = ['Columns']; // Corrected header row to match the example exactly
+  const rows = [];
 
-  // Extract columns
-  const columnElements = Array.from(element.querySelectorAll(':scope > div > div'));
+  // Header row
+  rows.push(['Columns (columns3)']);
 
-  // Map each column to rows containing extracted content
-  const rows = columnElements.map((column) => {
-    const cells = [];
+  // Content rows
+  const children = element.querySelectorAll(':scope > div > div');
 
-    // Extract image if present
-    const imageWrapper = column.querySelector('.columns-img-col picture img');
-    if (imageWrapper) {
-      cells.push(imageWrapper); // Push the image element directly
-    }
-
-    // Extract text content
-    const textWrapper = column.querySelector(':scope > div:not(.columns-img-col)');
-    if (textWrapper) {
-      const list = textWrapper.querySelector('ul');
-      const button = textWrapper.querySelector('.button-container a');
-
-      const textContent = [];
-      if (list) {
-        textContent.push(list); // Preserve semantic structure of the list
+  children.forEach((child) => {
+    const columns = [];
+    const innerChildren = child.querySelectorAll(':scope > div');
+    innerChildren.forEach((innerChild) => {
+      const picture = innerChild.querySelector('picture');
+      if (picture) {
+        columns.push(picture);
+      } else {
+        const content = [];
+        innerChild.childNodes.forEach((node) => {
+          content.push(node);
+        });
+        columns.push(content);
       }
-      if (button) {
-        textContent.push(button); // Include button in the same cell
-      }
-
-      cells.push(textContent); // Push the combined text content into the cell
-    }
-
-    return cells;
+    });
+    rows.push(columns);
   });
 
-  // Create and replace the block table
-  const tableData = [headerRow, ...rows];
-  const block = WebImporter.DOMUtils.createTable(tableData, document);
-  element.replaceWith(block);
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(table);
 }
