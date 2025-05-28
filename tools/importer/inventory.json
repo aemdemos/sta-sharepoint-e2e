@@ -27,11 +27,11 @@
   ],
   "blocks": [
     {
-      "name": "Embed (video)",
+      "name": "Cards",
       "cluster": 1,
-      "source": "Embed",
-      "target": "Embed (embedVideo1)",
-      "key": "embedVideo1",
+      "source": "Cards",
+      "target": "Cards (cards1)",
+      "key": "cards1",
       "instances": [
         {
           "url": "https://main--aem-boilerplate--adobe.aem.page/",
