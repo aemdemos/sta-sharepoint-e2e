@@ -1,25 +1,20 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Extract image
-  const imageElement = element.querySelector(':scope img');
+  // Extracting image
+  const image = element.querySelector(':scope img');
 
-  // Extract heading
-  const headingElement = element.querySelector(':scope h1');
+  // Extracting heading
+  const heading = element.querySelector(':scope h1');
 
-  // Define table header row
+  // Ensuring header row matches example exactly
   const headerRow = ['Hero (hero2)'];
 
-  // Define table content row
-  const contentRow = [
-    [imageElement, headingElement], // Combine the image and heading into a single cell
-  ];
+  // Content row with combined image and heading in one column
+  const contentRow = [[image, heading]];
 
-  // Create block table
-  const blockTable = WebImporter.DOMUtils.createTable([
-    headerRow,
-    [contentRow], // Fixing the structure to ensure content is a single cell
-  ], document);
+  // Creating block table
+  const table = WebImporter.DOMUtils.createTable([headerRow, contentRow], document);
 
-  // Replace original element with the table
-  element.replaceWith(blockTable);
+  // Replacing original element with the new structured block table
+  element.replaceWith(table);
 }
