@@ -1,20 +1,31 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Extracting image
-  const image = element.querySelector(':scope img');
+  // Extract image from <picture>
+  const picture = element.querySelector(':scope picture');
+  const image = picture?.querySelector('img');
 
-  // Extracting heading
+  // Extract heading (mandatory)
   const heading = element.querySelector(':scope h1');
 
-  // Ensuring header row matches example exactly
+  // Validate content presence
+  if (!image || !heading) {
+    console.warn('Missing mandatory content in the element');
+    return;
+  }
+
+  // Create the table rows
   const headerRow = ['Hero (hero2)'];
+  const contentRow = [
+    [
+      image,
+      heading
+    ] // Combine image and heading properly
+  ];
 
-  // Content row with combined image and heading in one column
-  const contentRow = [[image, heading]];
+  // Create the block table
+  const blockTable = WebImporter.DOMUtils.createTable([headerRow, contentRow], document);
 
-  // Creating block table
-  const table = WebImporter.DOMUtils.createTable([headerRow, contentRow], document);
+  // Replace the original element with the block table
+  element.replaceWith(blockTable);
 
-  // Replacing original element with the new structured block table
-  element.replaceWith(table);
 }

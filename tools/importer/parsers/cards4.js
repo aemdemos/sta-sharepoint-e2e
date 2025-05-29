@@ -1,21 +1,22 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  const cards = Array.from(element.querySelectorAll(':scope > div.cards.block ul > li'));
+  const headerRow = ['Cards (cards4)'];
 
-  const rows = cards.map((card) => {
-    const image = card.querySelector('picture');
-    const textContent = card.querySelector('.cards-card-body');
+  const cardElements = element.querySelectorAll(':scope > div > ul > li');
+  const rows = Array.from(cardElements).map((card) => {
+    const imageContainer = card.querySelector('.cards-card-image img');
+    const image = document.createElement('img');
+    image.src = imageContainer.src;
+    image.alt = imageContainer.alt;
 
-    // Handle missing elements gracefully
-    const processedImage = image || document.createElement('div');
-    const processedTextContent = textContent || document.createElement('div');
+    const bodyContainer = card.querySelector('.cards-card-body');
+    const bodyContent = Array.from(bodyContainer.children);
 
-    return [processedImage, processedTextContent];
+    return [image, bodyContent];
   });
 
-  const headerRow = ['Cards (cards4)'];
-  const tableData = [headerRow, ...rows];
+  const cells = [headerRow, ...rows];
+  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
 
-  const table = WebImporter.DOMUtils.createTable(tableData, document);
-  element.replaceWith(table);
+  element.replaceWith(blockTable);
 }
