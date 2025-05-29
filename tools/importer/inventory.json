@@ -27,11 +27,11 @@
   ],
   "blocks": [
     {
-      "name": "Cards",
+      "name": "Search",
       "cluster": 1,
-      "source": "Cards",
-      "target": "Cards (cards1)",
-      "key": "cards1",
+      "source": "Search",
+      "target": "Search (search1)",
+      "key": "search1",
       "instances": [
         {
           "url": "https://main--aem-boilerplate--adobe.aem.page/",
