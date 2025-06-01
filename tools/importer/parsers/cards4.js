@@ -1,22 +1,25 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  const headerRow = ['Cards (cards4)'];
+    const headerRow = ['Cards (cards4)'];
 
-  const cardElements = element.querySelectorAll(':scope > div > ul > li');
-  const rows = Array.from(cardElements).map((card) => {
-    const imageContainer = card.querySelector('.cards-card-image img');
-    const image = document.createElement('img');
-    image.src = imageContainer.src;
-    image.alt = imageContainer.alt;
+    // Get all card items
+    const cards = element.querySelectorAll(':scope > div > ul > li');
 
-    const bodyContainer = card.querySelector('.cards-card-body');
-    const bodyContent = Array.from(bodyContainer.children);
+    // Map over each card and construct rows for the table
+    const rows = Array.from(cards).map((card) => {
+        const imageContainer = card.querySelector('.cards-card-image img');
+        const cardBody = card.querySelector('.cards-card-body');
 
-    return [image, bodyContent];
-  });
+        const image = imageContainer.cloneNode(true); // Clone the image element
+        const textContent = cardBody.cloneNode(true); // Clone card body to preserve structure
 
-  const cells = [headerRow, ...rows];
-  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
+        return [image, textContent];
+    });
 
-  element.replaceWith(blockTable);
+    const cells = [headerRow, ...rows];
+
+    const block = WebImporter.DOMUtils.createTable(cells, document);
+
+    // Replace original element with new block table
+    element.replaceWith(block);
 }

@@ -1,31 +1,25 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Extract image from <picture>
-  const picture = element.querySelector(':scope picture');
-  const image = picture?.querySelector('img');
-
-  // Extract heading (mandatory)
+  // Extract relevant elements from the provided HTML element
+  const image = element.querySelector(':scope img');
   const heading = element.querySelector(':scope h1');
 
-  // Validate content presence
-  if (!image || !heading) {
-    console.warn('Missing mandatory content in the element');
-    return;
-  }
+  // Check for missing elements and handle empty states
+  const imageCell = image ? image : document.createTextNode('');
+  const headingCell = heading ? heading : document.createTextNode('');
 
-  // Create the table rows
-  const headerRow = ['Hero (hero2)'];
-  const contentRow = [
-    [
-      image,
-      heading
-    ] // Combine image and heading properly
-  ];
+  // Combine all content into a single cell for the second row
+  const contentCell = document.createElement('div');
+  if (imageCell) contentCell.appendChild(imageCell);
+  if (headingCell) contentCell.appendChild(headingCell);
 
-  // Create the block table
-  const blockTable = WebImporter.DOMUtils.createTable([headerRow, contentRow], document);
+  // Create an array representing the table rows and cells
+  const headerRow = ['Hero (hero2)']; // Ensure header row contains exactly one column
+  const contentRow = [[contentCell]]; // Merge all elements into a single cell
 
-  // Replace the original element with the block table
+  // Create the block table using WebImporter.DOMUtils.createTable
+  const blockTable = WebImporter.DOMUtils.createTable([headerRow, ...contentRow], document);
+
+  // Replace the original element with the new structured block table
   element.replaceWith(blockTable);
-
 }
