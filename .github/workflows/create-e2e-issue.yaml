@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Create GitHub Issue
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        if: always()
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,5 +28,18 @@ jobs:
               body: issueBody,
               labels: ['aemy-go', 'aemy-help', 'aemy-merge']
             });
+            core.setOutput('issue_url', issue.html_url);
+            core.setOutput('issue_title', issue.title);
 
             console.log(`Created issue: ${response.data.html_url}`);
+      - name: Post Slack message for new issue
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "channel": "${{ secrets.SLACK_CHANNEL_ID }}",
+              "text": "*E2E Test Started* :rocket:\nIssue created: <${{ steps.create_issue.outputs.issue_url }}|${{ steps.create_issue.outputs.issue_title }}>"
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
