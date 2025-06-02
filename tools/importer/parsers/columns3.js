@@ -1,38 +1,46 @@
 /* global WebImporter */
-
 export default function parse(element, { document }) {
-  // Define the header row exactly as specified in the example
+  // Create the header row
   const headerRow = ['Columns (columns3)'];
 
-  const rows = [];
+  // Extract the immediate child blocks
+  const blocks = Array.from(element.querySelectorAll(':scope > div'));
 
-  // Query direct child divs within the element
-  const columns = element.querySelectorAll(':scope > div > div');
+  // Map each block into rows for the table
+  const rows = blocks.map((block) => {
+    const cells = Array.from(block.querySelectorAll(':scope > div'));
+    return cells.map((cell) => {
+      const content = [];
 
-  columns.forEach((column) => {
-    const combinedContent = [];
+      // Extract images
+      const picture = cell.querySelector('picture');
+      const img = picture?.querySelector('img');
+      if (img) {
+        content.push(img);
+      }
 
-    // Check for images and add them to combined content
-    const imageCol = column.querySelector('.columns-img-col picture');
-    if (imageCol) {
-      combinedContent.push(imageCol);
-    }
+      // Extract lists
+      const list = cell.querySelector('ul');
+      if (list) {
+        content.push(list);
+      }
 
-    // Check for text content and add it to combined content
-    const textCol = column.querySelector(':scope > div:not(.columns-img-col)');
-    if (textCol) {
-      Array.from(textCol.children).forEach((child) => {
-        combinedContent.push(child);
-      });
-    }
+      // Extract text paragraphs
+      const paragraphs = Array.from(cell.querySelectorAll('p')).filter((p) => p.textContent.trim() !== '' && !p.classList.contains('button-container'));
+      content.push(...paragraphs);
 
-    // Push combined content for the column as a single cell
-    rows.push([combinedContent]);
+      // Extract links
+      const links = Array.from(cell.querySelectorAll('a')).filter((link) => link.textContent.trim() !== '');
+      content.push(...links);
+
+      return content.length > 0 ? content : null;
+    });
   });
 
+  // Create the table structure dynamically
   const tableData = [headerRow, ...rows];
+  const table = WebImporter.DOMUtils.createTable(tableData, document);
 
-  // Create the block table and replace the original element
-  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
-  element.replaceWith(blockTable);
+  // Replace the original element with the new table
+  element.replaceWith(table);
 }
