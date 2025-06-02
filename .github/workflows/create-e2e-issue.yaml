@@ -43,7 +43,7 @@ jobs:
           payload: |
             {
               "channel": "${{ secrets.SLACK_CHANNEL_ID }}",
-              "text": "*E2E Test Started* :rocket:\nIssue created: <${{ steps.create_issue.outputs.issue_url }}|${{ steps.create_issue.outputs.issue_title }}>"
+              "text": "* Experience Catalyst E2E Test Started* :rocket:\nIssue created: <${{ steps.create_issue.outputs.issue_url }}|${{ steps.create_issue.outputs.issue_title }}>"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
