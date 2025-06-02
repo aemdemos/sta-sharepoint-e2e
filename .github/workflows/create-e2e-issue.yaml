@@ -1,0 +1,57 @@
+name: AEMY Catalyze Trigger
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Runs every day at 9 AM UTC
+  workflow_dispatch:
+  pull_request:       # triggers on PR creation/updates
+
+jobs:
+  trigger-e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set Date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Issue
+        id: create_issue
+        run: |
+          TITLE="AEMY Catalyze - ${{ steps.date.outputs.date }}"
+          BODY="Catalyze https://main--aem-boilerplate--adobe.aem.page/."
+          RESPONSE=$(curl -s -X POST https://api.github.com/repos/aemdemos/sta-aem-boilerplate/issues \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -d @- <<EOF
+{
+  "title": "$TITLE",
+  "body": "$BODY",
+  "labels": ["aemy-go", "aemy-help", "aemy-merge"]
+}
+EOF
+          )
+          echo "$RESPONSE" > response.json
+          ISSUE_NUMBER=$(jq -r '.number' response.json)
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_ENV
+
+      - name: Save issue number
+        run: echo "${{ env.issue_number }}" > issue_number.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue-number
+          path: issue_number.txt
+
+      - name: Post Slack Message - Started
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+        run: |
+          curl -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+            -H "Content-type: application/json" \
+            --data '{
+              "channel": "'"$SLACK_CHANNEL_ID"'",
+              "text": "🚀 *AEMY Catalyze E2E test started* for ${{ steps.date.outputs.date }}.\n🔗 <https://github.com/aemdemos/sta-aem-boilerplate/issues/${{ env.issue_number }}|View Issue>"
+            }'
