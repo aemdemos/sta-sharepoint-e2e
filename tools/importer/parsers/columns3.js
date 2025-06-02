@@ -2,55 +2,71 @@
 export default function parse(element, { document }) {
   const headerRow = ['Columns (columns3)'];
 
-  // Get all immediate child elements of the block
-  const rows = Array.from(element.querySelectorAll(':scope > div'));
+  // Define rows array to store content dynamically
+  const rows = [];
 
-  const cells = [headerRow];
+  // Process the first column (Columns block, list, button)
+  const firstColumn = element.querySelector(':scope > div:nth-child(1)');
+  const firstColumnContent = [];
 
-  rows.forEach((row) => {
-    const columns = Array.from(row.querySelectorAll(':scope > div'));
-    const parsedRow = columns.map((col) => {
-      const content = [];
+  if (firstColumn) {
+    // Extract header text
+    const header = firstColumn.querySelector('p');
+    if (header) {
+      firstColumnContent.push(header);
+    }
 
-      const img = col.querySelector('img');
-      if (img) {
-        content.push(img);
-      }
+    // Extract list of items
+    const list = firstColumn.querySelector('ul');
+    if (list) {
+      firstColumnContent.push(list);
+    }
 
-      const list = col.querySelector('ul');
-      if (list) {
-        content.push(list);
-      }
-
-      const paragraph = col.querySelector('p:not(.button-container)');
-      if (paragraph) {
-        content.push(paragraph);
-      }
-
-      const button = col.querySelector('.button-container a');
+    // Extract button
+    const buttonContainer = firstColumn.querySelector('.button-container');
+    if (buttonContainer) {
+      const button = buttonContainer.querySelector('a');
       if (button) {
-        const link = document.createElement('a');
-        link.href = button.href;
-        link.textContent = button.title;
-        content.push(link);
+        firstColumnContent.push(button);
       }
+    }
+  }
 
-      const buttonSecondary = col.querySelector('.button-container em a');
-      if (buttonSecondary) {
-        const secondaryLink = document.createElement('a');
-        secondaryLink.href = buttonSecondary.href;
-        secondaryLink.textContent = buttonSecondary.title;
-        content.push(secondaryLink);
-      }
+  // Process the second column (image)
+  const secondColumn = element.querySelector(':scope > div:nth-child(2) .columns-img-col');
+  const secondColumnContent = secondColumn ? [secondColumn.querySelector('picture')] : [];
 
-      // Combine all content into a single cell for the column
-      return content;
-    });
+  // Process the third column (image and text)
+  const thirdColumn = element.querySelector(':scope > div:nth-child(3)');
+  const thirdColumnContent = [];
 
-    // Add the row with combined content for each column to the cells array
-    cells.push(parsedRow);
-  });
+  if (thirdColumn) {
+    // Extract image
+    const imageColumn = thirdColumn.querySelector('.columns-img-col picture');
+    if (imageColumn) {
+      thirdColumnContent.push(imageColumn);
+    }
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+    // Extract text
+    const textColumn = thirdColumn.querySelector(':scope > div:nth-child(2) > p');
+    if (textColumn) {
+      thirdColumnContent.push(textColumn);
+    }
+
+    // Extract button (Preview link)
+    const previewButton = thirdColumn.querySelector(':scope > div:nth-child(2) .button-container a');
+    if (previewButton) {
+      thirdColumnContent.push(previewButton);
+    }
+  }
+
+  // Build the table rows
+  rows.push([firstColumnContent, secondColumnContent]);
+  rows.push([thirdColumnContent]);
+
+  // Create the table
+  const table = WebImporter.DOMUtils.createTable([headerRow, ...rows], document);
+
+  // Replace the original element with the new table
   element.replaceWith(table);
 }

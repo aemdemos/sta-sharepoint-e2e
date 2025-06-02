@@ -1,57 +1,68 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Header row for the table
   const headerRow = ['Columns (columns1)'];
 
-  // Extract relevant sections dynamically
+  // Extract relevant sections
+  const navBrand = element.querySelector('.section.nav-brand');
   const navSections = element.querySelector('.section.nav-sections');
   const navTools = element.querySelector('.section.nav-tools');
-  const navBrand = element.querySelector('.section.nav-brand');
 
-  // First column content: Extract list items grouped by categories
-  const listItems = document.createElement('div');
-  const navListGroups = navSections.querySelectorAll(':scope > .default-content-wrapper > ul > li');
-  navListGroups.forEach((group) => {
-    const groupTitle = document.createElement('p');
-    groupTitle.textContent = group.firstChild.textContent.trim();
-    listItems.appendChild(groupTitle);
+  const rows = [];
 
-    const nestedList = document.createElement('ul');
-    const nestedItems = group.querySelectorAll(':scope > ul > li > a');
-    nestedItems.forEach((nestedItem) => {
-      const nestedLi = document.createElement('li');
-      nestedLi.textContent = nestedItem.textContent.trim();
-      nestedList.appendChild(nestedLi);
+  // First column: Extract content with proper nesting and semantic grouping
+  const firstColumnContent = document.createElement('div');
+  if (navSections) {
+    const sectionList = document.createElement('div');
+    const sectionItems = navSections.querySelectorAll(':scope > .default-content-wrapper > ul > li');
+    sectionItems.forEach((item) => {
+      const sectionTitle = document.createElement('p');
+      sectionTitle.textContent = item.firstChild.textContent;
+      const nestedList = item.querySelector('ul');
+      sectionTitle.appendChild(nestedList ? nestedList.cloneNode(true) : document.createElement('span'));
+      sectionList.appendChild(sectionTitle);
     });
-    listItems.appendChild(nestedList);
-  });
+    firstColumnContent.appendChild(sectionList);
+  }
 
+  // Append 'Live' link to first column content
   const liveLink = document.createElement('a');
   liveLink.href = 'https://word-edit.officeapps.live.com/';
   liveLink.textContent = 'Live';
-  listItems.appendChild(liveLink);
+  firstColumnContent.appendChild(liveLink);
 
-  // Second column content: Extract search icon dynamically
-  const searchIcon = navTools.querySelector('img');
-
-  // Third row content: Extract brand dynamically
-  const brandContent = document.createElement('div');
-  const brandLink = navBrand.querySelector('a');
-  if (brandLink) {
-    brandContent.appendChild(brandLink.cloneNode(true));
+  // Second column: Extract tool content and image with proper positioning
+  const secondColumnContent = document.createElement('div');
+  if (navTools) {
+    const img = navTools.querySelector('img');
+    if (img) {
+      const clonedImg = img.cloneNode(true);
+      secondColumnContent.appendChild(clonedImg);
+    }
   }
 
-  const brandExtraContent = document.createElement('p');
-  brandExtraContent.textContent = 'Additional branding info';
+  // Append 'Preview' link to second column content
+  const previewLink = document.createElement('a');
+  previewLink.href = 'https://word-edit.officeapps.live.com/';
+  previewLink.textContent = 'Preview';
+  secondColumnContent.appendChild(previewLink);
 
-  // Create table rows
-  const rows = [
-    headerRow,
-    [listItems, searchIcon],
-    [brandContent, brandExtraContent]
-  ];
+  // Additional branding content from nav-brand
+  const brandContent = document.createElement('div');
+  if (navBrand) {
+    const brandLink = navBrand.querySelector('a');
+    if (brandLink) {
+      brandContent.appendChild(brandLink.cloneNode(true));
+    }
+  }
 
-  // Create and replace table block
-  const blockTable = WebImporter.DOMUtils.createTable(rows, document);
-  element.replaceWith(blockTable);
+  // Populate rows with improved semantic grouping
+  rows.push([firstColumnContent, secondColumnContent]);
+  rows.push([brandContent]);
+
+  // Create table
+  const cells = [headerRow, ...rows];
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element
+  element.replaceWith(table);
 }
