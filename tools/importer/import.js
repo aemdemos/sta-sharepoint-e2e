@@ -13,7 +13,7 @@
 /* eslint-disable no-console */
 import cards4Parser from './parsers/cards4.js';
 import hero2Parser from './parsers/hero2.js';
-import search1Parser from './parsers/search1.js';
+import columns1Parser from './parsers/columns1.js';
 import columns3Parser from './parsers/columns3.js';
 import headerParser from './parsers/header.js';
 import metadataParser from './parsers/metadata.js';
@@ -32,7 +32,7 @@ const parsers = {
   metadata: metadataParser,
   cards4: cards4Parser,
   hero2: hero2Parser,
-  search1: search1Parser,
+  columns1: columns1Parser,
   columns3: columns3Parser,
 };
 

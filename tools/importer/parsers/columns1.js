@@ -1,69 +1,57 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Define the header row exactly as in the example
+  // Header row for the table
   const headerRow = ['Columns (columns1)'];
 
-  // Extract direct child elements of the block
-  const children = Array.from(element.querySelectorAll(':scope > div'));
+  // Extract relevant sections dynamically
+  const navSections = element.querySelector('.section.nav-sections');
+  const navTools = element.querySelector('.section.nav-tools');
+  const navBrand = element.querySelector('.section.nav-brand');
 
-  // Handle the first column content dynamically, ensuring extraction of the relevant HTML
-  const firstColumnContent = document.createElement('div');
-  if (children[0]) {
-    firstColumnContent.append(...children[0].childNodes);
+  // First column content: Extract list items grouped by categories
+  const listItems = document.createElement('div');
+  const navListGroups = navSections.querySelectorAll(':scope > .default-content-wrapper > ul > li');
+  navListGroups.forEach((group) => {
+    const groupTitle = document.createElement('p');
+    groupTitle.textContent = group.firstChild.textContent.trim();
+    listItems.appendChild(groupTitle);
 
-    // Convert elements with 'src' attributes (excluding images) into links
-    const srcElements = firstColumnContent.querySelectorAll('[src]:not(img)');
-    srcElements.forEach((srcElement) => {
-      const link = document.createElement('a');
-      link.href = srcElement.getAttribute('src');
-      link.textContent = 'View';
-      srcElement.replaceWith(link);
+    const nestedList = document.createElement('ul');
+    const nestedItems = group.querySelectorAll(':scope > ul > li > a');
+    nestedItems.forEach((nestedItem) => {
+      const nestedLi = document.createElement('li');
+      nestedLi.textContent = nestedItem.textContent.trim();
+      nestedList.appendChild(nestedLi);
     });
+    listItems.appendChild(nestedList);
+  });
 
-    // Include the image elements without converting them into links
-    const imgElements = firstColumnContent.querySelectorAll('img');
-    imgElements.forEach((imgElement) => {
-      const clonedImg = imgElement.cloneNode(true);
-      imgElement.replaceWith(clonedImg);
-    });
+  const liveLink = document.createElement('a');
+  liveLink.href = 'https://word-edit.officeapps.live.com/';
+  liveLink.textContent = 'Live';
+  listItems.appendChild(liveLink);
+
+  // Second column content: Extract search icon dynamically
+  const searchIcon = navTools.querySelector('img');
+
+  // Third row content: Extract brand dynamically
+  const brandContent = document.createElement('div');
+  const brandLink = navBrand.querySelector('a');
+  if (brandLink) {
+    brandContent.appendChild(brandLink.cloneNode(true));
   }
 
-  // Handle the second column content dynamically, ensuring extraction of the relevant HTML
-  const secondColumnContent = document.createElement('div');
-  if (children[1]) {
-    secondColumnContent.append(...children[1].childNodes);
+  const brandExtraContent = document.createElement('p');
+  brandExtraContent.textContent = 'Additional branding info';
 
-    // Convert elements with 'src' attributes (excluding images) into links
-    const srcElements = secondColumnContent.querySelectorAll('[src]:not(img)');
-    srcElements.forEach((srcElement) => {
-      const link = document.createElement('a');
-      link.href = srcElement.getAttribute('src');
-      link.textContent = 'View';
-      srcElement.replaceWith(link);
-    });
-
-    // Include the image elements without converting them into links
-    const imgElements = secondColumnContent.querySelectorAll('img');
-    imgElements.forEach((imgElement) => {
-      const clonedImg = imgElement.cloneNode(true);
-      imgElement.replaceWith(clonedImg);
-    });
-  } else {
-    // Fix for empty second column: Provide fallback content
-    const fallbackContent = document.createElement('p');
-    fallbackContent.textContent = 'No content available';
-    secondColumnContent.appendChild(fallbackContent);
-  }
-
-  // Create the table cells array
-  const cells = [
+  // Create table rows
+  const rows = [
     headerRow,
-    [firstColumnContent, secondColumnContent],
+    [listItems, searchIcon],
+    [brandContent, brandExtraContent]
   ];
 
-  // Create the block table using WebImporter.DOMUtils
-  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Replace the original element with the new block table
+  // Create and replace table block
+  const blockTable = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(blockTable);
 }
