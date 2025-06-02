@@ -1,30 +1,30 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Define header row based on example
+  // Extract all cards from the provided HTML structure
+  const cards = Array.from(element.querySelectorAll(':scope > div.cards > ul > li'));
+
+  // Prepare the header row for the table
   const headerRow = ['Cards (cards4)'];
 
-  // Extract rows dynamically from the element
-  const rows = Array.from(element.querySelectorAll(':scope > div ul > li')).map((card) => {
-    // Extract image and body content dynamically
-    const imageContainer = card.querySelector('.cards-card-image img');
-    const bodyContainer = card.querySelector('.cards-card-body');
+  // Prepare rows for each card
+  const rows = cards.map((card) => {
+    const image = card.querySelector('.cards-card-image picture');
+    const body = card.querySelector('.cards-card-body');
 
-    // Clone image element or use empty text node if missing
-    const imageElement = imageContainer ? imageContainer.cloneNode(true) : document.createTextNode('');
-
-    // Extract all child nodes from body content dynamically, or use empty text node if missing
-    const bodyElements = bodyContainer ? Array.from(bodyContainer.childNodes) : [document.createTextNode('')];
-
-    // Return a row containing image and body content
-    return [imageElement, bodyElements];
+    return [
+      image, // Image or icon in the first cell
+      body, // Text content (title, description, CTA) in the second cell
+    ];
   });
 
-  // Construct the table cells array
+  // Combine header and rows
   const cells = [headerRow, ...rows];
 
-  // Create the block table using WebImporter.DOMUtils.createTable
-  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
+  // Create the block table
+  const block = WebImporter.DOMUtils.createTable(cells, document);
 
-  // Replace the original element with the newly created block table
-  element.replaceWith(blockTable);
+  // Replace the original element with the new block table
+  element.replaceWith(block);
+
+  return block;
 }

@@ -1,26 +1,28 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
+  // Extract relevant content from the input element
+  const heroWrapper = element.querySelector(':scope > .hero-wrapper');
+  const heroBlock = heroWrapper?.querySelector(':scope > .hero');
+
+  // Image extraction
+  const image = heroBlock?.querySelector('picture img');
+
+  // Heading extraction
+  const heading = heroBlock?.querySelector('h1');
+
+  // Validate existence of required elements
+  const contentRow = [];
+  if (image) contentRow.push(image);
+  if (heading) contentRow.push(heading);
+
+  // Structure the table
   const headerRow = ['Hero (hero2)'];
 
-  // Extract the image element dynamically
-  const image = element.querySelector('picture img');
+  const cells = [headerRow, [contentRow]];
 
-  // Extract the heading element dynamically
-  const heading = element.querySelector('h1');
-
-  // Validate extracted content
-  const imageContent = image ? image : document.createTextNode('');
-  const headingContent = heading ? heading : document.createTextNode('');
-
-  // Create the rows for the table
-  const rows = [
-    headerRow,
-    [imageContent, headingContent]
-  ];
-
-  // Create the table block using the provided helper function
-  const block = WebImporter.DOMUtils.createTable(rows, document);
+  // Create the block table
+  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
 
   // Replace the original element with the new block table
-  element.replaceWith(block);
+  element.replaceWith(blockTable);
 }
