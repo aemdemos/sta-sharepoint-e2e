@@ -1,40 +1,39 @@
 /* global WebImporter */
-export default function parse(element, { document }) {
-  // Step 1: Extract header row dynamically and ensure it matches the example
+ export default function parse(element, { document }) {
   const headerRow = ['Columns (columns3)'];
 
-  // Initialize rows array to store content rows
   const rows = [];
 
-  // Extract all immediate children of the main block
-  const columnBlocks = Array.from(element.querySelectorAll(':scope > div > div'));
+  // Get the column blocks
+  const blocks = element.querySelectorAll(':scope > div > div');
 
-  // Iterate over each column block to extract content
-  columnBlocks.forEach((block) => {
+  blocks.forEach((block) => {
     const cells = [];
 
-    // Extract the image column
-    const imageCol = block.querySelector('picture');
-    if (imageCol) {
-      cells.push(imageCol);
-    }
+    // Iterate through the immediate children of the block to process content
+    const contents = block.querySelectorAll(':scope > div');
+    contents.forEach((content) => {
+      // If the content is an image column
+      const picture = content.querySelector('picture');
+      if (picture) {
+        const img = picture.querySelector('img');
+        if (img) {
+          cells.push(img);
+        }
+      } else {
+        // If the content is text and/or links
+        const links = content.querySelectorAll('a');
+        links.forEach((link) => {
+          link.href = link.getAttribute('href') || link.getAttribute('src');
+        });
+        cells.push(content);
+      }
+    });
 
-    // Extract the text column
-    const textCol = block.querySelector(':scope > div:not(.columns-img-col)');
-    if (textCol) {
-      cells.push(textCol);
-    }
-
-    // Add content cells to rows array
     rows.push(cells);
   });
 
-  // Ensure table data matches example structure
-  const tableData = [headerRow, ...rows];
+  const table = WebImporter.DOMUtils.createTable([headerRow, ...rows], document);
 
-  // Create block table using WebImporter helper method
-  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
-
-  // Replace the original element with the generated block table
-  element.replaceWith(blockTable);
+  element.replaceWith(table);
 }
