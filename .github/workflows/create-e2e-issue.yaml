@@ -1,19 +1,14 @@
-name: AEMY Catalyze Trigger
+name: Daily E2E Test
 
 on:
   schedule:
-    - cron: '0 9 * * *'  # Runs every day at 9 AM UTC
+    - cron: '0 12 * * *'  # every day at 12:00 UTC
   workflow_dispatch:
-  pull_request:       # triggers on PR creation/updates
+  pull_request:
 
 jobs:
-  trigger-e2e:
+  create-issue:
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Set Date
-        id: date
-        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
     steps:
       - name: Create GitHub Issue
@@ -35,24 +30,3 @@ jobs:
             });
 
             console.log(`Created issue: ${response.data.html_url}`);
-
-      - name: Save issue number
-        run: echo "${{ env.issue_number }}" > issue_number.txt
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: issue-number
-          path: issue_number.txt
-
-      - name: Post Slack Message - Started
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
-        run: |
-          curl -X POST https://slack.com/api/chat.postMessage \
-            -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
-            -H "Content-type: application/json" \
-            --data '{
-              "channel": "'"$SLACK_CHANNEL_ID"'",
-              "text": "🚀 *AEMY Catalyze E2E test started* for ${{ steps.date.outputs.date }}.\n🔗 <https://github.com/aemdemos/sta-aem-boilerplate/issues/${{ env.issue_number }}|View Issue>"
-            }'
