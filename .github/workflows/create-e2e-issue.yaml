@@ -36,6 +36,25 @@ jobs:
             core.setOutput('issue_title', response.data.title);
 
             console.log(`Created issue: ${response.data.html_url}`);
+      - name: Debug Slack secrets
+        run: |
+          echo "Checking if SLACK_CHANNEL_ID is set..."
+          if [ -z "${{ secrets.SLACK_CHANNEL_ID }}" ]; then
+            echo "❌ SLACK_CHANNEL_ID is empty or not set"
+          else
+            echo "✅ SLACK_CHANNEL_ID is set (length: ${#SLACK_CHANNEL_ID})"
+            echo "Channel ID starts with: ${SLACK_CHANNEL_ID:0:1}"
+          fi
+          
+          echo "Checking if SLACK_BOT_TOKEN is set..."
+          if [ -z "${{ secrets.SLACK_BOT_TOKEN }}" ]; then
+            echo "❌ SLACK_BOT_TOKEN is empty or not set"
+          else
+            echo "✅ SLACK_BOT_TOKEN is set"
+          fi
+        env:
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       - name: Post Slack message for new issue
         if: always()
         uses: slackapi/slack-github-action@v1.25.0
