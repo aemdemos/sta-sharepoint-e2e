@@ -1,42 +1,56 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Extract the columns wrapper
-  const columns = element.querySelectorAll(':scope > div');
-
   const headerRow = ['Columns (columns3)'];
 
-  const rows = [];
+  // Get all immediate child elements of the block
+  const rows = Array.from(element.querySelectorAll(':scope > div'));
 
-  // Process each column
-  columns.forEach((column) => {
-    const columnContent = [];
+  const cells = [headerRow];
 
-    const children = column.querySelectorAll(':scope > div');
-    children.forEach((child) => {
-      if (child.querySelector('img')) {
-        // Extract image element
-        columnContent.push(child.querySelector('img'));
-      } else if (child.querySelector('ul')) {
-        // Extract list content
-        columnContent.push(child.querySelector('ul'));
-      } else if (child.querySelector('a.button')) {
-        // Extract button link
-        const link = child.querySelector('a.button');
-        columnContent.push(link);
-      } else {
-        // Extract other content (e.g., paragraphs)
-        columnContent.push(...child.childNodes);
+  rows.forEach((row) => {
+    const columns = Array.from(row.querySelectorAll(':scope > div'));
+    const parsedRow = columns.map((col) => {
+      const content = [];
+
+      const img = col.querySelector('img');
+      if (img) {
+        content.push(img);
       }
+
+      const list = col.querySelector('ul');
+      if (list) {
+        content.push(list);
+      }
+
+      const paragraph = col.querySelector('p:not(.button-container)');
+      if (paragraph) {
+        content.push(paragraph);
+      }
+
+      const button = col.querySelector('.button-container a');
+      if (button) {
+        const link = document.createElement('a');
+        link.href = button.href;
+        link.textContent = button.title;
+        content.push(link);
+      }
+
+      const buttonSecondary = col.querySelector('.button-container em a');
+      if (buttonSecondary) {
+        const secondaryLink = document.createElement('a');
+        secondaryLink.href = buttonSecondary.href;
+        secondaryLink.textContent = buttonSecondary.title;
+        content.push(secondaryLink);
+      }
+
+      // Combine all content into a single cell for the column
+      return content;
     });
 
-    rows.push(columnContent);
+    // Add the row with combined content for each column to the cells array
+    cells.push(parsedRow);
   });
 
-  const tableData = [headerRow, ...rows];
-
-  // Create the table block
-  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
-
-  // Replace the original element with the new block table
-  element.replaceWith(blockTable);
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(table);
 }
