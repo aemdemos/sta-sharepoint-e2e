@@ -37,7 +37,7 @@ jobs:
 
             console.log(`Created issue: ${response.data.html_url}`);
       - name: Post Slack message for new issue
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        if: always()
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
