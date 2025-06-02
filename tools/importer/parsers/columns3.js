@@ -1,72 +1,40 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
+  // Step 1: Extract header row dynamically and ensure it matches the example
   const headerRow = ['Columns (columns3)'];
 
-  // Define rows array to store content dynamically
+  // Initialize rows array to store content rows
   const rows = [];
 
-  // Process the first column (Columns block, list, button)
-  const firstColumn = element.querySelector(':scope > div:nth-child(1)');
-  const firstColumnContent = [];
+  // Extract all immediate children of the main block
+  const columnBlocks = Array.from(element.querySelectorAll(':scope > div > div'));
 
-  if (firstColumn) {
-    // Extract header text
-    const header = firstColumn.querySelector('p');
-    if (header) {
-      firstColumnContent.push(header);
+  // Iterate over each column block to extract content
+  columnBlocks.forEach((block) => {
+    const cells = [];
+
+    // Extract the image column
+    const imageCol = block.querySelector('picture');
+    if (imageCol) {
+      cells.push(imageCol);
     }
 
-    // Extract list of items
-    const list = firstColumn.querySelector('ul');
-    if (list) {
-      firstColumnContent.push(list);
+    // Extract the text column
+    const textCol = block.querySelector(':scope > div:not(.columns-img-col)');
+    if (textCol) {
+      cells.push(textCol);
     }
 
-    // Extract button
-    const buttonContainer = firstColumn.querySelector('.button-container');
-    if (buttonContainer) {
-      const button = buttonContainer.querySelector('a');
-      if (button) {
-        firstColumnContent.push(button);
-      }
-    }
-  }
+    // Add content cells to rows array
+    rows.push(cells);
+  });
 
-  // Process the second column (image)
-  const secondColumn = element.querySelector(':scope > div:nth-child(2) .columns-img-col');
-  const secondColumnContent = secondColumn ? [secondColumn.querySelector('picture')] : [];
+  // Ensure table data matches example structure
+  const tableData = [headerRow, ...rows];
 
-  // Process the third column (image and text)
-  const thirdColumn = element.querySelector(':scope > div:nth-child(3)');
-  const thirdColumnContent = [];
+  // Create block table using WebImporter helper method
+  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
 
-  if (thirdColumn) {
-    // Extract image
-    const imageColumn = thirdColumn.querySelector('.columns-img-col picture');
-    if (imageColumn) {
-      thirdColumnContent.push(imageColumn);
-    }
-
-    // Extract text
-    const textColumn = thirdColumn.querySelector(':scope > div:nth-child(2) > p');
-    if (textColumn) {
-      thirdColumnContent.push(textColumn);
-    }
-
-    // Extract button (Preview link)
-    const previewButton = thirdColumn.querySelector(':scope > div:nth-child(2) .button-container a');
-    if (previewButton) {
-      thirdColumnContent.push(previewButton);
-    }
-  }
-
-  // Build the table rows
-  rows.push([firstColumnContent, secondColumnContent]);
-  rows.push([thirdColumnContent]);
-
-  // Create the table
-  const table = WebImporter.DOMUtils.createTable([headerRow, ...rows], document);
-
-  // Replace the original element with the new table
-  element.replaceWith(table);
+  // Replace the original element with the generated block table
+  element.replaceWith(blockTable);
 }
