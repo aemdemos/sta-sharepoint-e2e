@@ -1,41 +1,38 @@
 /* global WebImporter */
+
 export default function parse(element, { document }) {
-  // Define the header row
+  // Define the header row exactly as specified in the example
   const headerRow = ['Columns (columns3)'];
 
   const rows = [];
 
-  // Extract immediate child divs of the block
-  const blockDivs = Array.from(element.querySelectorAll(':scope > div > div'));
+  // Query direct child divs within the element
+  const columns = element.querySelectorAll(':scope > div > div');
 
-  blockDivs.forEach((blockDiv) => {
-    const columns = Array.from(blockDiv.querySelectorAll(':scope > div'));
+  columns.forEach((column) => {
+    const combinedContent = [];
 
-    const extractedRow = columns.map((column) => {
-      const paragraphElements = Array.from(column.querySelectorAll('p'));
-      const listElements = column.querySelector('ul');
-      const button = column.querySelector('.button-container');
+    // Check for images and add them to combined content
+    const imageCol = column.querySelector('.columns-img-col picture');
+    if (imageCol) {
+      combinedContent.push(imageCol);
+    }
 
-      const imageElement = column.querySelector('img');
+    // Check for text content and add it to combined content
+    const textCol = column.querySelector(':scope > div:not(.columns-img-col)');
+    if (textCol) {
+      Array.from(textCol.children).forEach((child) => {
+        combinedContent.push(child);
+      });
+    }
 
-      const combinedContent = [
-        ...paragraphElements,
-        listElements,
-        button,
-        imageElement,
-      ].filter(Boolean); // Ensure no null elements
-
-      // If no valid content is found, provide fallback text
-      return combinedContent.length > 0 ? combinedContent : document.createTextNode('No content available');
-    });
-
-    rows.push(extractedRow);
+    // Push combined content for the column as a single cell
+    rows.push([combinedContent]);
   });
 
-  // Create the table
   const tableData = [headerRow, ...rows];
-  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
 
-  // Replace the original element
+  // Create the block table and replace the original element
+  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
   element.replaceWith(blockTable);
 }
