@@ -32,8 +32,8 @@ jobs:
               body: issueBody,
               labels: ['aemy-go', 'aemy-help', 'aemy-merge']
             });
-            core.setOutput('issue_url', issue.html_url);
-            core.setOutput('issue_title', issue.title);
+            core.setOutput('issue_url', response.data.html_url);
+            core.setOutput('issue_title', response.data.title);
 
             console.log(`Created issue: ${response.data.html_url}`);
       - name: Post Slack message for new issue
