@@ -15,25 +15,26 @@ jobs:
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
+    steps:
       - name: Create GitHub Issue
-        id: create_issue
-        run: |
-          TITLE="AEMY Catalyze - ${{ steps.date.outputs.date }}"
-          BODY="Catalyze https://main--aem-boilerplate--adobe.aem.page/."
-          RESPONSE=$(curl -s -X POST https://api.github.com/repos/aemdemos/sta-aem-boilerplate/issues \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            -d @- <<EOF
-{
-  "title": "$TITLE",
-  "body": "$BODY",
-  "labels": ["aemy-go", "aemy-help", "aemy-merge"]
-}
-EOF
-          )
-          echo "$RESPONSE" > response.json
-          ISSUE_NUMBER=$(jq -r '.number' response.json)
-          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_ENV
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const today = new Date().toISOString().split('T')[0];
+            const issueTitle = `AEMY Catalyze - ${today}`;
+            const issueBody = `Catalyze https://main--aem-boilerplate--adobe.aem.page/.`;
+
+            const response = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody,
+              labels: ['aemy-go', 'aemy-help', 'aemy-merge']
+            });
+
+            console.log(`Created issue: ${response.data.html_url}`);
 
       - name: Save issue number
         run: echo "${{ env.issue_number }}" > issue_number.txt
