@@ -38,6 +38,7 @@ jobs:
 
             console.log(`Created issue: ${response.data.html_url}`);
       - name: Post Slack message for new issue
+        id: slack_notify
         if: always()
         uses: slackapi/slack-github-action@v1.25.0
         with:
@@ -45,6 +46,50 @@ jobs:
           payload: |
             {
               "text": "*E2E Test Started* :rocket:\nIssue created: <${{ steps.create_issue.outputs.issue_url }}|${{ steps.create_issue.outputs.issue_title }}>"
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Comment Slack thread timestamp on issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue_number = Number(process.env.ISSUE_NUMBER);
+            const thread_ts = process.env.SLACK_THREAD_TS;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              body: `Slack thread_ts: ${thread_ts}`
+            });
+        env:
+          ISSUE_NUMBER: ${{ steps.create_issue.outputs.issue_number }}
+          SLACK_THREAD_TS: ${{ steps.slack_notify.outputs.ts }}
+      - name: Get Slack thread_ts from issue comments
+        id: get_thread_ts
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const threadComment = comments.data.reverse().find(c => c.body.startsWith('Slack thread_ts: '));
+            if (threadComment) {
+              const thread_ts = threadComment.body.replace('Slack thread_ts: ', '').trim();
+              core.setOutput('thread_ts', thread_ts);
+            }
+      - name: Notify Slack that E2E test completed
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "*E2E Test Completed* ✅\nIssue closed: <${{ github.event.issue.html_url }}|${{ github.event.issue.title }}>",
+              "thread_ts": "${{ steps.get_thread_ts.outputs.thread_ts }}"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
