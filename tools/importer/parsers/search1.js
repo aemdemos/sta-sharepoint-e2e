@@ -1,26 +1,19 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Extract content dynamically from the element
-  const searchIcon = element.querySelector('img[data-icon-name="search"]');
-
-  // Header row matches example structure
+  // According to the block definition, the only required output is the Search block table
+  // with the static index URL, as the HTML does not contain a search index URL.
+  
+  // The block header matches the markdown example exactly
   const headerRow = ['Search (search1)'];
+  
+  // The second row should contain the absolute URL to the query index, which is not present in the HTML,
+  // but the block's description specifies a canonical sample URL to use.
+  const contentRow = ['https://main--helix-block-collection--adobe.hlx.page/block-collection/sample-search-data/query-index.json'];
 
-  // Attempt to dynamically locate a query index URL
-  const queryIndexURL = element.querySelector('a[href]')?.href || 'https://main--helix-block-collection--adobe.hlx.page/block-collection/sample-search-data/query-index.json';
+  // Compose the table
+  const cells = [headerRow, contentRow];
+  const table = WebImporter.DOMUtils.createTable(cells, document);
 
-  const queryIndexLink = document.createElement('a');
-  queryIndexLink.href = queryIndexURL;
-  queryIndexLink.textContent = queryIndexURL;
-
-  // Table cell structure matches example
-  const cells = [
-    headerRow,
-    [queryIndexLink]
-  ];
-
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Replace the original element with the new block table
-  element.replaceWith(block);
+  // Replace the original element with the new table
+  element.replaceWith(table);
 }
