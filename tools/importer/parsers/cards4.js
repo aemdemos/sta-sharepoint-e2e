@@ -1,34 +1,40 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-    const cards = element.querySelectorAll(':scope > div > ul > li');
-    const rows = [['Cards (cards4)']];
+  // The cards block may be wrapped; find the actual cards block
+  let cardsBlock = element.classList.contains('cards') ? element : element.querySelector('.cards');
+  if (!cardsBlock) return;
 
-    cards.forEach((card) => {
-        const image = card.querySelector('.cards-card-image img');
-        const title = card.querySelector('.cards-card-body p strong');
-        const description = card.querySelector('.cards-card-body p:nth-of-type(2)');
+  // Get the list of cards (li elements)
+  const ul = cardsBlock.querySelector('ul');
+  if (!ul) return;
+  const cardLis = Array.from(ul.children).filter(li => li.nodeName === 'LI');
 
-        const imageElement = document.createElement('img');
-        if (image) {
-            imageElement.src = image.src;
-            imageElement.alt = image.alt;
-        }
+  const headerRow = ['Cards (cards4)'];
+  const rows = [];
 
-        const textContainer = [];
-        if (title) {
-            const titleElement = document.createElement('strong');
-            titleElement.textContent = title.textContent;
-            textContainer.push(titleElement);
-        }
-        if (description) {
-            const descriptionElement = document.createElement('p');
-            descriptionElement.textContent = description.textContent;
-            textContainer.push(descriptionElement);
-        }
+  cardLis.forEach(li => {
+    // Image cell: .cards-card-image > picture or img
+    const imageDiv = li.querySelector('.cards-card-image');
+    let imageCell = '';
+    if (imageDiv) {
+      // prefer <picture>; fallback to <img>
+      const picture = imageDiv.querySelector('picture');
+      if (picture) imageCell = picture;
+      else {
+        const img = imageDiv.querySelector('img');
+        if (img) imageCell = img;
+      }
+    }
+    // Text cell: .cards-card-body
+    const bodyDiv = li.querySelector('.cards-card-body');
+    let textCell = '';
+    if (bodyDiv) textCell = bodyDiv;
+    rows.push([imageCell, textCell]);
+  });
 
-        rows.push([imageElement, textContainer]);
-    });
-
-    const table = WebImporter.DOMUtils.createTable(rows, document);
-    element.replaceWith(table);
+  const table = WebImporter.DOMUtils.createTable([
+    headerRow,
+    ...rows
+  ], document);
+  element.replaceWith(table);
 }

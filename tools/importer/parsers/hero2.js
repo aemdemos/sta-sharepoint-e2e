@@ -1,22 +1,37 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  const headerRow = ['Hero (hero2)'];
-
-  // Extract content from the given element
-  const heroWrapper = element.querySelector(':scope > div.hero-wrapper');
-  const imageElement = heroWrapper.querySelector('picture img');
-  const titleElement = heroWrapper.querySelector('h1');
-
-  // Combine the image and title into a single cell (as per requirements)
-  const combinedCell = [imageElement, titleElement];
-  const contentRow = [
-    [combinedCell]
+  // Find the deepest div containing image and headline
+  let contentDiv = element;
+  const heroWrapper = element.querySelector(':scope > .hero-wrapper');
+  if (heroWrapper) {
+    const heroBlock = heroWrapper.querySelector(':scope > .hero.block');
+    if (heroBlock) {
+      const outerDiv = heroBlock.querySelector(':scope > div');
+      if (outerDiv) {
+        const innerDiv = outerDiv.querySelector(':scope > div');
+        if (innerDiv) {
+          contentDiv = innerDiv;
+        }
+      }
+    }
+  }
+  // Get picture (image)
+  const picture = contentDiv.querySelector('picture');
+  // Get heading (first h1-h6)
+  let heading = null;
+  for (let i = 1; i <= 6; i++) {
+    heading = contentDiv.querySelector('h' + i);
+    if (heading) break;
+  }
+  // Compose cell content as array, referencing existing elements
+  const cellContent = [];
+  if (picture) cellContent.push(picture);
+  if (heading) cellContent.push(heading);
+  // Always build header row as in the markdown example
+  const cells = [
+    ['Hero (hero2)'],
+    [cellContent]
   ];
-
-  // Generate the table
-  const tableData = [headerRow, ...contentRow];
-  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
-
-  // Replace the original element with the new table
-  element.replaceWith(blockTable);
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(table);
 }
