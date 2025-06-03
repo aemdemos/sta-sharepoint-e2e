@@ -1,23 +1,29 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Dynamically extract the image element
-  const imageElement = element.querySelector('img[data-icon-name="search"]');
-
-  // Dynamically extract the video link
-  const videoLink = document.createElement('a');
-  videoLink.href = 'https://vimeo.com/454418448';
-  videoLink.textContent = 'https://vimeo.com/454418448';
-
-  // Ensure header row matches example
+  // Define the header row dynamically based on block name
   const headerRow = ['Embed (embedVideo1)'];
 
-  // Combine image and video link into the same cell
-  const contentCell = [imageElement, videoLink];
+  // Extract iframe with src attribute, if present
+  const iframe = element.querySelector('iframe[src]');
+  let videoLink;
+  if (iframe) {
+    videoLink = document.createElement('a');
+    videoLink.href = iframe.src;
+    videoLink.textContent = iframe.src;
+  }
 
-  // Create table
-  const cells = [headerRow, [contentCell]];
+  // Extract image element, if present
+  const img = element.querySelector('img');
+
+  // Construct the content row dynamically based on extracted elements
+  const contentRow = img && videoLink ? [img, videoLink] : [videoLink];
+
+  // Create the table cells array with header and content rows
+  const cells = [headerRow, contentRow];
+
+  // Create the block table using the helper function
   const blockTable = WebImporter.DOMUtils.createTable(cells, document);
 
-  // Replace element with new table
+  // Replace the original element with the new block table
   element.replaceWith(blockTable);
 }

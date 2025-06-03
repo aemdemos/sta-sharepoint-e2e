@@ -1,34 +1,50 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
+  // Create the header row
   const headerRow = ['Columns (columns3)'];
 
-  // Extracting the first column block section
-  const firstColumn = element.querySelector(':scope > div > div:first-child');
-  const paragraph = firstColumn.querySelector('p');
-  const list = firstColumn.querySelector('ul');
-  const button = firstColumn.querySelector('.button-container');
+  // Extract content for the first column (text and list)
+  const firstCol = element.querySelector(':scope > div > div:first-child');
+  if (!firstCol) {
+    throw new Error('First column missing');
+  }
+  const textBlock = firstCol.querySelector('p');
+  const listBlock = firstCol.querySelector('ul');
+  const buttonBlock = firstCol.querySelector('p.button-container');
 
-  const firstImageColumn = element.querySelector(':scope > div > div:first-child .columns-img-col picture');
+  // Extract image for the first column
+  const firstImageCol = firstCol.querySelector(':scope > div.columns-img-col picture');
 
-  // Extracting the second column block section
-  const secondColumn = element.querySelector(':scope > div > div:nth-child(2) > div:last-child');
-  const secondParagraph = secondColumn.querySelector('p');
-  const secondButton = secondColumn.querySelector('.button-container');
+  // Extract content for the second column (image and preview text)
+  const secondCol = element.querySelector(':scope > div > div:nth-child(2)');
+  if (!secondCol) {
+    throw new Error('Second column missing');
+  }
+  const secondImageCol = secondCol.querySelector(':scope > div.columns-img-col picture');
+  const previewTextBlock = secondCol.querySelector(':scope > div > p');
+  const previewButtonBlock = secondCol.querySelector(':scope > div > p.button-container');
 
-  const secondImageColumn = element.querySelector(':scope > div > div:nth-child(2) .columns-img-col picture');
+  // Ensure all required content is present
+  if (!textBlock || !listBlock || !buttonBlock || !firstImageCol || !secondImageCol || !previewTextBlock || !previewButtonBlock) {
+    console.warn('Warning: Some optional elements are missing. Proceeding with available content.');
+  }
 
-  const cells = [
-    headerRow, // Header
+  // Create table rows
+  const rows = [
+    headerRow,
     [
-      [paragraph, list, button],
-      firstImageColumn,
+      [textBlock, listBlock, buttonBlock],
+      firstImageCol,
     ],
     [
-      secondImageColumn,
-      [secondParagraph, secondButton],
+      secondImageCol,
+      [previewTextBlock, previewButtonBlock],
     ],
   ];
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(table);
+  // Create table using WebImporter.DOMUtils.createTable
+  const blockTable = WebImporter.DOMUtils.createTable(rows, document);
+
+  // Replace element with the new block table
+  element.replaceWith(blockTable);
 }

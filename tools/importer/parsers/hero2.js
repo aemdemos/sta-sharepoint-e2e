@@ -1,27 +1,22 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Correcting header row capitalization issue
   const headerRow = ['Hero (hero2)'];
 
-  // Extract the background image dynamically
-  const picture = element.querySelector(':scope > div > div > div > div > p > picture');
+  // Extract content from the given element
+  const heroWrapper = element.querySelector(':scope > div.hero-wrapper');
+  const imageElement = heroWrapper.querySelector('picture img');
+  const titleElement = heroWrapper.querySelector('h1');
 
-  // Extract title dynamically
-  const heading = element.querySelector(':scope > div > div > div > div > h1');
-
-  // Check for missing or empty elements, handle gracefully
-  const pictureCell = picture ? picture : document.createTextNode('');
-  const headingCell = heading ? heading : document.createTextNode('');
-
-  // Construct Table Content
-  const cells = [
-    headerRow,
-    [pictureCell, headingCell],
+  // Combine the image and title into a single cell (as per requirements)
+  const combinedCell = [imageElement, titleElement];
+  const contentRow = [
+    [combinedCell]
   ];
 
-  // Create Table Block
-  const block = WebImporter.DOMUtils.createTable(cells, document);
+  // Generate the table
+  const tableData = [headerRow, ...contentRow];
+  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
 
-  // Replace Original Element
-  element.replaceWith(block);
+  // Replace the original element with the new table
+  element.replaceWith(blockTable);
 }

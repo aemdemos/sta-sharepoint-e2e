@@ -1,16 +1,34 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  const headerRow = ['Cards (cards4)'];
+    const cards = element.querySelectorAll(':scope > div > ul > li');
+    const rows = [['Cards (cards4)']];
 
-  const rows = Array.from(element.querySelectorAll(':scope > div > ul > li')).map((card) => {
-    const image = card.querySelector('.cards-card-image picture');
-    const content = card.querySelector('.cards-card-body');
+    cards.forEach((card) => {
+        const image = card.querySelector('.cards-card-image img');
+        const title = card.querySelector('.cards-card-body p strong');
+        const description = card.querySelector('.cards-card-body p:nth-of-type(2)');
 
-    return [image, content];
-  });
+        const imageElement = document.createElement('img');
+        if (image) {
+            imageElement.src = image.src;
+            imageElement.alt = image.alt;
+        }
 
-  const tableData = [headerRow, ...rows];
-  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
+        const textContainer = [];
+        if (title) {
+            const titleElement = document.createElement('strong');
+            titleElement.textContent = title.textContent;
+            textContainer.push(titleElement);
+        }
+        if (description) {
+            const descriptionElement = document.createElement('p');
+            descriptionElement.textContent = description.textContent;
+            textContainer.push(descriptionElement);
+        }
 
-  element.replaceWith(blockTable);
+        rows.push([imageElement, textContainer]);
+    });
+
+    const table = WebImporter.DOMUtils.createTable(rows, document);
+    element.replaceWith(table);
 }
