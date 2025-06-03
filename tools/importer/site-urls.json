@@ -5,7 +5,7 @@
     {
       "url": "https://main--aem-boilerplate--adobe.aem.page/",
       "source": "SITEMAPS",
-      "targetPath": "/index",
+      "targetPath": "/",
       "id": "3e001f8e061719b5b648a04afeb2d041bf93d5fd"
     }
   ],
