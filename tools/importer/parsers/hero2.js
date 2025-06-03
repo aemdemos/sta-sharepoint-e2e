@@ -1,28 +1,27 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Extract relevant content from the input element
-  const heroWrapper = element.querySelector(':scope > .hero-wrapper');
-  const heroBlock = heroWrapper?.querySelector(':scope > .hero');
-
-  // Image extraction
-  const image = heroBlock?.querySelector('picture img');
-
-  // Heading extraction
-  const heading = heroBlock?.querySelector('h1');
-
-  // Validate existence of required elements
-  const contentRow = [];
-  if (image) contentRow.push(image);
-  if (heading) contentRow.push(heading);
-
-  // Structure the table
+  // Correcting header row capitalization issue
   const headerRow = ['Hero (hero2)'];
 
-  const cells = [headerRow, [contentRow]];
+  // Extract the background image dynamically
+  const picture = element.querySelector(':scope > div > div > div > div > p > picture');
 
-  // Create the block table
-  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
+  // Extract title dynamically
+  const heading = element.querySelector(':scope > div > div > div > div > h1');
 
-  // Replace the original element with the new block table
-  element.replaceWith(blockTable);
+  // Check for missing or empty elements, handle gracefully
+  const pictureCell = picture ? picture : document.createTextNode('');
+  const headingCell = heading ? heading : document.createTextNode('');
+
+  // Construct Table Content
+  const cells = [
+    headerRow,
+    [pictureCell, headingCell],
+  ];
+
+  // Create Table Block
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace Original Element
+  element.replaceWith(block);
 }
