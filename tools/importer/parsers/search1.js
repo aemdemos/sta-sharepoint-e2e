@@ -1,31 +1,26 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Define the header row for the block table
-  const headerRow = ['Search (search1)']; // Static block name per specification
+  // Extract content dynamically from the element
+  const searchIcon = element.querySelector('img[data-icon-name="search"]');
 
-  // Extract the query index URL dynamically from the element
-  let queryIndexURL = 'https://main--helix-block-collection--adobe.hlx.page/block-collection/sample-search-data/query-index.json'; // Default fallback URL
-  const searchBlock = element.querySelector('.nav-tools .icon-search img');
+  // Header row matches example structure
+  const headerRow = ['Search (search1)'];
 
-  // Ensure the img remains an img and find the correct URL dynamically
-  if (searchBlock && searchBlock.src) {
-    const resolvedURL = searchBlock.src.startsWith('http') ? searchBlock.src : `https://main--helix-block-collection--adobe.hlx.page${searchBlock.src}`;
-    queryIndexURL = resolvedURL.includes('/query-index.json') ? resolvedURL : queryIndexURL; // Ensure the URL matches the intended query index
-  }
+  // Attempt to dynamically locate a query index URL
+  const queryIndexURL = element.querySelector('a[href]')?.href || 'https://main--helix-block-collection--adobe.hlx.page/block-collection/sample-search-data/query-index.json';
 
-  // Define the second row with the valid search query URL
-  const secondRow = [
-    (() => {
-      const a = document.createElement('a');
-      a.href = queryIndexURL;
-      a.textContent = queryIndexURL;
-      return a;
-    })(),
+  const queryIndexLink = document.createElement('a');
+  queryIndexLink.href = queryIndexURL;
+  queryIndexLink.textContent = queryIndexURL;
+
+  // Table cell structure matches example
+  const cells = [
+    headerRow,
+    [queryIndexLink]
   ];
 
-  // Create the block table
-  const block = WebImporter.DOMUtils.createTable([headerRow, secondRow], document);
+  const block = WebImporter.DOMUtils.createTable(cells, document);
 
-  // Replace the original element with the block table
+  // Replace the original element with the new block table
   element.replaceWith(block);
 }

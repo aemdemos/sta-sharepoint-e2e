@@ -1,41 +1,34 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Define the header row
   const headerRow = ['Columns (columns3)'];
 
-  const rows = [];
+  // Extracting the first column block section
+  const firstColumn = element.querySelector(':scope > div > div:first-child');
+  const paragraph = firstColumn.querySelector('p');
+  const list = firstColumn.querySelector('ul');
+  const button = firstColumn.querySelector('.button-container');
 
-  // Extract immediate child divs of the block
-  const blockDivs = Array.from(element.querySelectorAll(':scope > div > div'));
+  const firstImageColumn = element.querySelector(':scope > div > div:first-child .columns-img-col picture');
 
-  blockDivs.forEach((blockDiv) => {
-    const columns = Array.from(blockDiv.querySelectorAll(':scope > div'));
+  // Extracting the second column block section
+  const secondColumn = element.querySelector(':scope > div > div:nth-child(2) > div:last-child');
+  const secondParagraph = secondColumn.querySelector('p');
+  const secondButton = secondColumn.querySelector('.button-container');
 
-    const extractedRow = columns.map((column) => {
-      const paragraphElements = Array.from(column.querySelectorAll('p'));
-      const listElements = column.querySelector('ul');
-      const button = column.querySelector('.button-container');
+  const secondImageColumn = element.querySelector(':scope > div > div:nth-child(2) .columns-img-col picture');
 
-      const imageElement = column.querySelector('img');
+  const cells = [
+    headerRow, // Header
+    [
+      [paragraph, list, button],
+      firstImageColumn,
+    ],
+    [
+      secondImageColumn,
+      [secondParagraph, secondButton],
+    ],
+  ];
 
-      const combinedContent = [
-        ...paragraphElements,
-        listElements,
-        button,
-        imageElement,
-      ].filter(Boolean); // Ensure no null elements
-
-      // If no valid content is found, provide fallback text
-      return combinedContent.length > 0 ? combinedContent : document.createTextNode('No content available');
-    });
-
-    rows.push(extractedRow);
-  });
-
-  // Create the table
-  const tableData = [headerRow, ...rows];
-  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
-
-  // Replace the original element
-  element.replaceWith(blockTable);
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(table);
 }

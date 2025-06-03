@@ -27,11 +27,11 @@
   ],
   "blocks": [
     {
-      "name": "Search",
+      "name": "Tabs",
       "cluster": 1,
-      "source": "Search",
-      "target": "Search (search1)",
-      "key": "search1",
+      "source": "Tabs",
+      "target": "Tabs (tabs1)",
+      "key": "tabs1",
       "instances": [
         {
           "url": "https://main--aem-boilerplate--adobe.aem.page/",
