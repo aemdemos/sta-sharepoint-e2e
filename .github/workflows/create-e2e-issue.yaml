@@ -2,7 +2,7 @@ name: Daily E2E Test
 
 on:
   schedule:
-    - cron: '0 12 * * *'  # every day at 12:00 UTC
+    - cron: '10 17 * * *'  # every day at 5:10 pm UTC
   workflow_dispatch:
   pull_request:
 
