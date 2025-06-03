@@ -1,34 +1,27 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-    const cards = element.querySelectorAll(':scope > div > ul > li');
-    const rows = [['Cards (cards4)']];
+  // Ensure we operate on the actual cards block
+  let block = element;
+  if (block.classList.contains('cards-wrapper')) {
+    const inner = block.querySelector(':scope > .cards.block');
+    if (inner) block = inner;
+  }
 
-    cards.forEach((card) => {
-        const image = card.querySelector('.cards-card-image img');
-        const title = card.querySelector('.cards-card-body p strong');
-        const description = card.querySelector('.cards-card-body p:nth-of-type(2)');
+  // Find all cards in the block
+  const ul = block.querySelector('ul');
+  const lis = ul ? Array.from(ul.children) : [];
 
-        const imageElement = document.createElement('img');
-        if (image) {
-            imageElement.src = image.src;
-            imageElement.alt = image.alt;
-        }
+  const rows = [['Cards (cards4)']]; // Header exactly as in example
 
-        const textContainer = [];
-        if (title) {
-            const titleElement = document.createElement('strong');
-            titleElement.textContent = title.textContent;
-            textContainer.push(titleElement);
-        }
-        if (description) {
-            const descriptionElement = document.createElement('p');
-            descriptionElement.textContent = description.textContent;
-            textContainer.push(descriptionElement);
-        }
+  lis.forEach(li => {
+    // Each card
+    const imageDiv = li.querySelector(':scope > .cards-card-image');
+    const bodyDiv = li.querySelector(':scope > .cards-card-body');
+    if (imageDiv && bodyDiv) {
+      rows.push([imageDiv, bodyDiv]);
+    }
+  });
 
-        rows.push([imageElement, textContainer]);
-    });
-
-    const table = WebImporter.DOMUtils.createTable(rows, document);
-    element.replaceWith(table);
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(table);
 }
