@@ -27,11 +27,11 @@
   ],
   "blocks": [
     {
-      "name": "Search",
+      "name": "Embed (video)",
       "cluster": 1,
-      "source": "Search",
-      "target": "Search (search1)",
-      "key": "search1",
+      "source": "Embed",
+      "target": "Embed (embedVideo1)",
+      "key": "embedVideo1",
       "instances": [
         {
           "url": "https://main--aem-boilerplate--adobe.aem.page/",
