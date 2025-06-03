@@ -27,11 +27,11 @@
   ],
   "blocks": [
     {
-      "name": "Columns",
+      "name": "Tabs",
       "cluster": 1,
-      "source": "Columns",
-      "target": "Columns (columns1)",
-      "key": "columns1",
+      "source": "Tabs",
+      "target": "Tabs (tabs1)",
+      "key": "tabs1",
       "instances": [
         {
           "url": "https://main--aem-boilerplate--adobe.aem.page/",
