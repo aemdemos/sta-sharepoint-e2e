@@ -1,55 +1,37 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the hero block content
-  let contentDiv = null;
-  const heroWrapper = element.querySelector('.hero-wrapper');
+  // Find the deepest div containing image and headline
+  let contentDiv = element;
+  const heroWrapper = element.querySelector(':scope > .hero-wrapper');
   if (heroWrapper) {
-    const heroBlock = heroWrapper.querySelector('.hero.block');
+    const heroBlock = heroWrapper.querySelector(':scope > .hero.block');
     if (heroBlock) {
-      // Try to find the innermost content div
-      let inner = heroBlock.querySelector(':scope > div > div');
-      if (!inner) {
-        // fallback if not deeply nested
-        inner = heroBlock.querySelector(':scope > div');
-      }
-      if (inner) {
-        contentDiv = inner;
+      const outerDiv = heroBlock.querySelector(':scope > div');
+      if (outerDiv) {
+        const innerDiv = outerDiv.querySelector(':scope > div');
+        if (innerDiv) {
+          contentDiv = innerDiv;
+        }
       }
     }
   }
-  if (!contentDiv) {
-    // fallback to main element if structure is different
-    contentDiv = element;
+  // Get picture (image)
+  const picture = contentDiv.querySelector('picture');
+  // Get heading (first h1-h6)
+  let heading = null;
+  for (let i = 1; i <= 6; i++) {
+    heading = contentDiv.querySelector('h' + i);
+    if (heading) break;
   }
-
-  // Content for the row: background image (picture), heading, (optional subheading, CTA)
-  // We'll collect all picture, headings in order found
-  const cells = [];
-  cells.push(['Hero (hero2)']); // header row
-  const content = [];
-  // gather all <picture> (image), keep parent <p> if that's the only child in it
-  const pictures = contentDiv.querySelectorAll('picture');
-  pictures.forEach(picture => {
-    const parentP = picture.parentElement;
-    if (
-      parentP &&
-      parentP.tagName === 'P' &&
-      parentP.childElementCount === 1
-    ) {
-      content.push(parentP);
-    } else {
-      content.push(picture);
-    }
-  });
-  // gather all heading tags (h1-h6)
-  const headings = contentDiv.querySelectorAll('h1, h2, h3, h4, h5, h6');
-  headings.forEach(h => content.push(h));
-  // If there is a subheading (not in this example), could check for a <p> following headings
-  // If there is a CTA (not in this example), could check for <a> as button or link
-  // Add the content row
-  cells.push([content]);
-
-  // Create the table and replace the element
+  // Compose cell content as array, referencing existing elements
+  const cellContent = [];
+  if (picture) cellContent.push(picture);
+  if (heading) cellContent.push(heading);
+  // Always build header row as in the markdown example
+  const cells = [
+    ['Hero (hero2)'],
+    [cellContent]
+  ];
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
