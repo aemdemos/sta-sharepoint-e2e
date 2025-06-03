@@ -27,6 +27,7 @@ jobs:
               issue_number: context.issue.number,
               per_page: 100
             });
+            console.log('Timeline events:', events.data);
             const parentEvent = events.data.find(event =>
               event.event === 'connected' &&
               event.subject && event.subject.type === 'issue' &&
@@ -54,8 +55,6 @@ jobs:
             // 4. Output for use in Slack step
             core.setOutput('parent_thread_ts', thread_ts);
             core.setOutput('parent_issue_url', `https://github.com/${context.repo.owner}/${context.repo.repo}/issues/${parentIssueNumber}`);
-
-            console.log('Timeline events:', events.data);
       - name: Notify parent issue Slack thread
         if: steps.find_parent.outputs.parent_thread_ts != ''
         uses: slackapi/slack-github-action@v1.25.0
