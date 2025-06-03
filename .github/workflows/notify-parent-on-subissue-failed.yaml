@@ -20,34 +20,24 @@ jobs:
               return;
             }
 
-            // 2. Find parent issue (where this issue is a subissue)
-            const subissueNumber = context.issue.number;
-            const query = `
-              query($owner: String!, $repo: String!, $number: Int!) {
-                repository(owner: $owner, name: $repo) {
-                  issue(number: $number) {
-                    id
-                    trackedInIssues(first: 1) {
-                      nodes {
-                        number
-                        url
-                      }
-                    }
-                  }
-                }
+            // 2. Find parent issue using REST Linked Issues API
+            const response = await github.request(
+              'GET /repos/{owner}/{repo}/issues/{issue_number}/linked',
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number
               }
-            `;
-            const result = await github.graphql(query, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              number: subissueNumber
-            });
-            const parentNodes = result.repository.issue.trackedInIssues.nodes;
-            if (!parentNodes.length) {
-              console.log('No parent issue found via GraphQL trackedInIssues.');
+            );
+            console.log('Linked issues:', response.data);
+
+            // Find the parent issue (relationship_type: 'parent')
+            const parent = response.data.find(link => link.relationship_type === 'parent');
+            if (!parent) {
+              console.log('No parent issue found via REST linked issues.');
               return;
             }
-            const parentIssueNumber = parentNodes[0].number;
+            const parentIssueNumber = parent.number;
             console.log('Parent issue number:', parentIssueNumber);
 
             // 3. Get Slack thread_ts from parent issue comments
@@ -66,17 +56,6 @@ jobs:
             // 4. Output for use in Slack step
             core.setOutput('parent_thread_ts', thread_ts);
             core.setOutput('parent_issue_url', `https://github.com/${context.repo.owner}/${context.repo.repo}/issues/${parentIssueNumber}`);
-
-            // 5. Check linked issues using REST API
-            const response = await github.request(
-              'GET /repos/{owner}/{repo}/issues/{issue_number}/linked',
-              {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number
-              }
-            );
-            console.log('Linked issues:', response.data);
       - name: Notify parent issue Slack thread
         if: steps.find_parent.outputs.parent_thread_ts != ''
         uses: slackapi/slack-github-action@v1.25.0
