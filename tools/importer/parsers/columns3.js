@@ -1,34 +1,40 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
+  // Correct header row
   const headerRow = ['Columns (columns3)'];
 
-  // Extracting the first column block section
-  const firstColumn = element.querySelector(':scope > div > div:first-child');
-  const paragraph = firstColumn.querySelector('p');
-  const list = firstColumn.querySelector('ul');
-  const button = firstColumn.querySelector('.button-container');
+  // Extracting columns content
+  const columns = Array.from(element.querySelectorAll(':scope > div'));
 
-  const firstImageColumn = element.querySelector(':scope > div > div:first-child .columns-img-col picture');
+  // Safely handling first content block
+  const firstContentBlock = columns[0];
+  const columnText = firstContentBlock?.querySelector('p') || null;
+  const list = firstContentBlock?.querySelector('ul') || null;
+  const button = firstContentBlock?.querySelector('a.button') || null;
 
-  // Extracting the second column block section
-  const secondColumn = element.querySelector(':scope > div > div:nth-child(2) > div:last-child');
-  const secondParagraph = secondColumn.querySelector('p');
-  const secondButton = secondColumn.querySelector('.button-container');
+  // Safely handling first image block
+  const firstImageBlock = columns[1]?.querySelector('img') || null;
 
-  const secondImageColumn = element.querySelector(':scope > div > div:nth-child(2) .columns-img-col picture');
+  // Safely handling second content block
+  const secondContentBlock = columns[2];
+  const secondImage = secondContentBlock?.querySelector('img') || null;
+  const secondText = secondContentBlock?.querySelector('p') || null;
+  const secondButton = secondContentBlock?.querySelector('a.button.secondary') || null;
 
+  // Constructing cells for table without placeholder text
   const cells = [
-    headerRow, // Header
+    headerRow,
     [
-      [paragraph, list, button],
-      firstImageColumn,
+      [columnText, list, button].filter(Boolean),
+      firstImageBlock,
     ],
     [
-      secondImageColumn,
-      [secondParagraph, secondButton],
+      secondImage,
+      [secondText, secondButton].filter(Boolean),
     ],
   ];
 
+  // Create table and replace element
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
