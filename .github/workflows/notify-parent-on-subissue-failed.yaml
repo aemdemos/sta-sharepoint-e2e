@@ -20,40 +20,33 @@ jobs:
               return;
             }
 
-            // 2. Use GraphQL API to find parent issue
-            const subissueNumber = context.issue.number;
-            const query = `
-              query($owner: String!, $repo: String!, $number: Int!) {
-                repository(owner: $owner, name: $repo) {
-                  issue(number: $number) {
-                    id
-                    timelineItems(last: 100, itemTypes: [CONNECTED_EVENT, PARENT_ISSUE_ADDED_EVENT]) {
-                      nodes {
-                        ... on ParentIssueAddedEvent {
-                          id
-                          actor { login }
-                          createdAt
-                          parentIssue { number url }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            `;
-            const result = await github.graphql(query, {
+            // 2. Find parent issue (where this issue is a subissue)
+            const events = await github.rest.issues.listEventsForTimeline({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              number: subissueNumber
+              issue_number: context.issue.number,
+              per_page: 100
             });
-            const timelineNodes = result.repository.issue.timelineItems.nodes;
-            const parentEvent = timelineNodes.find(node => node.parentIssue);
+            console.log('Timeline events:', events.data);
+
+            // Find the parent_issue_added event
+            const parentEvent = events.data.find(event =>
+              event.event === 'parent_issue_added'
+            );
+
             if (!parentEvent) {
-              console.log('No parent issue found via GraphQL.');
+              console.log('No parent issue found.');
               return;
             }
-            const parentIssueNumber = parentEvent.parentIssue.number;
-            console.log('Parent issue number:', parentIssueNumber);
+
+            // Now, fetch all timeline events for the parent issue to find its number
+            // Unfortunately, the parent issue number is not directly in the event
+            // So, as a workaround, you can use the GitHub GraphQL API or parse the parent from the UI, or (if only one parent) use the relationships API
+
+            // For now, log the event and instruct the user to check the parent issue manually
+            console.log('Parent issue event:', parentEvent);
+            console.log('You may need to use the GraphQL API or relationships API to get the parent issue number.');
+            return;
 
             // 3. Get Slack thread_ts from parent issue comments
             const comments = await github.rest.issues.listComments({
