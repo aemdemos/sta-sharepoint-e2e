@@ -1,41 +1,50 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Define the header row
+  // Create the header row
   const headerRow = ['Columns (columns3)'];
 
-  const rows = [];
+  // Extract content for the first column (text and list)
+  const firstCol = element.querySelector(':scope > div > div:first-child');
+  if (!firstCol) {
+    throw new Error('First column missing');
+  }
+  const textBlock = firstCol.querySelector('p');
+  const listBlock = firstCol.querySelector('ul');
+  const buttonBlock = firstCol.querySelector('p.button-container');
 
-  // Extract immediate child divs of the block
-  const blockDivs = Array.from(element.querySelectorAll(':scope > div > div'));
+  // Extract image for the first column
+  const firstImageCol = firstCol.querySelector(':scope > div.columns-img-col picture');
 
-  blockDivs.forEach((blockDiv) => {
-    const columns = Array.from(blockDiv.querySelectorAll(':scope > div'));
+  // Extract content for the second column (image and preview text)
+  const secondCol = element.querySelector(':scope > div > div:nth-child(2)');
+  if (!secondCol) {
+    throw new Error('Second column missing');
+  }
+  const secondImageCol = secondCol.querySelector(':scope > div.columns-img-col picture');
+  const previewTextBlock = secondCol.querySelector(':scope > div > p');
+  const previewButtonBlock = secondCol.querySelector(':scope > div > p.button-container');
 
-    const extractedRow = columns.map((column) => {
-      const paragraphElements = Array.from(column.querySelectorAll('p'));
-      const listElements = column.querySelector('ul');
-      const button = column.querySelector('.button-container');
+  // Ensure all required content is present
+  if (!textBlock || !listBlock || !buttonBlock || !firstImageCol || !secondImageCol || !previewTextBlock || !previewButtonBlock) {
+    console.warn('Warning: Some optional elements are missing. Proceeding with available content.');
+  }
 
-      const imageElement = column.querySelector('img');
+  // Create table rows
+  const rows = [
+    headerRow,
+    [
+      [textBlock, listBlock, buttonBlock],
+      firstImageCol,
+    ],
+    [
+      secondImageCol,
+      [previewTextBlock, previewButtonBlock],
+    ],
+  ];
 
-      const combinedContent = [
-        ...paragraphElements,
-        listElements,
-        button,
-        imageElement,
-      ].filter(Boolean); // Ensure no null elements
+  // Create table using WebImporter.DOMUtils.createTable
+  const blockTable = WebImporter.DOMUtils.createTable(rows, document);
 
-      // If no valid content is found, provide fallback text
-      return combinedContent.length > 0 ? combinedContent : document.createTextNode('No content available');
-    });
-
-    rows.push(extractedRow);
-  });
-
-  // Create the table
-  const tableData = [headerRow, ...rows];
-  const blockTable = WebImporter.DOMUtils.createTable(tableData, document);
-
-  // Replace the original element
+  // Replace element with the new block table
   element.replaceWith(blockTable);
 }

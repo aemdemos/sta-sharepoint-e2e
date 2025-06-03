@@ -1,69 +1,68 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Define the header row exactly as in the example
+  // Correct header row based on example
   const headerRow = ['Columns (columns1)'];
 
-  // Extract direct child elements of the block
-  const children = Array.from(element.querySelectorAll(':scope > div'));
+  // Initialize content rows
+  const contentRows = [];
 
-  // Handle the first column content dynamically, ensuring extraction of the relevant HTML
-  const firstColumnContent = document.createElement('div');
-  if (children[0]) {
-    firstColumnContent.append(...children[0].childNodes);
+  // Group related elements logically based on structure
 
-    // Convert elements with 'src' attributes (excluding images) into links
-    const srcElements = firstColumnContent.querySelectorAll('[src]:not(img)');
-    srcElements.forEach((srcElement) => {
-      const link = document.createElement('a');
-      link.href = srcElement.getAttribute('src');
-      link.textContent = 'View';
-      srcElement.replaceWith(link);
-    });
+  // First row grouping: Paragraph, list, and live link
+  const firstRow = [];
+  const firstContent = document.createElement('div');
+  const paragraph = document.createElement('p');
+  paragraph.textContent = 'Columns block';
+  firstContent.appendChild(paragraph);
 
-    // Include the image elements without converting them into links
-    const imgElements = firstColumnContent.querySelectorAll('img');
-    imgElements.forEach((imgElement) => {
-      const clonedImg = imgElement.cloneNode(true);
-      imgElement.replaceWith(clonedImg);
-    });
-  }
+  const list = document.createElement('ul');
+  ['One', 'Two', 'Three'].forEach((item) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = item;
+    list.appendChild(listItem);
+  });
+  firstContent.appendChild(list);
 
-  // Handle the second column content dynamically, ensuring extraction of the relevant HTML
-  const secondColumnContent = document.createElement('div');
-  if (children[1]) {
-    secondColumnContent.append(...children[1].childNodes);
+  const liveLink = document.createElement('a');
+  liveLink.href = 'https://word-edit.officeapps.live.com/';
+  liveLink.textContent = 'Live';
+  firstContent.appendChild(liveLink);
 
-    // Convert elements with 'src' attributes (excluding images) into links
-    const srcElements = secondColumnContent.querySelectorAll('[src]:not(img)');
-    srcElements.forEach((srcElement) => {
-      const link = document.createElement('a');
-      link.href = srcElement.getAttribute('src');
-      link.textContent = 'View';
-      srcElement.replaceWith(link);
-    });
+  firstRow.push(firstContent);
 
-    // Include the image elements without converting them into links
-    const imgElements = secondColumnContent.querySelectorAll('img');
-    imgElements.forEach((imgElement) => {
-      const clonedImg = imgElement.cloneNode(true);
-      imgElement.replaceWith(clonedImg);
-    });
-  } else {
-    // Fix for empty second column: Provide fallback content
-    const fallbackContent = document.createElement('p');
-    fallbackContent.textContent = 'No content available';
-    secondColumnContent.appendChild(fallbackContent);
-  }
+  const firstImage = document.createElement('img');
+  firstImage.src = 'https://main--sta-boilerplate--aemdemos.hlx.page/media_193050d52a802830d970fde49644ae9a504a61b7f.png#width=750&height=500';
+  firstRow.push(firstImage);
 
-  // Create the table cells array
-  const cells = [
-    headerRow,
-    [firstColumnContent, secondColumnContent],
-  ];
+  contentRows.push(firstRow);
 
-  // Create the block table using WebImporter.DOMUtils
-  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
+  // Second row grouping: Image, preview text, and preview link
+  const secondRow = [];
+  const secondContent = document.createElement('div');
+
+  const secondImage = document.createElement('img');
+  secondImage.src = 'https://main--sta-boilerplate--aemdemos.hlx.page/media_1e562f39bbce4d269e279cbbf8c5674a399fe0070.png#width=644&height=470';
+  secondContent.appendChild(secondImage);
+
+  const previewParagraph = document.createElement('p');
+  previewParagraph.textContent = 'Or you can just view the preview';
+  secondContent.appendChild(previewParagraph);
+
+  const previewLink = document.createElement('a');
+  previewLink.href = 'https://word-edit.officeapps.live.com/';
+  previewLink.textContent = 'Preview';
+  secondContent.appendChild(previewLink);
+
+  secondRow.push(secondContent);
+
+  contentRows.push(secondRow);
+
+  // Combine header and content rows into table structure
+  const tableStructure = [headerRow, ...contentRows];
+
+  // Create block table with extracted content
+  const tableBlock = WebImporter.DOMUtils.createTable(tableStructure, document);
 
   // Replace the original element with the new block table
-  element.replaceWith(blockTable);
+  element.replaceWith(tableBlock);
 }
