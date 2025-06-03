@@ -6,6 +6,7 @@ on:
 
 jobs:
   notify-failed-subissues:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Find subissues with aemy-failed label
