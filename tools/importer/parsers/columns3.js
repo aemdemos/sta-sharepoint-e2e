@@ -1,39 +1,34 @@
 /* global WebImporter */
- export default function parse(element, { document }) {
+export default function parse(element, { document }) {
   const headerRow = ['Columns (columns3)'];
 
-  const rows = [];
+  // Extracting the first column block section
+  const firstColumn = element.querySelector(':scope > div > div:first-child');
+  const paragraph = firstColumn.querySelector('p');
+  const list = firstColumn.querySelector('ul');
+  const button = firstColumn.querySelector('.button-container');
 
-  // Get the column blocks
-  const blocks = element.querySelectorAll(':scope > div > div');
+  const firstImageColumn = element.querySelector(':scope > div > div:first-child .columns-img-col picture');
 
-  blocks.forEach((block) => {
-    const cells = [];
+  // Extracting the second column block section
+  const secondColumn = element.querySelector(':scope > div > div:nth-child(2) > div:last-child');
+  const secondParagraph = secondColumn.querySelector('p');
+  const secondButton = secondColumn.querySelector('.button-container');
 
-    // Iterate through the immediate children of the block to process content
-    const contents = block.querySelectorAll(':scope > div');
-    contents.forEach((content) => {
-      // If the content is an image column
-      const picture = content.querySelector('picture');
-      if (picture) {
-        const img = picture.querySelector('img');
-        if (img) {
-          cells.push(img);
-        }
-      } else {
-        // If the content is text and/or links
-        const links = content.querySelectorAll('a');
-        links.forEach((link) => {
-          link.href = link.getAttribute('href') || link.getAttribute('src');
-        });
-        cells.push(content);
-      }
-    });
+  const secondImageColumn = element.querySelector(':scope > div > div:nth-child(2) .columns-img-col picture');
 
-    rows.push(cells);
-  });
+  const cells = [
+    headerRow, // Header
+    [
+      [paragraph, list, button],
+      firstImageColumn,
+    ],
+    [
+      secondImageColumn,
+      [secondParagraph, secondButton],
+    ],
+  ];
 
-  const table = WebImporter.DOMUtils.createTable([headerRow, ...rows], document);
-
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
