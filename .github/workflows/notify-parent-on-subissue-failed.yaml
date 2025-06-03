@@ -20,24 +20,40 @@ jobs:
               return;
             }
 
-            // 2. Find parent issue (where this issue is a subissue)
-            const events = await github.rest.issues.listEventsForTimeline({
+            // 2. Use GraphQL API to find parent issue
+            const subissueNumber = context.issue.number;
+            const query = `
+              query($owner: String!, $repo: String!, $number: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  issue(number: $number) {
+                    id
+                    timelineItems(last: 100, itemTypes: [CONNECTED_EVENT, PARENT_ISSUE_ADDED_EVENT]) {
+                      nodes {
+                        ... on ParentIssueAddedEvent {
+                          id
+                          actor { login }
+                          createdAt
+                          parentIssue { number url }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+            const result = await github.graphql(query, {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
-              per_page: 100
+              number: subissueNumber
             });
-            console.log('Timeline events:', events.data);
-            const parentEvent = events.data.find(event =>
-              event.event === 'connected' &&
-              event.subject && event.subject.type === 'issue' &&
-              event.source && event.source.type === 'issue'
-            );
+            const timelineNodes = result.repository.issue.timelineItems.nodes;
+            const parentEvent = timelineNodes.find(node => node.parentIssue);
             if (!parentEvent) {
-              console.log('No parent issue found.');
+              console.log('No parent issue found via GraphQL.');
               return;
             }
-            const parentIssueNumber = parentEvent.source.issue.number;
+            const parentIssueNumber = parentEvent.parentIssue.number;
+            console.log('Parent issue number:', parentIssueNumber);
 
             // 3. Get Slack thread_ts from parent issue comments
             const comments = await github.rest.issues.listComments({
