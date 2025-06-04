@@ -1,27 +1,34 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the actual columns block (could be element or its child)
-  let columnsBlock = element;
-  if (!columnsBlock.classList.contains('columns')) {
-    columnsBlock = element.querySelector('.columns');
-  }
+  // Find the main columns block inside the wrapper
+  const columnsBlock = element.querySelector('.columns.block');
   if (!columnsBlock) return;
 
-  // Header row: single column, exactly as the example
-  const headerRow = ['Columns (columns3)'];
+  // Get all direct child divs: one div per row in the columns block
+  const rowDivs = Array.from(columnsBlock.querySelectorAll(':scope > div'));
+  if (!rowDivs.length) return;
 
-  // Each row in the columns block is a <div> containing two <div>s for left/right content
-  const rows = Array.from(columnsBlock.querySelectorAll(':scope > div'));
-  const tableRows = rows.map(row => {
-    // Collect all column divs for this row
-    const cols = Array.from(row.children);
-    // Combine them into a single cell (one column)
-    // This preserves the original elements and their order
-    return [cols];
+  // Build each table row: for each row, get all direct children (columns)
+  const tableRows = rowDivs.map(rowDiv => {
+    // Get all direct child divs (columns)
+    const colDivs = Array.from(rowDiv.querySelectorAll(':scope > div'));
+    // Defensive: if there is only one child and it's not a div, include it
+    if (!colDivs.length) {
+      // If there are no child divs, treat the rowDiv itself as the column
+      return [rowDiv];
+    }
+    return colDivs;
   });
 
-  // Compose the table: header + each row as a single column
+  // Create the header row (exact match to the markdown example)
+  const headerRow = ['Columns (columns3)'];
+
+  // Compose the cells array for the block table
   const cells = [headerRow, ...tableRows];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(table);
+
+  // Create the block table
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element with the new block
+  element.replaceWith(block);
 }

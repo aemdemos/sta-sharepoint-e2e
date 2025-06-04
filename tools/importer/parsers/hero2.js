@@ -1,43 +1,54 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // The target block is always a single table with header and one content cell
-  // We want: [ ['Hero (hero2)'], [mainContent] ]
+  // Find the .hero.block element. This is the main block for content extraction
+  let heroBlock = element.querySelector('.hero.block');
+  if (!heroBlock) heroBlock = element;
 
-  // Find the hero block with the content
-  let mainContent = null;
-  // Usually .hero-wrapper > .hero.block > div > div contains the content
-  const heroWrapper = element.querySelector('.hero-wrapper');
-  if (heroWrapper) {
-    const heroBlock = heroWrapper.querySelector('.hero.block');
-    if (heroBlock) {
-      // Some variations may have extra divs, but we want the main content inside .hero.block
-      // Find the first div that contains the image and heading
-      let contentDiv = heroBlock.querySelector('div > div');
-      if (!contentDiv) contentDiv = heroBlock.querySelector('div');
-      if (contentDiv) {
-        mainContent = contentDiv;
-      } else {
-        mainContent = heroBlock;
-      }
+  // The content is typically in hero.block > div > div
+  let contentRoot = heroBlock;
+  const firstDiv = heroBlock.querySelector(':scope > div');
+  if (firstDiv) {
+    const secondDiv = firstDiv.querySelector(':scope > div');
+    if (secondDiv) {
+      contentRoot = secondDiv;
     } else {
-      mainContent = heroWrapper;
+      contentRoot = firstDiv;
     }
-  } else {
-    mainContent = element;
+  }
+  const children = Array.from(contentRoot.children);
+
+  // 1. Find the image row (picture inside p)
+  let imgCell = '';
+  for (const child of children) {
+    if (child.tagName === 'P' && child.querySelector('picture')) {
+      imgCell = child;
+      break;
+    }
   }
 
-  // Defensive: If mainContent is null, fallback to the original element
-  if (!mainContent) {
-    mainContent = element;
+  // 2. Title and text row (headings, paragraphs except image)
+  const contentParts = [];
+  for (const child of children) {
+    // Include all headings
+    if (/^H[1-6]$/.test(child.tagName)) {
+      contentParts.push(child);
+    } else if (child.tagName === 'P' && !child.querySelector('picture') && child.textContent.trim()) {
+      contentParts.push(child);
+    }
   }
+  // If nothing found, leave as empty string for the cell
+  const titleCell = contentParts.length ? contentParts : '';
 
-  // Assemble the table structure
+  // FIX: Ensure header row is exactly 'Hero' (no variants, no extra text)
   const cells = [
-    ['Hero (hero2)'],
-    [mainContent]
+    ['Hero'],
+    [imgCell],
+    [titleCell]
   ];
 
+  // Create the table with the given utility
   const table = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element with the new table
   element.replaceWith(table);
-  return table;
 }
