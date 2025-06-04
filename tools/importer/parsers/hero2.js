@@ -1,53 +1,28 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the .hero.block element. This is the main block for content extraction
-  let heroBlock = element.querySelector('.hero.block');
-  if (!heroBlock) heroBlock = element;
-
-  // The content is typically in hero.block > div > div
-  let contentRoot = heroBlock;
-  const firstDiv = heroBlock.querySelector(':scope > div');
-  if (firstDiv) {
-    const secondDiv = firstDiv.querySelector(':scope > div');
-    if (secondDiv) {
-      contentRoot = secondDiv;
-    } else {
-      contentRoot = firstDiv;
-    }
-  }
-  const children = Array.from(contentRoot.children);
-
-  // 1. Find the image row (picture inside p)
-  let imgCell = '';
-  for (const child of children) {
-    if (child.tagName === 'P' && child.querySelector('picture')) {
-      imgCell = child;
-      break;
-    }
+  // Find the hero block content
+  const heroBlock = element.querySelector('.hero.block');
+  let contentDiv;
+  if (heroBlock) {
+    // Find the deepest div containing a picture or h1
+    const innerDivs = Array.from(heroBlock.querySelectorAll('div'));
+    contentDiv = innerDivs.find(div => div.querySelector('picture') || div.querySelector('h1')) || heroBlock;
+  } else {
+    contentDiv = element;
   }
 
-  // 2. Title and text row (headings, paragraphs except image)
-  const contentParts = [];
-  for (const child of children) {
-    // Include all headings
-    if (/^H[1-6]$/.test(child.tagName)) {
-      contentParts.push(child);
-    } else if (child.tagName === 'P' && !child.querySelector('picture') && child.textContent.trim()) {
-      contentParts.push(child);
-    }
-  }
-  // If nothing found, leave as empty string for the cell
-  const titleCell = contentParts.length ? contentParts : '';
+  // Extract the picture and heading
+  const picture = contentDiv.querySelector('picture');
+  const heading = contentDiv.querySelector('h1');
 
-  // FIX: Ensure header row is exactly 'Hero' (no variants, no extra text)
-  const cells = [
+  // Build the block table: header, image, heading
+  const rows = [
     ['Hero'],
-    [imgCell],
-    [titleCell]
+    [picture ? picture : ''],
+    [heading ? heading : '']
   ];
 
-  // Create the table with the given utility
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  const table = WebImporter.DOMUtils.createTable(rows, document);
 
   // Replace the original element with the new table
   element.replaceWith(table);
