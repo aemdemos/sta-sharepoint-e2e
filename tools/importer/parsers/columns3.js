@@ -1,33 +1,32 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the columns block inside the wrapper
-  const columnsBlock = element.querySelector('.columns.block');
-  if (!columnsBlock) return;
+  // Find the actual columns block (inside columns-wrapper)
+  const block = element.querySelector('.columns.block');
+  if (!block) return;
 
-  // Rows of the columns block
-  const rowDivs = Array.from(columnsBlock.children);
-  if (rowDivs.length < 2) return;
-
-  // Cells for each content row
-  const firstRowCells = Array.from(rowDivs[0].children);
-  const secondRowCells = Array.from(rowDivs[1].children);
-
-  const numCols = firstRowCells.length;
-
-  // Instead of passing a <th> element (which causes nested <th>),
-  // pass a string as the single cell, and let WebImporter.DOMUtils.createTable
-  // handle creation of the <th> with appropriate colspan
-  // It is assumed that createTable will generate a single <th colspan=numCols>
-  // This matches the desired output structure
+  // Header row, as specified in the example
   const headerRow = ['Columns (columns3)'];
-  const tableData = [headerRow, firstRowCells, secondRowCells];
 
-  const table = WebImporter.DOMUtils.createTable(tableData, document);
-  // Adjust the header row's <th> colspan if needed
-  const th = table.querySelector('tr:first-child th');
-  if (th && numCols > 1) {
-    th.setAttribute('colspan', numCols);
-  }
+  // Gather the direct child divs of the block, each represents a row of columns
+  const blockRows = Array.from(block.querySelectorAll(':scope > div'));
+  if (!blockRows.length) return;
 
+  // Prepare the body rows for the table
+  // Each row is an array of direct child divs (columns)
+  const bodyRows = blockRows.map(rowDiv => {
+    // For each row, get direct children divs which are the columns
+    const cols = Array.from(rowDiv.querySelectorAll(':scope > div'));
+    // If there are no child divs, fallback to rowDiv as a single column
+    if (cols.length === 0) return [rowDiv];
+    return cols;
+  });
+
+  // Compose the final table array
+  const cells = [headerRow, ...bodyRows];
+
+  // Create the block table
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element in the DOM with the new table
   element.replaceWith(table);
 }
