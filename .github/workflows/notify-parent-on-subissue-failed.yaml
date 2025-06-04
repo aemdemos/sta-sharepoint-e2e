@@ -3,6 +3,7 @@ name: Notify Parent Issue Slack Thread on Subissue Failure
 on:
   issues:
     types: [labeled]
+  workflow_dispatch:
 
 jobs:
   notify-parent-on-failed-subissue:
