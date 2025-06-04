@@ -1,31 +1,43 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Table header must match the provided block name
-  const headerRow = ['Hero (hero2)'];
+  // The target block is always a single table with header and one content cell
+  // We want: [ ['Hero (hero2)'], [mainContent] ]
 
-  // The hero block's innermost content contains the image and heading
-  // We want to reference the <div> that contains both the <picture> and <h1>
-  // From the HTML structure, this is likely the first <div> that has both an <img>/<picture> and an <h1>
-  let contentDiv = null;
-  // Prefer direct children for robustness
-  const divs = element.querySelectorAll('div');
-  for (const div of divs) {
-    if ((div.querySelector('picture') || div.querySelector('img')) && div.querySelector('h1')) {
-      contentDiv = div;
-      break;
+  // Find the hero block with the content
+  let mainContent = null;
+  // Usually .hero-wrapper > .hero.block > div > div contains the content
+  const heroWrapper = element.querySelector('.hero-wrapper');
+  if (heroWrapper) {
+    const heroBlock = heroWrapper.querySelector('.hero.block');
+    if (heroBlock) {
+      // Some variations may have extra divs, but we want the main content inside .hero.block
+      // Find the first div that contains the image and heading
+      let contentDiv = heroBlock.querySelector('div > div');
+      if (!contentDiv) contentDiv = heroBlock.querySelector('div');
+      if (contentDiv) {
+        mainContent = contentDiv;
+      } else {
+        mainContent = heroBlock;
+      }
+    } else {
+      mainContent = heroWrapper;
     }
-  }
-  // Fallback to the element itself if not found
-  if (!contentDiv) {
-    contentDiv = element;
+  } else {
+    mainContent = element;
   }
 
-  // Build the table structure
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    [contentDiv]
-  ], document);
+  // Defensive: If mainContent is null, fallback to the original element
+  if (!mainContent) {
+    mainContent = element;
+  }
 
-  // Replace the original element with the parsed block table
+  // Assemble the table structure
+  const cells = [
+    ['Hero (hero2)'],
+    [mainContent]
+  ];
+
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
+  return table;
 }

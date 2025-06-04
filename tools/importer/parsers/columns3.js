@@ -1,32 +1,27 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the actual columns block (inside columns-wrapper)
-  const block = element.querySelector('.columns.block');
-  if (!block) return;
+  // Find the actual columns block (could be element or its child)
+  let columnsBlock = element;
+  if (!columnsBlock.classList.contains('columns')) {
+    columnsBlock = element.querySelector('.columns');
+  }
+  if (!columnsBlock) return;
 
-  // Header row, as specified in the example
+  // Header row: single column, exactly as the example
   const headerRow = ['Columns (columns3)'];
 
-  // Gather the direct child divs of the block, each represents a row of columns
-  const blockRows = Array.from(block.querySelectorAll(':scope > div'));
-  if (!blockRows.length) return;
-
-  // Prepare the body rows for the table
-  // Each row is an array of direct child divs (columns)
-  const bodyRows = blockRows.map(rowDiv => {
-    // For each row, get direct children divs which are the columns
-    const cols = Array.from(rowDiv.querySelectorAll(':scope > div'));
-    // If there are no child divs, fallback to rowDiv as a single column
-    if (cols.length === 0) return [rowDiv];
-    return cols;
+  // Each row in the columns block is a <div> containing two <div>s for left/right content
+  const rows = Array.from(columnsBlock.querySelectorAll(':scope > div'));
+  const tableRows = rows.map(row => {
+    // Collect all column divs for this row
+    const cols = Array.from(row.children);
+    // Combine them into a single cell (one column)
+    // This preserves the original elements and their order
+    return [cols];
   });
 
-  // Compose the final table array
-  const cells = [headerRow, ...bodyRows];
-
-  // Create the block table
+  // Compose the table: header + each row as a single column
+  const cells = [headerRow, ...tableRows];
   const table = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Replace the original element in the DOM with the new table
   element.replaceWith(table);
 }
