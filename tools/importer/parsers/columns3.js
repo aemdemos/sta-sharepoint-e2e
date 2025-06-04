@@ -1,34 +1,27 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main columns block inside the wrapper
-  const columnsBlock = element.querySelector('.columns.block');
-  if (!columnsBlock) return;
+  // Find the main columns block
+  const block = element.querySelector('.columns.block');
+  // Get all direct child <div>s of the block (these are rows)
+  const rowDivs = Array.from(block.querySelectorAll(':scope > div'));
 
-  // Get all direct child divs: one div per row in the columns block
-  const rowDivs = Array.from(columnsBlock.querySelectorAll(':scope > div'));
-  if (!rowDivs.length) return;
+  const table = [];
+  // Header row: exactly one cell as in the example
+  table.push(['Columns (columns3)']);
 
-  // Build each table row: for each row, get all direct children (columns)
-  const tableRows = rowDivs.map(rowDiv => {
-    // Get all direct child divs (columns)
+  // For each row, extract exactly the direct columns as cells
+  rowDivs.forEach(rowDiv => {
     const colDivs = Array.from(rowDiv.querySelectorAll(':scope > div'));
-    // Defensive: if there is only one child and it's not a div, include it
-    if (!colDivs.length) {
-      // If there are no child divs, treat the rowDiv itself as the column
-      return [rowDiv];
+    // If there are columns, use as columns
+    if (colDivs.length > 0) {
+      table.push(colDivs);
+    } else {
+      // If just a single cell for the row, make it one cell
+      table.push([rowDiv]);
     }
-    return colDivs;
   });
 
-  // Create the header row (exact match to the markdown example)
-  const headerRow = ['Columns (columns3)'];
-
-  // Compose the cells array for the block table
-  const cells = [headerRow, ...tableRows];
-
-  // Create the block table
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Replace the original element with the new block
-  element.replaceWith(block);
+  // Create and replace
+  const blockTable = WebImporter.DOMUtils.createTable(table, document);
+  element.replaceWith(blockTable);
 }
