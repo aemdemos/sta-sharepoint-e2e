@@ -1,40 +1,41 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // The cards block may be wrapped; find the actual cards block
-  let cardsBlock = element.classList.contains('cards') ? element : element.querySelector('.cards');
+  // Find the <ul> with cards
+  let cardsBlock = element.querySelector('.cards.block > ul');
   if (!cardsBlock) return;
 
-  // Get the list of cards (li elements)
-  const ul = cardsBlock.querySelector('ul');
-  if (!ul) return;
-  const cardLis = Array.from(ul.children).filter(li => li.nodeName === 'LI');
-
-  const headerRow = ['Cards (cards4)'];
   const rows = [];
+  // Header row exactly as in the example
+  rows.push(['Cards (cards4)']);
 
-  cardLis.forEach(li => {
-    // Image cell: .cards-card-image > picture or img
-    const imageDiv = li.querySelector('.cards-card-image');
-    let imageCell = '';
-    if (imageDiv) {
-      // prefer <picture>; fallback to <img>
-      const picture = imageDiv.querySelector('picture');
-      if (picture) imageCell = picture;
-      else {
-        const img = imageDiv.querySelector('img');
-        if (img) imageCell = img;
+  // For each card (li)
+  cardsBlock.querySelectorAll(':scope > li').forEach((card) => {
+    // Image cell: only the <picture> (or <img> fallback)
+    let imgDiv = card.querySelector('.cards-card-image');
+    let imgCell = null;
+    if (imgDiv) {
+      let pic = imgDiv.querySelector('picture');
+      if (pic) {
+        imgCell = pic;
+      } else {
+        let img = imgDiv.querySelector('img');
+        if (img) imgCell = img;
       }
     }
-    // Text cell: .cards-card-body
-    const bodyDiv = li.querySelector('.cards-card-body');
-    let textCell = '';
-    if (bodyDiv) textCell = bodyDiv;
-    rows.push([imageCell, textCell]);
+
+    // Text cell: only direct children <p>, without the wrapping div
+    let bodyDiv = card.querySelector('.cards-card-body');
+    let textCell = [];
+    if (bodyDiv) {
+      textCell = Array.from(bodyDiv.children);
+    }
+
+    rows.push([
+      imgCell,
+      textCell
+    ]);
   });
 
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    ...rows
-  ], document);
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }
