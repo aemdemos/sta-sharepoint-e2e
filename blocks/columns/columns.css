@@ -1,3 +1,4 @@
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,95 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+/* Merged .columns selector */
+.columns {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+  background: #fff;
+  box-sizing: border-box;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+/* Each column take up equal width and stretch content to match height */
+.columns > div {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 32px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Each "cell": both the text and image side should fill and center content */
+.columns > div > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+}
+
+.columns > div > div:not(.columns-img-col) {
+  align-items: flex-start;
+}
+
+.columns .columns-img-col {
+  align-items: center;
+  justify-content: center;
+}
+
+.columns .columns-img-col img {
+  width: 100%;
+  max-width: 340px;
+  min-width: 160px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  margin: 0;
+}
+
+.columns p,
+.columns ul,
+.columns .button-container {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.columns .button-container {
+  margin-top: 24px;
+}
+
+@media (max-width: 899px) {
+  .columns {
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  .columns > div {
+    flex-direction: column;
+    gap: 24px;
+    align-items: stretch;
+    height: auto;
+  }
+  .columns > div > div {
+    align-items: flex-start;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .columns .columns-img-col img {
+    max-width: 100%;
+    min-width: 0;
+    max-height: 200px;
   }
 }
