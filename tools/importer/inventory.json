@@ -27,11 +27,11 @@
   ],
   "blocks": [
     {
-      "name": "Embed (video)",
+      "name": "Carousel",
       "cluster": 1,
-      "source": "Embed",
-      "target": "Embed (embedVideo1)",
-      "key": "embedVideo1",
+      "source": "Carousel",
+      "target": "Carousel (carousel1)",
+      "key": "carousel1",
       "instances": [
         {
           "url": "https://main--aem-boilerplate--adobe.aem.page/",
