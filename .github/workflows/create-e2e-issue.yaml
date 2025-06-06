@@ -3,7 +3,6 @@ name: Daily E2E Test
 on:
   schedule:
     - cron: '0 5 * * *'  # every day at 5:00 am UTC
-  workflow_dispatch:
 
 permissions:
   issues: write
