@@ -1,31 +1,26 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Defensive: ensure .nav-wrapper exists
-  const navWrapper = element.querySelector('.nav-wrapper');
-  if (!navWrapper) return;
-
-  const nav = navWrapper.querySelector('nav');
+  // Find the nav element
+  const nav = element.querySelector('nav');
   if (!nav) return;
 
-  // Extract the main navigation columns in order:
-  // 1. Brand (left)
-  // 2. Sections (center)
-  // 3. Tools (right)
+  // Get left column (brand + nav-sections)
   const brand = nav.querySelector('.nav-brand');
   const sections = nav.querySelector('.nav-sections');
-  const tools = nav.querySelector('.nav-tools');
+  const leftCol = document.createElement('div');
+  if (brand) leftCol.appendChild(brand);
+  if (sections) leftCol.appendChild(sections);
 
-  // Only include columns that exist (could be empty if not present)
-  const columns = [];
-  if (brand) columns.push(brand);
-  if (sections) columns.push(sections);
-  if (tools) columns.push(tools);
+  // Get right column (nav-tools)
+  let rightCol = nav.querySelector('.nav-tools');
+  if (!rightCol) {
+    rightCol = document.createElement('div');
+  }
 
-  // Per the markdown example, the header row is a single cell,
-  // and each row after should be a single cell containing all columns as an array.
+  // Table: header row is single column, next row is two columns
   const cells = [
     ['Columns (columns1)'],
-    [columns]
+    [leftCol, rightCol]
   ];
 
   const table = WebImporter.DOMUtils.createTable(cells, document);
