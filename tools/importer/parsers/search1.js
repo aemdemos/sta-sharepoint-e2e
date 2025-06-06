@@ -1,19 +1,24 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // According to the block description and example, there is only one table: Search (search1)
-  // The second row must contain the absolute URL to the query index used for search.
-  // The header must exactly match: 'Search (search1)'
-  // There is no Section Metadata table in the example, so none is created.
-  // There is no content in the header that should be dynamically extracted (the index URL is not present in the source HTML),
-  // so we must use the canonical sample index URL as in the example.
+  // The Search block requires only the block name header and the query index URL in row 2.
+  // The query index is not present in the source HTML and must be provided as per component/block info.
+  // Table structure:
+  // [ ['Search (search1)'], [link to query-index.json] ]
 
+  // Create the header row as per example
   const headerRow = ['Search (search1)'];
+
+  // The example always uses the same query index URL (not found in the HTML, must be added literally)
   const indexUrl = 'https://main--helix-block-collection--adobe.hlx.page/block-collection/sample-search-data/query-index.json';
+  const linkEl = document.createElement('a');
+  linkEl.href = indexUrl;
+  linkEl.textContent = indexUrl;
+
   const cells = [
     headerRow,
-    [indexUrl],
+    [linkEl],
   ];
 
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(block);
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(table);
 }

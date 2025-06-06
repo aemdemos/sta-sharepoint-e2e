@@ -1,36 +1,43 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Locate the .cards.block element or use the provided element
-  let cardsBlock = element.querySelector('.cards.block');
-  if (!cardsBlock) cardsBlock = element;
-
-  // Find the <ul> containing cards
-  const ul = cardsBlock.querySelector('ul');
+  // Find the main <ul> within the cards block
+  const ul = element.querySelector('ul');
   if (!ul) return;
+  const cards = Array.from(ul.children); // <li> elements
 
-  // Initialize rows for the table
+  // Prepare the cells for the block table
   const rows = [];
-  // Header row: must exactly match the required header
+  // Header row: must match the example exactly
   rows.push(['Cards (cards4)']);
 
-  // Process each card <li>
-  ul.querySelectorAll('li').forEach((li) => {
-    // Image cell (mandatory): reference the .cards-card-image div as-is
-    const imgDiv = li.querySelector('.cards-card-image');
-    // Text cell (mandatory): reference the .cards-card-body div as-is
-    const textDiv = li.querySelector('.cards-card-body');
-    // Defensive: Only add row if both image and text exist
-    if (imgDiv && textDiv) {
-      rows.push([imgDiv, textDiv]);
-    } else if (imgDiv) {
-      rows.push([imgDiv, '']);
-    } else if (textDiv) {
-      rows.push(['', textDiv]);
+  cards.forEach((li) => {
+    // First cell: the image or <picture> element
+    let imageCell = '';
+    const imageDiv = li.querySelector('.cards-card-image');
+    if (imageDiv) {
+      const picture = imageDiv.querySelector('picture');
+      const img = imageDiv.querySelector('img');
+      if (picture) {
+        imageCell = picture;
+      } else if (img) {
+        imageCell = img;
+      } else {
+        imageCell = '';
+      }
     }
+
+    // Second cell: all the text content (preserving strong etc.)
+    let textCell = '';
+    const bodyDiv = li.querySelector('.cards-card-body');
+    if (bodyDiv) {
+      // Direct children to preserve block structure
+      textCell = Array.from(bodyDiv.childNodes);
+    }
+
+    rows.push([imageCell, textCell]);
   });
 
-  // Create the table block
+  // Create and insert the table
   const table = WebImporter.DOMUtils.createTable(rows, document);
-  // Replace the original element with the new block table
   element.replaceWith(table);
 }
