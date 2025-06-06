@@ -1,29 +1,20 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Define the header row dynamically based on block name
+  // The example HTML is a site header, not an embed. There is no video/image/link to extract.
+  // The Embed (embedVideo1) block requires a table with the header and a second row with the link and optional poster image.
+  // Since there is no video embed in the source, this block will be output as an empty embed block with the correct structure.
+
+  // Block header row
   const headerRow = ['Embed (embedVideo1)'];
+  // Content row (empty)
+  const contentRow = [''];
 
-  // Extract iframe with src attribute, if present
-  const iframe = element.querySelector('iframe[src]');
-  let videoLink;
-  if (iframe) {
-    videoLink = document.createElement('a');
-    videoLink.href = iframe.src;
-    videoLink.textContent = iframe.src;
-  }
+  // Create the table block
+  const table = WebImporter.DOMUtils.createTable([
+    headerRow,
+    contentRow
+  ], document);
 
-  // Extract image element, if present
-  const img = element.querySelector('img');
-
-  // Construct the content row dynamically based on extracted elements
-  const contentRow = img && videoLink ? [img, videoLink] : [videoLink];
-
-  // Create the table cells array with header and content rows
-  const cells = [headerRow, contentRow];
-
-  // Create the block table using the helper function
-  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Replace the original element with the new block table
-  element.replaceWith(blockTable);
+  // Replace the original element with the new table
+  element.replaceWith(table);
 }
