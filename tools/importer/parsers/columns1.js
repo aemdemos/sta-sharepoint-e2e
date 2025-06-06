@@ -1,25 +1,33 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Only create a columns block if the element is a real columns block, not a header/nav
-  // Use a heuristic: columns block contains only direct child <div>s (for columns),
-  // and does not have classes like 'header', 'nav', etc.
-  const className = element.className || '';
-  const forbidden = ['header', 'nav', 'navbar', 'header-wrapper'];
-  if (forbidden.some(cls => className.includes(cls))) {
-    // Do not process navigation/header elements as columns blocks
-    return;
-  }
-  // Check if it contains at least 2 direct div children (columns pattern)
-  const columns = Array.from(element.querySelectorAll(':scope > div'));
-  if (columns.length < 2) {
-    // Not a real columns block
-    return;
-  }
-  // Build the columns block table
-  const headerRow = ['Columns (columns1)'];
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    columns,
-  ], document);
+  // Defensive: ensure .nav-wrapper exists
+  const navWrapper = element.querySelector('.nav-wrapper');
+  if (!navWrapper) return;
+
+  const nav = navWrapper.querySelector('nav');
+  if (!nav) return;
+
+  // Extract the main navigation columns in order:
+  // 1. Brand (left)
+  // 2. Sections (center)
+  // 3. Tools (right)
+  const brand = nav.querySelector('.nav-brand');
+  const sections = nav.querySelector('.nav-sections');
+  const tools = nav.querySelector('.nav-tools');
+
+  // Only include columns that exist (could be empty if not present)
+  const columns = [];
+  if (brand) columns.push(brand);
+  if (sections) columns.push(sections);
+  if (tools) columns.push(tools);
+
+  // Per the markdown example, the header row is a single cell,
+  // and each row after should be a single cell containing all columns as an array.
+  const cells = [
+    ['Columns (columns1)'],
+    [columns]
+  ];
+
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
