@@ -1,53 +1,34 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Helper function to check for whitespace text nodes
-  function isNonEmptyNode(node) {
-    return !(node.nodeType === 3 && !node.textContent.trim()); // 3 === TEXT_NODE
-  }
-
-  // Find the inner 'cards' block
-  const cardsBlock = element.querySelector('.cards.block');
-  if (!cardsBlock) return;
-  const ul = cardsBlock.querySelector('ul');
+  // Find the <ul> containing cards
+  const ul = element.querySelector('ul');
   if (!ul) return;
-
-  // Build the rows array
-  const rows = [];
-
-  // Header row: single cell with colspan=2
-  rows.push(['Cards (cards4)']);
-
-  ul.querySelectorAll(':scope > li').forEach((li) => {
-    // Image cell
+  const cards = Array.from(ul.children);
+  const headerRow = ['Cards (cards4)'];
+  const rows = cards.map(li => {
+    // Find image (picture or img) in .cards-card-image
     const imageDiv = li.querySelector('.cards-card-image');
     let imageContent = null;
     if (imageDiv) {
-      const pic = imageDiv.querySelector('picture');
-      if (pic) {
-        imageContent = pic;
+      // Prefer <picture> if present (semantically correct, preserves image srcset)
+      const picture = imageDiv.querySelector('picture');
+      if (picture) {
+        imageContent = picture;
       } else {
         const img = imageDiv.querySelector('img');
         if (img) imageContent = img;
       }
     }
-    // Body cell: only children of .cards-card-body, not the wrapping div
+    // Find text content in .cards-card-body
     const bodyDiv = li.querySelector('.cards-card-body');
-    let textContent = [];
-    if (bodyDiv) {
-      textContent = Array.from(bodyDiv.childNodes).filter(isNonEmptyNode);
-    }
-    rows.push([
-      imageContent,
-      textContent.length === 1 ? textContent[0] : textContent
-    ]);
+    // Defensive: If bodyDiv is missing, use empty div
+    const textContent = bodyDiv || document.createElement('div');
+    return [imageContent, textContent];
   });
 
-  // Use the original createTable then set colspan on the header cell
-  const table = WebImporter.DOMUtils.createTable(rows, document);
-  // Set colspan=2 on the first th (header row)
-  const firstRow = table.querySelector('tr');
-  if (firstRow && firstRow.children.length === 1) {
-    firstRow.children[0].setAttribute('colspan', '2');
-  }
+  const table = WebImporter.DOMUtils.createTable([
+    headerRow,
+    ...rows
+  ], document);
   element.replaceWith(table);
 }
