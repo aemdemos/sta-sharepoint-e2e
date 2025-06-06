@@ -1,36 +1,30 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the actual columns block (immediate child with .columns.block)
-  const columnsBlock = element.querySelector('.columns.block');
-  if (!columnsBlock) return;
+  // Find the columns block (the actual block container)
+  const block = element.querySelector('.columns.block');
+  if (!block) return;
 
-  // Get all visible rows
-  const rows = Array.from(columnsBlock.children);
-  if (rows.length === 0) return;
-
-  // Collect column content arrays for each row
-  const rowCols = rows.map((row) => {
-    return Array.from(row.children).map((col) => {
-      // If the col is only a wrapper for an image, use its <picture> element if present
-      const pic = col.querySelector(':scope > picture');
-      if (pic) return pic;
-      return col;
-    });
-  });
-
-  // Find the maximum number of columns
-  const maxCols = Math.max(...rowCols.map(cols => cols.length));
-  // Pad content rows to ensure uniform column count
-  rowCols.forEach((cols) => {
-    while (cols.length < maxCols) cols.push('');
-  });
-
-  // Create the header row as a single cell array
+  // Prepare the table header (must match example exactly)
   const headerRow = ['Columns (columns3)'];
 
-  // Compose final cells array
-  const cells = [headerRow, ...rowCols];
+  // For each row in the columns block, extract its direct children (<div>s = columns)
+  const rows = Array.from(block.querySelectorAll(':scope > div'));
+  if (rows.length === 0) return;
 
+  const tableRows = rows.map(row => {
+    // Get all direct column <div>s in this row
+    const cols = Array.from(row.querySelectorAll(':scope > div'));
+    // If no direct <div> children (edge case), use the row itself
+    if (cols.length === 0) return [row];
+    return cols;
+  });
+
+  // Assemble all table rows
+  const cells = [headerRow, ...tableRows];
+
+  // Create the block table
   const table = WebImporter.DOMUtils.createTable(cells, document);
+
+  // Replace the original element with the new table
   element.replaceWith(table);
 }

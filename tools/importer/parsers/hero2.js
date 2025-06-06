@@ -1,33 +1,43 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Locate the hero block's main content
-  let contentRoot = element;
-  // Find the .hero.block inside section
-  const heroBlock = element.querySelector('.hero.block');
-  if (heroBlock) {
-    contentRoot = heroBlock;
+  // Extract the innermost hero block content
+  let contentDiv = element;
+  // Drill down through wrappers (section, wrapper, block, etc.) to get to the inner content div
+  while (
+    contentDiv.children.length === 1 &&
+    contentDiv.firstElementChild &&
+    contentDiv.firstElementChild.tagName === 'DIV'
+  ) {
+    contentDiv = contentDiv.firstElementChild;
   }
 
-  // Drill down if there are extra wrappers
-  let innerContent = contentRoot;
-  while (innerContent.children.length === 1 && innerContent.children[0].tagName === 'DIV') {
-    innerContent = innerContent.children[0];
+  // Now expect children: paragraphs, headings, etc.
+  // Find the first <picture> in a <p>
+  let pictureEl = null;
+  let textEls = [];
+  for (const child of contentDiv.children) {
+    if (pictureEl === null && child.tagName === 'P' && child.querySelector('picture')) {
+      pictureEl = child.querySelector('picture');
+    }
+    // Extract headings (h1, h2, h3...) and non-empty paragraphs
+    if (/^H[1-6]$/.test(child.tagName)) {
+      textEls.push(child);
+    } else if (child.tagName === 'P' && child.textContent.trim()) {
+      // Avoid extracting the <picture> again as text if already found
+      if (!child.querySelector('picture')) {
+        textEls.push(child);
+      }
+    }
   }
 
-  // Select the first <picture> for the image row
-  const picture = innerContent.querySelector('picture');
-  // Select the first heading (h1-h6) for the title row
-  const heading = innerContent.querySelector('h1, h2, h3, h4, h5, h6');
+  // Build the hero block table
+  const rows = [];
+  rows.push(['Hero']); // Header exactly as in the example
+  rows.push([pictureEl ? pictureEl : '']);
+  rows.push([textEls.length > 0 ? textEls : '']);
 
-  // Build the table according to the markdown example
-  const cells = [
-    ['Hero'],
-    [picture ? picture : ''],
-    [heading ? heading : '']
-  ];
+  const table = WebImporter.DOMUtils.createTable(rows, document);
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  
   // Replace the original element with the new block table
   element.replaceWith(table);
 }
