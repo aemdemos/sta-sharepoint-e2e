@@ -1,29 +1,60 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the block with class 'columns block'
-  const block = element.querySelector('.columns.block');
-  if (!block) return;
-  // Get all immediate children (each row of columns)
-  const rows = Array.from(block.querySelectorAll(':scope > div'));
-  if (rows.length < 2) return;
+  // Find the main columns block
+  const columnsBlock = element.querySelector('.columns.block');
+  if (!columnsBlock) return;
 
-  // First row: columns
-  const firstRowCols = Array.from(rows[0].querySelectorAll(':scope > div'));
-  // Second row: columns
-  const secondRowCols = Array.from(rows[1].querySelectorAll(':scope > div'));
+  // Get the rows of columns (the columns.block > div children)
+  const rows = Array.from(columnsBlock.children);
 
-  // Make sure there are two columns per row (pad with empty divs if needed for robustness)
-  while (firstRowCols.length < 2) firstRowCols.push(document.createElement('div'));
-  while (secondRowCols.length < 2) secondRowCols.push(document.createElement('div'));
+  // For each row, collect its immediate children as columns
+  const tableRows = rows.map(row => {
+    // Each row is expected to have two divs (columns)
+    const cols = Array.from(row.children);
+    // If there are missing columns, fill with empty strings to keep the number of columns consistent
+    return cols.length ? cols : [''];
+  });
 
-  // The header row must have two columns: header text then an empty string, for alignment
-  const headerRow = ['Columns (columns3)', ''];
+  // Number of columns is determined by the longest row (should be 2 for this example)
+  const numCols = tableRows.reduce((max, row) => Math.max(max, row.length), 0);
 
-  const cells = [
-    headerRow,
-    [firstRowCols[0], firstRowCols[1]],
-    [secondRowCols[0], secondRowCols[1]]
-  ];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  // Normalize all rows to have the same number of columns
+  const normalizedRows = tableRows.map(row => {
+    const filledRow = row.slice();
+    while (filledRow.length < numCols) {
+      filledRow.push('');
+    }
+    return filledRow;
+  });
+
+  // --- Manually build the table to ensure header uses colspan ---
+  const table = document.createElement('table');
+
+  // Header row: one cell, spans all columns
+  const headerTr = document.createElement('tr');
+  const headerTh = document.createElement('th');
+  headerTh.innerHTML = 'Columns (columns3)';
+  if (numCols > 1) headerTh.colSpan = numCols;
+  headerTr.appendChild(headerTh);
+  table.appendChild(headerTr);
+
+  // Body rows
+  normalizedRows.forEach(row => {
+    const tr = document.createElement('tr');
+    row.forEach(cell => {
+      const td = document.createElement('td');
+      if (typeof cell === 'string') {
+        td.innerHTML = cell;
+      } else if (Array.isArray(cell)) {
+        td.append(...cell);
+      } else {
+        td.append(cell);
+      }
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+
+  // Replace the original element with the table
   element.replaceWith(table);
 }

@@ -1,26 +1,40 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the .cards block (it may be the element itself or a child)
-  let cardsBlock = element;
-  if (!cardsBlock.classList.contains('cards')) {
-    cardsBlock = element.querySelector('.cards.block');
-  }
-  if (!cardsBlock) return;
+  // Defensive: find the actual <ul> with the cards
+  const ul = element.querySelector('ul');
+  if (!ul) return;
+  const cards = Array.from(ul.children).filter(li => li.tagName === 'LI');
 
-  // Find card rows (li elements)
-  const cardItems = cardsBlock.querySelectorAll('ul > li');
-  const rows = [['Cards (cards4)']]; // header
+  // Build block header
+  const headerRow = ['Cards (cards4)'];
+  const rows = [headerRow];
 
-  cardItems.forEach((li) => {
-    // Get the card image container (div.cards-card-image)
+  cards.forEach((li) => {
+    // Image cell
+    let imageCell = null;
     const imgDiv = li.querySelector('.cards-card-image');
-    // Get the card body container (div.cards-card-body)
+    if (imgDiv) {
+      // Use the <picture> as a whole if possible, for all sources
+      const pic = imgDiv.querySelector('picture');
+      if (pic) {
+        imageCell = pic;
+      } else {
+        const img = imgDiv.querySelector('img');
+        if (img) imageCell = img;
+      }
+    }
+    // Text cell
+    let textCell = null;
     const bodyDiv = li.querySelector('.cards-card-body');
-    // Defensive: If either cell is missing, treat as empty
-    rows.push([
-      imgDiv || document.createElement('div'),
-      bodyDiv || document.createElement('div'),
-    ]);
+    if (bodyDiv) {
+      // Use all child nodes (not just <p>), retain formatting (e.g., <strong>)
+      textCell = Array.from(bodyDiv.childNodes).filter(node => {
+        // Remove empty text nodes
+        return !(node.nodeType === Node.TEXT_NODE && !node.textContent.trim());
+      });
+    }
+    // Always provide both cells, even if one is null
+    rows.push([imageCell, textCell]);
   });
 
   const table = WebImporter.DOMUtils.createTable(rows, document);
