@@ -3,6 +3,8 @@ name: Notify Parent Issue Slack Thread on Subissue Failure
 on:
   issues:
     types: [labeled]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   notify-parent-on-failed-subissue:
@@ -43,9 +45,43 @@ jobs:
             }
             const thread_ts = threadComment.body.replace('Slack thread_ts: ', '').trim();
 
-            // 4. Output for use in Slack step
+            // 4. Gather subissue details
+            const subissueTitle = context.payload.issue.title;
+            const subissueBody = context.payload.issue.body || '';
+            const subissueUrl = context.payload.issue.html_url;
+
+            // 5. Check for PR reference in the body (e.g., PR: #123)
+            let prCommentText = '';
+            const prMatch = subissueBody.match(/PR: #([0-9]+)/i);
+            if (prMatch) {
+              const prNumber = Number(prMatch[1]);
+              try {
+                const prComments = await github.rest.issues.listComments({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                });
+                if (prComments.data.length > 0) {
+                  const lastPrComment = prComments.data[prComments.data.length - 1];
+                  prCommentText = `*Last PR comment (#${prNumber}):*\n${lastPrComment.body}`;
+                } else {
+                  prCommentText = `*PR #${prNumber} has no comments.*`;
+                }
+              } catch (e) {
+                prCommentText = `*Could not fetch comments for PR #${prNumber}*`;
+              }
+            }
+
+            // 6. Build the Slack message
+            let slackMessage = `*Subissue failed:*\n*Title:* ${subissueTitle}\n*URL:* ${subissueUrl}\n*Body:*\n${subissueBody}`;
+            if (prCommentText) {
+              slackMessage += `\n\n${prCommentText}`;
+            }
+
+            // 7. Output for use in Slack step
             core.setOutput('parent_thread_ts', thread_ts);
             core.setOutput('parent_issue_url', `https://github.com/${context.repo.owner}/${context.repo.repo}/issues/${parentIssueNumber}`);
+            core.setOutput('slack_message', slackMessage);
       - name: Notify parent issue Slack thread
         if: steps.find_parent.outputs.parent_thread_ts != ''
         uses: slackapi/slack-github-action@v1.25.0
@@ -53,7 +89,7 @@ jobs:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
           payload: |
             {
-              "text": "Subissue failed: ${{ github.event.issue.html_url }}",
+              "text": "${{ steps.find_parent.outputs.slack_message }}",
               "thread_ts": "${{ steps.find_parent.outputs.parent_thread_ts }}"
             }
         env:
