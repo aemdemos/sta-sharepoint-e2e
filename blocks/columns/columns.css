@@ -1,4 +1,17 @@
 
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  background: #fff;
+  min-height: 64px;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -33,20 +46,10 @@
   }
 }
 
-/* Merged .columns selector */
-.columns {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: center;
-  gap: 32px;
-  width: 100%;
-  background: #fff;
-  box-sizing: border-box;
-  padding-top: 32px;
-  padding-bottom: 32px;
-}
+/* Merged .columns selector above */
 
+/* Merged .columns selector above */
+ 
 /* Each column take up equal width and stretch content to match height */
 .columns > div {
   display: flex;
@@ -122,3 +125,189 @@
     max-height: 200px;
   }
 }
+
+/* Generated CSS */
+
+.columns > div:nth-child(2) {
+  display: none;
+}
+
+/* Left and right nav blocks stretch to edges */
+.columns > div {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+
+/* --- LEFT GROUP: Brand, Nav Links, and "Live" Inline --- */
+.columns > div:first-child > div:first-child {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+  min-width: 0;
+  padding: 0;
+  flex: 1 1 0;
+  justify-content: flex-start;
+}
+
+/* Brand styling */
+.columns > div:first-child > div:first-child > p:first-child {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+/* Inline nav links (ul > li) */
+.columns > div:first-child > div:first-child > ul {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.columns > div:first-child > div:first-child > ul > li {
+  font-size: 16px;
+  font-weight: 400;
+  color: #181818;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+/* "Live" button inline with nav links */
+.columns > div:first-child > div:first-child > .button-container {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Style "Live" to look like a nav-link, not a button */
+.columns-container > .columns-wrapper > .block.columns .button {
+  font-size: 16px;
+  font-weight: 400;
+  background: none;
+  color: #181818;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  min-width: unset;
+  box-shadow: none;
+  display: inline;
+  line-height: 1.2;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.columns-container > .columns-wrapper > .block.columns .button:hover,
+.columns-container > .columns-wrapper > .block.columns .button:focus {
+  color: #3b63fb;
+  background: none;
+  text-decoration: underline;
+}
+
+/* --- RIGHT GROUP: Text and "Preview" Inline, right-aligned --- */
+.columns > div:last-child {
+  justify-content: flex-end;
+  flex: 1 1 0;
+}
+
+.columns > div:last-child > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 32px;
+  min-width: 0;
+}
+
+/* Inline right text */
+.columns > div:last-child > div > p {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  color: #181818;
+  line-height: 1.2;
+  display: inline;
+  white-space: nowrap;
+}
+
+/* Style "Preview" button as a nav-link */
+.columns-container > .columns-wrapper > .block.columns .button.secondary {
+  color: #181818;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+  min-width: unset;
+  border-radius: 0;
+  box-shadow: none;
+  display: inline;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.columns-container > .columns-wrapper > .block.columns .button.secondary:hover,
+.columns-container > .columns-wrapper > .block.columns .button.secondary:focus {
+  color: #3b63fb;
+  background: none;
+  text-decoration: underline;
+}
+
+/* Remove extra vertical space on nav items */
+.columns p,
+.columns ul,
+.columns li {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  color: #181818;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Responsive stacking for mobile */
+@media (max-width: 899px) {
+  .columns {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 16px;
+    min-height: unset;
+  }
+  .columns > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    min-width: 0;
+  }
+  .columns > div:first-child > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .columns > div:last-child > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    justify-content: flex-start;
+  }
+  .columns-container > .columns-wrapper > .block.columns .button,
+  .columns-container > .columns-wrapper > .block.columns .button.secondary {
+    margin-left: 0;
+    margin-top: 12px;
+  }
+}
+
