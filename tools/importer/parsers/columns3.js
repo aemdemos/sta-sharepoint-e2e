@@ -1,30 +1,29 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the columns block (the actual block container)
+  // Find the block with class 'columns block'
   const block = element.querySelector('.columns.block');
   if (!block) return;
-
-  // Prepare the table header (must match example exactly)
-  const headerRow = ['Columns (columns3)'];
-
-  // For each row in the columns block, extract its direct children (<div>s = columns)
+  // Get all immediate children (each row of columns)
   const rows = Array.from(block.querySelectorAll(':scope > div'));
-  if (rows.length === 0) return;
+  if (rows.length < 2) return;
 
-  const tableRows = rows.map(row => {
-    // Get all direct column <div>s in this row
-    const cols = Array.from(row.querySelectorAll(':scope > div'));
-    // If no direct <div> children (edge case), use the row itself
-    if (cols.length === 0) return [row];
-    return cols;
-  });
+  // First row: columns
+  const firstRowCols = Array.from(rows[0].querySelectorAll(':scope > div'));
+  // Second row: columns
+  const secondRowCols = Array.from(rows[1].querySelectorAll(':scope > div'));
 
-  // Assemble all table rows
-  const cells = [headerRow, ...tableRows];
+  // Make sure there are two columns per row (pad with empty divs if needed for robustness)
+  while (firstRowCols.length < 2) firstRowCols.push(document.createElement('div'));
+  while (secondRowCols.length < 2) secondRowCols.push(document.createElement('div'));
 
-  // Create the block table
+  // The header row must have two columns: header text then an empty string, for alignment
+  const headerRow = ['Columns (columns3)', ''];
+
+  const cells = [
+    headerRow,
+    [firstRowCols[0], firstRowCols[1]],
+    [secondRowCols[0], secondRowCols[1]]
+  ];
   const table = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Replace the original element with the new table
   element.replaceWith(table);
 }
