@@ -1,4 +1,9 @@
-
+/* Remove extra spacing above the hero (from parent sections or wrappers) */
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+  margin-top: 0;
+}
 
 .hero-container .hero-wrapper {
   max-width: unset;
@@ -38,23 +43,17 @@
   }
 }
 
-/* Remove extra spacing above the hero (from parent sections or wrappers) */
-.hero-container > .hero-wrapper {
-  max-width: unset;
-  padding: 0;
-  margin-top: 0;
-}
-
 /* Merged .hero.hero2 selector */
 .hero.hero2 {
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  justify-content: flex-start;
   min-height: 380px;
   width: 100vw;
   max-width: unset;
-  background: linear-gradient(100deg, #112e44 70%, #1b496e 100%);
+  background: linear-gradient(100deg, #0c2335 60%, #183b59 100%);
   overflow: hidden;
   box-sizing: border-box;
   padding: 0;
@@ -68,22 +67,41 @@ main > .section {
 /* Image background: cover the entire hero, DNA spiral anchored to the right edge */
 .hero.hero2 > div:first-child {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: -4vw;
+  width: 108vw;
   height: 100%;
   z-index: 1;
+  display: block;
   pointer-events: none;
-  display: flex;
-  justify-content: flex-end;
-  align-items: stretch;
 }
+
 .hero.hero2 > div:first-child::after {
   content: "";
   position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(17,46,68,0.90) 0%, rgba(17,46,68,0.60) 40%, rgba(17,46,68,0.03) 75%, rgba(17,46,68,0) 100%);
+  background: linear-gradient(90deg, rgb(17 46 68 / 90%) 0%, rgb(17 46 68 / 60%) 40%, rgb(17 46 68 / 3%) 75%, rgb(17 46 68 / 0%) 100%);
   z-index: 2;
+}
+
+.hero.hero2 > div:first-child > div,
+.hero.hero2 > div:first-child picture,
+.hero.hero2 > div:first-child img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 97% 50%;
+  max-width: none;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
 }
 
 .hero.hero2 > div:first-child picture,
@@ -106,133 +124,58 @@ main > .section {
 /* Text column: sits above the background image */
 .hero.hero2 > div:last-child {
   position: relative;
-  z-index: 3;
-  flex: 1 1 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  min-width: 0;
-  box-sizing: border-box;
-  background: transparent;
-  padding: 0;
-}
-
-/* Reduce top padding so heading sits closer to the top */
-.hero.hero2 h1,
-.hero.hero2 > div:last-child > div > *:first-child {
-  color: #fff;
-  font-size: 48px;
-  font-family: var(--heading-font-family, "roboto-condensed", Arial, sans-serif);
-  font-weight: 700;
-  line-height: 1.1;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-  box-sizing: border-box;
   z-index: 2;
-}
-
-.hero.hero2 > div:last-child > div {
+  flex: 1 1 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-left: 48px;
-  padding-top: 48px;
+  min-width: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.hero.hero2 > div:last-child > div {
   width: 100%;
+  padding-left: 56px;
+  padding-top: 60px;
+  padding-bottom: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
-@media (max-width: 900px) {
-  .hero.hero2 {
-    flex-direction: column;
-    min-height: 300px;
-    width: 100vw;
-  }
-  .hero.hero2 > div:first-child {
-    height: 60vw;
-    min-height: 200px;
-    max-height: 60vw;
-    align-items: flex-start;
-  }
-  .hero.hero2 > div:first-child picture,
-  .hero.hero2 > div:first-child img {
-    width: 120vw;
-    height: 100%;
-    min-height: 0;
-    object-position: 70% top;
-  }
-  .hero.hero2 > div:last-child > div {
-    padding: 24px 16px 0 16px;
-    align-items: flex-start;
-  }
-  .hero.hero2 h1,
-  .hero.hero2 > div:last-child > div > *:first-child {
-    font-size: 2rem;
-    padding: 0;
-    text-align: left;
-  }
+.hero.hero2 h1,
+.hero.hero2 > div:last-child > div > *:first-child {
+  color: #fff;
+  font-size: 48px;
+  font-family: var(--heading-font-family, roboto-condensed, Arial, sans-serif);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  letter-spacing: normal;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 13%);
+  box-sizing: border-box;
+  z-index: 2;
+  background: none;
 }
 
-/* Generated CSS START */
-.hero.hero2 > div:first-child::after {
-  content: "";
+/* Finer gradient fade for text contrast and DNA glow */
+.hero.hero2::before {
   position: absolute;
-  left: 0; top: 0; right: 0; bottom: 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, rgba(17,46,68,0.90) 0%, rgba(17,46,68,0.60) 40%, rgba(17,46,68,0.03) 75%, rgba(17,46,68,0) 100%);
-  z-index: 2;
-}
-
-.hero.hero2 > div:first-child picture,
-.hero.hero2 > div:first-child img {
-  width: 120vw;
-  height: 100%;
-  min-height: 380px;
-  max-width: none;
-  object-fit: cover;
-  object-position: 90% center;
-  display: block;
-  background: transparent;
-  border: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
-}
-
-.hero.hero2 > div:last-child {
-  position: relative;
-  z-index: 3;
-  flex: 1 1 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  min-width: 0;
-  box-sizing: border-box;
-  background: transparent;
-  padding: 0;
-}
-
-.hero.hero2 > div:last-child > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding-left: 48px;
-  padding-top: 48px;
-  width: 100%;
-}
-.hero.hero2 h1,
-.hero.hero2 > div:last-child > div > *:first-child {
-  color: #fff;
-  font-size: 48px;
-  font-family: var(--heading-font-family, "roboto-condensed", Arial, sans-serif);
-  font-weight: 700;
-  line-height: 1.1;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-  box-sizing: border-box;
+  display: block;
+  background: linear-gradient(90deg, rgb(12 35 53 / 98%) 0%, rgb(12 35 53 / 70%) 20%, rgb(12 35 53 / 25%) 43%, rgb(12 35 53 / 0%) 58%);
+  pointer-events: none;
+  content: "";
 }
 
 @media (max-width: 900px) {
@@ -242,21 +185,26 @@ main > .section {
     width: 100vw;
   }
   .hero.hero2 > div:first-child {
-    height: 60vw;
+    left: 0;
+    width: 100vw;
     min-height: 200px;
-    max-height: 60vw;
-    align-items: flex-start;
+    max-height: none;
+    z-index: 1;
   }
+  .hero.hero2 > div:first-child > div,
   .hero.hero2 > div:first-child picture,
   .hero.hero2 > div:first-child img {
-    width: 120vw;
-    height: 100%;
-    min-height: 0;
-    object-position: 70% top;
+    object-position: 70% 50%;
+  }
+  .hero.hero2 > div:last-child {
+    position: relative;
+    width: 100%;
+    justify-content: flex-start;
   }
   .hero.hero2 > div:last-child > div {
     padding: 24px 16px 0 16px;
     align-items: flex-start;
+    justify-content: flex-start;
   }
   .hero.hero2 h1,
   .hero.hero2 > div:last-child > div > *:first-child {
@@ -265,6 +213,3 @@ main > .section {
     text-align: left;
   }
 }
-
-/* Generated CSS END */
-
