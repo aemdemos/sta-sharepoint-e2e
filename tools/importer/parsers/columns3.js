@@ -1,60 +1,48 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main columns block
+  // Find the main columns block inside this element
   const columnsBlock = element.querySelector('.columns.block');
   if (!columnsBlock) return;
 
-  // Get the rows of columns (the columns.block > div children)
+  // Get all direct rows inside the columns block
   const rows = Array.from(columnsBlock.children);
 
-  // For each row, collect its immediate children as columns
-  const tableRows = rows.map(row => {
-    // Each row is expected to have two divs (columns)
+  // Determine the maximum number of columns in any row
+  let maxCols = 0;
+  rows.forEach(row => {
     const cols = Array.from(row.children);
-    // If there are missing columns, fill with empty strings to keep the number of columns consistent
-    return cols.length ? cols : [''];
+    if (cols.length > maxCols) maxCols = cols.length;
+  });
+  if (maxCols === 0) maxCols = 1;
+
+  // For each row, collect its immediate children (columns)
+  const tableRows = [];
+  rows.forEach(row => {
+    const cols = Array.from(row.children);
+    // Pad with empty string if the row is short
+    while (cols.length < maxCols) cols.push('');
+    tableRows.push(cols);
   });
 
-  // Number of columns is determined by the longest row (should be 2 for this example)
-  const numCols = tableRows.reduce((max, row) => Math.max(max, row.length), 0);
+  // Build the table array, start with an empty array for the header row
+  const tableArray = [];
+  // Add only a single header cell as the first row
+  tableArray.push(['Columns (columns3)']);
+  // Add all content rows
+  tableArray.push(...tableRows);
 
-  // Normalize all rows to have the same number of columns
-  const normalizedRows = tableRows.map(row => {
-    const filledRow = row.slice();
-    while (filledRow.length < numCols) {
-      filledRow.push('');
+  // Create the block table
+  const block = WebImporter.DOMUtils.createTable(tableArray, document);
+
+  // Fix header row: set colspan on the first <th>
+  const firstRow = block.querySelector('tr');
+  if (firstRow) {
+    const th = firstRow.querySelector('th');
+    if (th && maxCols > 1) {
+      th.setAttribute('colspan', maxCols);
     }
-    return filledRow;
-  });
+  }
 
-  // --- Manually build the table to ensure header uses colspan ---
-  const table = document.createElement('table');
-
-  // Header row: one cell, spans all columns
-  const headerTr = document.createElement('tr');
-  const headerTh = document.createElement('th');
-  headerTh.innerHTML = 'Columns (columns3)';
-  if (numCols > 1) headerTh.colSpan = numCols;
-  headerTr.appendChild(headerTh);
-  table.appendChild(headerTr);
-
-  // Body rows
-  normalizedRows.forEach(row => {
-    const tr = document.createElement('tr');
-    row.forEach(cell => {
-      const td = document.createElement('td');
-      if (typeof cell === 'string') {
-        td.innerHTML = cell;
-      } else if (Array.isArray(cell)) {
-        td.append(...cell);
-      } else {
-        td.append(cell);
-      }
-      tr.appendChild(td);
-    });
-    table.appendChild(tr);
-  });
-
-  // Replace the original element with the table
-  element.replaceWith(table);
+  // Replace original element with the block table
+  element.replaceWith(block);
 }
