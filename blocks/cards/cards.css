@@ -1,4 +1,13 @@
+/* ======================== BASE CARDS STYLES ======================== */
 
+.cards {
+  background: #fff;
+  padding-left: 32px;
+  padding-right: 32px;
+  box-sizing: border-box;
+  max-width: 1240px;
+  margin: 0 auto;
+}
 
 .cards > ul {
   list-style: none;
@@ -28,26 +37,15 @@
   object-fit: cover;
 }
 
-/* .cards.cards4 (Base CSS) - to be replaced by merged selector below
+/* .cards.cards4 (Base CSS) - merged with generated CSS below */
 .cards.cards4 {
-  background: #f5f5f5;
-  padding: 0;
-  margin: 0;
-  width: 100vw;
-  max-width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  transform: translateX(-50%);
+  background: #fff;
+  max-width: 1240px;
+  margin: 0 auto;
   box-sizing: border-box;
-  margin-top: 0;
-  margin-bottom: 0;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-.cards.cards4 {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-*/
 
 .cards.cards4 > ul {
   display: flex;
@@ -126,6 +124,7 @@
     max-width: calc(50% - 12px);
   }
 }
+
 @media (max-width: 700px) {
   .cards.cards4 > ul {
     gap: 16px;
@@ -136,112 +135,112 @@
   }
 }
 
-/* ======= GENERATED CSS (except for .cards.cards4 below) ======= */
-
-.cards.cards4 > ul {
+/* =============== MERGED .cards.cards4 SELECTOR =============== */
+.cards > ul {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 32px;
   margin: 0;
   padding: 0;
   list-style: none;
-  width: 100%;
   justify-content: flex-start;
   align-items: stretch;
 }
 
-.cards.cards4 > ul > li {
+.cards > ul > li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   background: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 0;
   box-sizing: border-box;
-  margin: 0;
+  border-radius: 0;
+  overflow: hidden;
+  padding: 24px 20px;
+  flex: 0 0 calc(25% - 24px);
+  max-width: calc(25% - 24px);
+  min-width: 270px;
+  min-height: 120px;
+  transition: box-shadow 0.15s;
+}
+
+.cards .cards-card-image {
+  flex: 0 0 96px;
+  width: 96px;
+  height: 96px;
+  margin-right: 24px;
   display: flex;
-  flex-direction: column;
-  flex: 0 0 calc(25% - 9px);
-  max-width: calc(25% - 9px);
-  min-width: 220px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: transparent;
   overflow: hidden;
 }
 
-.cards.cards4 .cards-card-image {
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: #eee;
-  display: block;
-  overflow: hidden;
-}
-
-.cards.cards4 .cards-card-image img {
-  width: 100%;
-  height: 100%;
+.cards .cards-card-image img {
+  width: 96px;
+  height: 96px;
   object-fit: cover;
+  border-radius: 8px;
   display: block;
 }
 
-.cards.cards4 .cards-card-body {
-  padding: 24px;
-  margin: 0;
+.cards .cards-card-body {
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  gap: 8px;
-  justify-content: flex-start;
-}
-
-.cards.cards4 .cards-card-body p:first-child {
-  margin: 0 0 8px 0;
-  font-weight: 700;
-  color: #212121;
-  font-size: 1.2rem;
-  line-height: 1.3;
-}
-
-.cards.cards4 .cards-card-body p:not(:first-child) {
+  justify-content: center;
+  padding: 0;
   margin: 0;
-  color: #616161;
-  font-size: 1rem;
-  line-height: 1.5;
-  font-weight: 400;
+  min-width: 0;
 }
 
-.cards.cards4 .cards-card-body strong {
+.cards .cards-card-body p {
+  color: #111;
+  font-size: 16px;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.cards .cards-card-body p strong {
   font-weight: 700;
-  color: #212121;
+  color: #111;
+  font-size: 18px;
 }
 
-@media (max-width: 1240px) {
-  .cards.cards4 {
-    padding-left: 4px;
-    padding-right: 4px;
-  }
-  .cards.cards4 > ul > li {
-    flex: 0 0 calc(50% - 6px);
-    max-width: calc(50% - 6px);
+/* Responsive: stack on mobile */
+@media (max-width: 1100px) {
+  .cards > ul > li {
+    flex: 0 0 calc(50% - 16px);
+    max-width: calc(50% - 16px);
   }
 }
+
 @media (max-width: 700px) {
-  .cards.cards4 {
-    padding-left: 2px;
-    padding-right: 2px;
+  .cards {
+    padding-left: 8px;
+    padding-right: 8px;
   }
-  .cards.cards4 > ul > li {
+  .cards > ul {
+    gap: 16px;
+  }
+  .cards > ul > li {
     flex: 0 0 100%;
     max-width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 8px;
+    min-height: unset;
   }
-  .cards.cards4 > ul {
-    gap: 6px;
+  .cards .cards-card-image {
+    margin: 0 0 12px 0;
+    width: 100%;
+    height: 180px;
+    justify-content: flex-start;
   }
-}
-
-/* ======= MERGED .cards.cards4 SELECTOR ======= */
-
-.cards.cards4 {
-  background: #fff;
-  max-width: 1240px;
-  margin: 0 auto;
-  box-sizing: border-box;
-  padding-left: 10px;
-  padding-right: 10px;
+  .cards .cards-card-image img {
+    width: 100%;
+    height: 100%;
+  }
 }
