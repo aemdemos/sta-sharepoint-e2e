@@ -1,26 +1,18 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the nav element
+  // Find the nav inside the header
   const nav = element.querySelector('nav');
   if (!nav) return;
 
-  // Get left column (brand + nav-sections)
-  const brand = nav.querySelector('.nav-brand');
-  const sections = nav.querySelector('.nav-sections');
-  const leftCol = document.createElement('div');
-  if (brand) leftCol.appendChild(brand);
-  if (sections) leftCol.appendChild(sections);
+  // Extract the three major nav sections for columns: brand, sections, tools
+  const brandSection = nav.querySelector('.nav-brand') || document.createDocumentFragment();
+  const sectionsSection = nav.querySelector('.nav-sections') || document.createDocumentFragment();
+  const toolsSection = nav.querySelector('.nav-tools') || document.createDocumentFragment();
 
-  // Get right column (nav-tools)
-  let rightCol = nav.querySelector('.nav-tools');
-  if (!rightCol) {
-    rightCol = document.createElement('div');
-  }
-
-  // Table: header row is single column, next row is two columns
+  // Compose the columns block table: single-cell header, then three-column content row
   const cells = [
     ['Columns (columns1)'],
-    [leftCol, rightCol]
+    [brandSection, sectionsSection, toolsSection]
   ];
 
   const table = WebImporter.DOMUtils.createTable(cells, document);
