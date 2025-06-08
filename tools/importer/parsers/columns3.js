@@ -1,48 +1,31 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main columns block inside this element
+  // Find the .columns.block (the actual columns block)
   const columnsBlock = element.querySelector('.columns.block');
   if (!columnsBlock) return;
 
-  // Get all direct rows inside the columns block
-  const rows = Array.from(columnsBlock.children);
+  // Get each row: each direct > div under columns.block represents a row
+  const rowDivs = Array.from(columnsBlock.querySelectorAll(':scope > div'));
+  if (rowDivs.length === 0) return;
 
-  // Determine the maximum number of columns in any row
-  let maxCols = 0;
-  rows.forEach(row => {
-    const cols = Array.from(row.children);
-    if (cols.length > maxCols) maxCols = cols.length;
-  });
-  if (maxCols === 0) maxCols = 1;
+  // Table header (must match example exactly)
+  const headerRow = ['Columns (columns3)'];
 
-  // For each row, collect its immediate children (columns)
-  const tableRows = [];
-  rows.forEach(row => {
-    const cols = Array.from(row.children);
-    // Pad with empty string if the row is short
-    while (cols.length < maxCols) cols.push('');
-    tableRows.push(cols);
+  // For each visual row, collect the column block divs (each is a column)
+  const tableRows = rowDivs.map(rowDiv => {
+    // Each column is a direct > div under the rowDiv
+    // If there are no direct > div children, treat rowDiv itself as a column (edge case safety)
+    const colDivs = Array.from(rowDiv.querySelectorAll(':scope > div'));
+    if (colDivs.length === 0) return [rowDiv];
+    return colDivs;
   });
 
-  // Build the table array, start with an empty array for the header row
-  const tableArray = [];
-  // Add only a single header cell as the first row
-  tableArray.push(['Columns (columns3)']);
-  // Add all content rows
-  tableArray.push(...tableRows);
+  // Compose table array
+  const tableArray = [headerRow, ...tableRows];
 
-  // Create the block table
-  const block = WebImporter.DOMUtils.createTable(tableArray, document);
+  // Create the table using referenced DOM nodes
+  const table = WebImporter.DOMUtils.createTable(tableArray, document);
 
-  // Fix header row: set colspan on the first <th>
-  const firstRow = block.querySelector('tr');
-  if (firstRow) {
-    const th = firstRow.querySelector('th');
-    if (th && maxCols > 1) {
-      th.setAttribute('colspan', maxCols);
-    }
-  }
-
-  // Replace original element with the block table
-  element.replaceWith(block);
+  // Replace the original element
+  element.replaceWith(table);
 }
