@@ -1,42 +1,46 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the hero block content div
-  let contentDiv = element.querySelector('.hero.block > div > div') || element.querySelector('.hero.block > div') || element;
-  // Find the picture or image for the background
-  let imageEl = contentDiv.querySelector('picture') || contentDiv.querySelector('img');
+  // Find the hero block (structure assumption as described)
+  let heroContent = element.querySelector('.hero.block');
+  if (!heroContent) heroContent = element; // fallback in case structure varies
+  
+  // Find the innermost content wrapper: usually two nested divs inside .hero.block
+  let inner = heroContent.querySelector('div > div') || heroContent.querySelector('div') || heroContent;
 
-  // For the image row, use the picture (for all sources) if it exists, otherwise the img
-  let imageRowContent = '';
-  if (imageEl) {
-    // Always prefer <picture> if available
-    if (imageEl.tagName.toLowerCase() === 'picture') {
-      imageRowContent = imageEl;
-    } else {
-      imageRowContent = imageEl;
-    }
+  // Find the hero image (picture tag inside a p)
+  let picture = inner.querySelector('picture');
+  let imgRow;
+  if (picture) {
+    imgRow = [picture];
+  } else {
+    imgRow = [''];
   }
 
-  // For the body row: collect heading and text content (skip empty <p>)
-  const contentCells = [];
-  const children = Array.from(contentDiv.children);
-  for (const child of children) {
-    // Skip <picture> or <img> already used
-    if (child === imageEl) continue;
-    if (imageEl && imageEl.tagName.toLowerCase() === 'picture' && child.contains(imageEl)) continue;
-    // Only include if not empty
-    if (child.tagName.match(/^H[1-6]$/) || (child.tagName === 'P' && child.textContent.trim() !== '')) {
-      contentCells.push(child);
+  // Gather content nodes for the third row:
+  // All headings and non-empty paragraphs except the paragraph containing the picture
+  let contentNodes = [];
+  const childNodes = Array.from(inner.childNodes);
+  childNodes.forEach(node => {
+    if (node.nodeType === 1) {
+      // skip the <p> containing the <picture>
+      if (node.tagName.toLowerCase() === 'p' && node.querySelector('picture')) return;
+      // skip empty paragraphs
+      if (node.tagName.toLowerCase() === 'p' && node.innerHTML.trim() === '') return;
+      // include headings and non-empty paragraphs
+      if (/^h[1-6]$/.test(node.tagName.toLowerCase()) || node.tagName.toLowerCase() === 'p') {
+        contentNodes.push(node);
+      }
     }
-  }
-  // If contentCells is empty, add an empty string so the cell exists
-  const contentRow = [contentCells.length > 0 ? contentCells : ''];
+  });
+  let contentRow = contentNodes.length > 0 ? [contentNodes] : [''];
 
-  // Build the table structure: Header, Image Row, Content Row (1 col, 3 rows)
-  const table = WebImporter.DOMUtils.createTable([
+  // Table header row must exactly match the example: 'Hero'
+  const cells = [
     ['Hero'],
-    [imageRowContent],
-    contentRow
-  ], document);
+    imgRow,
+    contentRow,
+  ];
 
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
