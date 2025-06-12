@@ -1,50 +1,29 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main cards block
-  let cardsBlock = element;
-  // If element is a wrapper, drill down to the .cards.block
-  if (!cardsBlock.classList.contains('cards') && cardsBlock.querySelector('.cards.block')) {
-    cardsBlock = cardsBlock.querySelector('.cards.block');
+  // Find the actual block with class 'cards block' (could be the element itself or child)
+  let block = element;
+  if (!block.classList.contains('block')) {
+    block = element.querySelector('.cards.block');
   }
-
-  // Get the <ul> containing the cards
-  const ul = cardsBlock.querySelector('ul');
+  if (!block) return;
+  const ul = block.querySelector('ul');
   if (!ul) return;
+  const cards = Array.from(ul.children); // Each <li>
 
   const rows = [];
-  // Header row as specified
+  // Header row exactly as specified
   rows.push(['Cards (cards4)']);
 
-  // Process each card <li>
-  ul.querySelectorAll(':scope > li').forEach((li) => {
-    // First cell: image or icon (mandatory)
-    let imageCell = null;
+  // Card rows: image in first cell, text in second
+  cards.forEach((li) => {
+    // Defensive: only add row if both expected elements are present
     const imgDiv = li.querySelector('.cards-card-image');
-    if (imgDiv) {
-      // Prefer a <picture> or <img>, but fallback to whatever is inside
-      const imageElem = imgDiv.querySelector('picture, img');
-      imageCell = imageElem ? imageElem : imgDiv;
-    }
-    // Second cell: text content (title, description, CTA)
-    let textCell = null;
     const bodyDiv = li.querySelector('.cards-card-body');
-    if (bodyDiv) {
-      // Get elements only (remove whitespace text nodes)
-      const nodes = Array.from(bodyDiv.childNodes).filter(n => n.nodeType === Node.ELEMENT_NODE || (n.nodeType === Node.TEXT_NODE && n.textContent.trim() !== ''));
-      if (nodes.length === 1) {
-        textCell = nodes[0];
-      } else {
-        // Wrap all nodes in a <div> to preserve order/structure
-        const wrapper = document.createElement('div');
-        nodes.forEach(node => wrapper.appendChild(node));
-        textCell = wrapper;
-      }
+    if (imgDiv || bodyDiv) {
+      rows.push([imgDiv || '', bodyDiv || '']);
     }
-    rows.push([imageCell, textCell]);
   });
 
-  // Create the block table
   const table = WebImporter.DOMUtils.createTable(rows, document);
-  // Replace the original element
   element.replaceWith(table);
 }
