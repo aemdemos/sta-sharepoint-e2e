@@ -1,29 +1,37 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the actual columns block inside the wrapper
-  const columnsBlock = element.querySelector('.columns.block');
-  if (!columnsBlock) return;
+  // Find all immediate child divs (rows in the columns block)
+  const rows = Array.from(element.querySelectorAll(':scope > div'));
+  const bodyRows = [];
+  let maxCols = 0;
 
-  // Get all direct children (each row of columns)
-  const rows = Array.from(columnsBlock.querySelectorAll(':scope > div'));
-  if (rows.length === 0) return;
+  // Determine the max number of columns for spanning the header correctly
+  rows.forEach(row => {
+    const columns = Array.from(row.querySelectorAll(':scope > div'));
+    maxCols = Math.max(maxCols, columns.length);
+  });
+  if (maxCols === 0 && rows.length > 0) {
+    // fallback: treat as 1 column if only one div per row
+    maxCols = 1;
+  }
 
-  // Prepare the table array
-  const table = [];
-  // Header row matches the example
-  table.push(['Columns (columns3)']);
-
-  // For each row of the columns block:
-  rows.forEach((row) => {
-    // Collect the immediate child divs, which are the cells (columns)
-    const cols = Array.from(row.querySelectorAll(':scope > div'));
-    // If there are no divs (edge case), skip this row
-    if (cols.length === 0) return;
-    // Reference the existing col elements directly
-    table.push(cols);
+  // Populate each body row with the correct number of columns
+  rows.forEach(row => {
+    const columns = Array.from(row.querySelectorAll(':scope > div'));
+    if (columns.length > 0) {
+      bodyRows.push(columns);
+    } else {
+      // fallback: treat the row itself as a single cell
+      bodyRows.push([row]);
+    }
   });
 
-  // Create the block table and replace the original element
-  const block = WebImporter.DOMUtils.createTable(table, document);
-  element.replaceWith(block);
+  // Header row: single cell, but should span all columns
+  // WebImporter.DOMUtils.createTable does not add colspan, but by putting only one cell in that row,
+  // the importer will know to render it as a spanning header
+  const headerRow = ['Columns (columns3)'];
+  const tableData = [headerRow, ...bodyRows];
+  const table = WebImporter.DOMUtils.createTable(tableData, document);
+
+  element.replaceWith(table);
 }
