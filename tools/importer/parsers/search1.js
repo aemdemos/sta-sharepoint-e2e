@@ -1,25 +1,23 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // The Search (search1) block expects a 1x2 table: header, then index URL
-  // The example shows the header: 'Search (search1)'
-  // The second row: the absolute URL to the query index (static in doc)
-  // The HTML does not reference the query index URL directly, so the canonical sample URL is used
-  // There is no Section Metadata table in the example, so do not add one
-
+  // 1. Build header row as in the example
   const headerRow = ['Search (search1)'];
-  const queryIndexUrl = 'https://main--helix-block-collection--adobe.hlx.page/block-collection/sample-search-data/query-index.json';
 
-  // Create a link element for the index URL, as in the example
+  // 2. Extract the query-index URL. If it exists in HTML, use it, else default
+  // Typically, this isn't present in source navigation HTML, so we use canonical sample index
+  // If in a custom project this is present, update this extraction!
+  const indexUrl = 'https://main--helix-block-collection--adobe.hlx.page/block-collection/sample-search-data/query-index.json';
   const link = document.createElement('a');
-  link.href = queryIndexUrl;
-  link.textContent = queryIndexUrl;
+  link.href = indexUrl;
+  link.textContent = indexUrl;
 
-  // Construct table rows
+  // 3. Structure for 1-column, 2-row table
   const cells = [
     headerRow,
     [link]
   ];
 
+  // 4. Replace the original element with the block table
   const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }

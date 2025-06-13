@@ -1,37 +1,27 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find all immediate child divs (rows in the columns block)
-  const rows = Array.from(element.querySelectorAll(':scope > div'));
-  const bodyRows = [];
-  let maxCols = 0;
+  // Find the columns block inside the wrapper
+  const columnsBlock = element.querySelector('.columns.block');
+  if (!columnsBlock) return;
 
-  // Determine the max number of columns for spanning the header correctly
-  rows.forEach(row => {
-    const columns = Array.from(row.querySelectorAll(':scope > div'));
-    maxCols = Math.max(maxCols, columns.length);
-  });
-  if (maxCols === 0 && rows.length > 0) {
-    // fallback: treat as 1 column if only one div per row
-    maxCols = 1;
-  }
+  // Get all the first-level row divs
+  const rowDivs = Array.from(columnsBlock.children);
 
-  // Populate each body row with the correct number of columns
-  rows.forEach(row => {
-    const columns = Array.from(row.querySelectorAll(':scope > div'));
-    if (columns.length > 0) {
-      bodyRows.push(columns);
-    } else {
-      // fallback: treat the row itself as a single cell
-      bodyRows.push([row]);
-    }
-  });
-
-  // Header row: single cell, but should span all columns
-  // WebImporter.DOMUtils.createTable does not add colspan, but by putting only one cell in that row,
-  // the importer will know to render it as a spanning header
+  // Prepare the header row with a single cell
   const headerRow = ['Columns (columns3)'];
-  const tableData = [headerRow, ...bodyRows];
-  const table = WebImporter.DOMUtils.createTable(tableData, document);
 
+  // For each row, get its direct children as columns
+  const contentRows = rowDivs.map(row => {
+    // Each row is a <div> containing two columns (divs)
+    // We want those direct children as separate cells
+    const cols = Array.from(row.children);
+    return cols;
+  });
+
+  // Compose the table: header row (single cell), then each row with two cells
+  const tableArray = [headerRow, ...contentRows];
+
+  // Create table and replace the element
+  const table = WebImporter.DOMUtils.createTable(tableArray, document);
   element.replaceWith(table);
 }
