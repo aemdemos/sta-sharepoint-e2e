@@ -1,5 +1,4 @@
 /* ========================= BASE CARDS STYLES ========================= */
-
 .cards {
   background: #fff;
   padding-left: 32px;
@@ -43,25 +42,24 @@
 
 .cards.cards4 {
   background: #f5f5f5;
-  padding: 16px 0;
   max-width: 1240px;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 16px 0;
   box-sizing: border-box;
-  padding-left: 10px;
-  padding-right: 10px;
 }
 
 .cards.cards4 > ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px 24px;
+  gap: 14px;
+  justify-content: center;
+  align-items: stretch;
   margin: 0;
   padding: 0;
   list-style: none;
   width: 100%;
   box-sizing: border-box;
-  justify-content: flex-start;
-  align-items: stretch;
 }
 
 .cards.cards4 > ul > li {
@@ -70,25 +68,24 @@
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  min-height: 370px;
   box-sizing: border-box;
   overflow: hidden;
   margin: 0;
-  flex: 0 0 calc(25% - 18px);
-  max-width: calc(25% - 18px);
+  flex: 0 0 calc(25% - 11px);
+  max-width: calc(25% - 11px);
+  min-height: 378px;
 }
 
 .cards.cards4 .cards-card-image {
   width: 100%;
-  height: 164px;
-  min-height: 164px;
-  max-height: 164px;
+  height: 180px;
+  min-height: 180px;
+  max-height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f8f8f8;
   overflow: hidden;
-  aspect-ratio: unset;
 }
 
 .cards.cards4 .cards-card-image img {
@@ -100,7 +97,7 @@
 }
 
 .cards.cards4 .cards-card-body {
-  padding: 6px 18px 18px;
+  padding: 16px;
   margin: 0;
   background: #fff;
   display: flex;
@@ -121,22 +118,22 @@
 
 .cards.cards4 .cards-card-body p:last-child {
   margin: 0;
-  color: #212121;
+  color: #424242;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.4;
 }
 
-@media (width <= 1100px) {
+@media (width <= 1100px), (width <= 1024px) {
   .cards.cards4 > ul > li {
-    flex: 0 0 calc(50% - 12px);
-    max-width: calc(50% - 12px);
+    flex: 0 0 calc(50% - 7px);
+    max-width: calc(50% - 7px);
   }
 }
 
 @media (width <= 700px) {
   .cards.cards4 > ul {
-    gap: 16px;
+    gap: 10px;
   }
 
   .cards.cards4 > ul > li {
@@ -145,20 +142,14 @@
   }
 }
 
-@media (width <= 1024px) {
-  .cards.cards4 > ul > li {
-    flex: 0 0 calc(50% - 12px);
-    max-width: calc(50% - 12px);
-  }
-}
-
 @media (width <= 600px) {
   .cards.cards4 {
-    padding: 10px 0;
+    padding: 6px 0;
+    max-width: 100%;
   }
 
   .cards.cards4 > ul {
-    gap: 2px 0;
+    gap: 5px 0;
   }
 
   .cards.cards4 > ul > li {
@@ -169,11 +160,11 @@
 
   .cards.cards4 .cards-card-image {
     height: 110px;
-    min-height: 100px;
+    min-height: 110px;
     max-height: 140px;
   }
 
   .cards.cards4 .cards-card-body {
-    padding: 6px 10px 12px;
+    padding: 10px;
   }
 }
