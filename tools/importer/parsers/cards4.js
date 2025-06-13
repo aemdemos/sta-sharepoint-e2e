@@ -1,29 +1,36 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the actual block with class 'cards block' (could be the element itself or child)
-  let block = element;
-  if (!block.classList.contains('block')) {
-    block = element.querySelector('.cards.block');
-  }
-  if (!block) return;
-  const ul = block.querySelector('ul');
+  // Find the <ul> containing the cards
+  const ul = element.querySelector('ul');
   if (!ul) return;
-  const cards = Array.from(ul.children); // Each <li>
 
+  const headerRow = ['Cards (cards4)'];
   const rows = [];
-  // Header row exactly as specified
-  rows.push(['Cards (cards4)']);
 
-  // Card rows: image in first cell, text in second
-  cards.forEach((li) => {
-    // Defensive: only add row if both expected elements are present
-    const imgDiv = li.querySelector('.cards-card-image');
-    const bodyDiv = li.querySelector('.cards-card-body');
-    if (imgDiv || bodyDiv) {
-      rows.push([imgDiv || '', bodyDiv || '']);
+  // Each <li> is a card
+  ul.querySelectorAll(':scope > li').forEach(li => {
+    // Image cell
+    let imgCell = null;
+    const imgDiv = li.querySelector(':scope > .cards-card-image');
+    if (imgDiv) {
+      const picture = imgDiv.querySelector('picture');
+      if (picture) imgCell = picture;
     }
+
+    // Text cell
+    let textCell = null;
+    const textDiv = li.querySelector(':scope > .cards-card-body');
+    if (textDiv) {
+      // Reference the original textDiv directly (not a clone)
+      textCell = textDiv;
+    }
+
+    rows.push([imgCell, textCell]);
   });
 
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+  const table = WebImporter.DOMUtils.createTable([
+    headerRow,
+    ...rows
+  ], document);
   element.replaceWith(table);
 }
