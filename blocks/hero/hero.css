@@ -1,4 +1,3 @@
-
 /* Remove extra spacing above the hero (from parent sections or wrappers) */
 .hero-container > .hero-wrapper {
   max-width: unset;
@@ -49,14 +48,15 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
+  position: relative;
   width: 100vw;
   min-height: 380px;
-  background: radial-gradient(ellipse at 80% 50%, #15324c 0%, #0f2236 100%);
+  background: radial-gradient(ellipse at 75% 50%, #15324c 60%, #0f2236 100%);
+  overflow: hidden;
   padding: 0;
   margin: 0;
-  position: relative;
   box-sizing: border-box;
-  overflow: visible;
 }
 
 main > .section,
@@ -71,80 +71,59 @@ main > .section:first-of-type {
   height: 100%;
   z-index: 1;
   pointer-events: none;
-  flex: 1 1 65%;
+  flex: 1 1 62vw;
   order: 2;
-  width: 64vw;
-  min-width: 540px;
-  max-width: 900px;
+  width: 128vw;
+  min-width: 340px;
+  max-width: none;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  margin-left: -11vw;
+  box-sizing: border-box;
+  min-height: 380px;
 }
 
 .hero.hero2 > div:last-child {
-  position: relative;
-  z-index: 3;
-  flex: 1 1 44vw;
+  flex: 0 1 41vw;
+  order: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-width: 0;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 260px;
+  max-width: 46vw;
   height: 100%;
+  padding: 0 2vw 0 48px;
+  z-index: 2;
+  box-sizing: border-box;
   background: transparent;
-  padding: 0;
-  padding-left: 7vw;
 }
 
 .hero.hero2 > div:first-child > div,
-.hero.hero2 > div:first-child picture,
-.hero.hero2 > div:first-child img {
+.hero.hero2 > div:first-child picture {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 100%;
+  width: 128vw;
   height: 100%;
-  object-fit: cover;
-  object-position: 115% 50%;
   max-width: none;
-  max-height: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-}
-
-.hero.hero2 > div:first-child picture,
-.hero.hero2 > div:first-child img {
-  width: 120vw;
-  height: 100%;
-  min-height: 380px;
-  max-width: none;
-  object-fit: cover;
-  object-position: 90% center;
-  display: block;
-  background: transparent;
-  border: none;
-  margin: 0;
-  padding: 0;
+  min-width: 340px;
   position: relative;
-  z-index: 1;
 }
 
 .hero.hero2 > div:first-child img {
-  width: 120%;
-  height: 100%;
+  display: block;
+  width: 128vw;
+  max-width: none;
+  min-width: 340px;
+  height: 380px;
+  max-height: 100%;
   object-fit: cover;
   object-position: right center;
-  display: block;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  max-width: none;
-  max-height: 100%;
-  filter: none;
-  box-shadow: none;
+  filter: drop-shadow(0 0 24px #31b7ff80);
+  mask-image: linear-gradient(to left, transparent 0%, black 28%, black 100%);
+  pointer-events: none;
 }
 
 .hero.hero2 > div:first-child::after {
@@ -164,25 +143,23 @@ main > .section:first-of-type {
 
 .hero.hero2 > div:last-child > div {
   width: 100%;
-  max-width: 480px;
+  max-width: 540px;
   color: #fff;
   font-family: roboto-condensed, Arial, sans-serif;
   font-weight: 700;
-  font-size: 2.5rem;
+  font-size: 2.7rem;
   line-height: 1.15;
   text-align: left;
   letter-spacing: normal;
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
   text-shadow: 0 2px 8px rgb(0 0 0 / 13%);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  height: 100%;
-  padding-left: 6px;
-  padding-right: 8px;
+  min-height: 160px;
+  padding: 0 8px 0 6px;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .hero.hero2 h1,
@@ -229,172 +206,29 @@ main > .section:first-of-type {
     z-index: 1;
     flex: none;
     order: unset;
-    height: auto;
+    height: 160px;
     right: 0;
     top: unset;
     bottom: 0;
     align-items: flex-end;
     justify-content: center;
+    margin-left: 0;
+    padding: 0;
+    min-height: 0;
   }
 
   .hero.hero2 > div:last-child {
-    width: 100%;
-    padding: 20px 6vw 12px;
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
+    padding: 20px 10px 12px;
     justify-content: flex-start;
     align-items: flex-start;
     z-index: 3;
     flex: none;
     order: unset;
     height: auto;
-  }
-
-  .hero.hero2 > div:first-child > div,
-  .hero.hero2 > div:first-child picture,
-  .hero.hero2 > div:first-child img {
-    object-position: center top;
-    min-height: 200px;
-  }
-
-  .hero.hero2 > div:first-child img {
-    object-fit: contain;
-    object-position: center bottom;
-    width: 100vw;
-    height: 100%;
-    max-width: none;
-    max-height: 100%;
-  }
-
-  .hero.hero2 > div:last-child > div {
-    font-size: 1.3rem;
-    max-width: 100vw;
-    padding-left: 10px;
-    padding-right: 10px;
-    align-items: flex-start;
-    justify-content: flex-start;
-    height: auto;
-  }
-
-  .hero.hero2 h1,
-  .hero.hero2 > div:last-child > div > *:first-child {
-    font-size: 2rem;
-    padding: 0;
-    text-align: left;
-  }
-
-  .hero.hero2 > div:first-child::after {
-    background: linear-gradient(
-      to left,
-      rgb(15 34 54 / 0%) 68%,
-      rgb(15 34 54 / 20%) 82%,
-      rgb(15 34 54 / 50%) 90%,
-      rgb(15 34 54 / 100%) 100%
-    );
-  }
-}
-
-/* Generated CSS */
-.hero.hero2 > div:last-child {
-  flex: 0 1 41vw;
-  order: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  min-width: 260px;
-  max-width: 46vw;
-  height: 100%;
-  padding-left: 48px;
-  padding-right: 2vw;
-  z-index: 2;
-  box-sizing: border-box;
-}
-
-.hero.hero2 > div:last-child > div {
-  width: 100%;
-  max-width: 540px;
-  color: #fff;
-  font-family: roboto-condensed, "roboto-condensed Fallback", roboto-condensed-fallback, sans-serif;
-  font-weight: 700;
-  font-size: 2.7rem;
-  text-align: left;
-  text-shadow: 0 2px 8px rgb(0 0 0 / 13%);
-  display: flex;
-  align-items: center;
-  min-height: 160px;
-}
-
-.hero.hero2 > div:first-child {
-  flex: 1 1 62vw;
-  order: 2;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-width: 320px;
-  min-height: 380px;
-  height: 100%;
-  position: relative;
-  z-index: 1;
-  margin-left: -11vw;
-  pointer-events: none;
-  box-sizing: border-box;
-}
-
-.hero.hero2 > div:first-child > div,
-.hero.hero2 > div:first-child picture {
-  width: 128vw;
-  max-width: none;
-  min-width: 340px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  position: relative;
-}
-
-.hero.hero2 > div:first-child img {
-  display: block;
-  width: 128vw;
-  max-width: none;
-  min-width: 340px;
-  height: 380px;
-  max-height: 100%;
-  object-fit: cover;
-  object-position: right center;
-  filter: drop-shadow(0 0 24px #31b7ff80);
-  mask-image: linear-gradient(to left, transparent 0%, black 28%, black 100%);
-  pointer-events: none;
-}
-
-@media (width <= 900px) {
-  .hero.hero2 {
-    flex-direction: column;
-    min-height: 220px;
-    width: 100vw;
-  }
-
-  .hero.hero2 > div:last-child {
-    width: 100vw;
-    max-width: 100vw;
-    min-width: 0;
-    padding: 24px 5vw 12px;
-    justify-content: flex-start;
-    align-items: flex-start;
     min-height: 0;
-  }
-
-  .hero.hero2 > div:last-child > div {
-    font-size: 1.25rem;
-    min-height: 60px;
-    max-width: 95vw;
-  }
-
-  .hero.hero2 > div:first-child {
-    width: 100vw;
-    min-width: 0;
-    margin-left: 0;
-    padding: 0;
-    height: 160px;
-    min-height: 0;
-    justify-content: center;
   }
 
   .hero.hero2 > div:first-child > div,
@@ -414,19 +248,31 @@ main > .section:first-of-type {
     object-position: center bottom;
     mask-image: none;
   }
-}
 
-/* Merged .hero.hero2 selector */
-.hero.hero2 {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100vw;
-  min-height: 380px;
-  background: radial-gradient(ellipse at 80% 50%, #15324c 0%, #0f2236 100%);
-  padding: 0;
-  margin: 0;
-  position: relative;
-  box-sizing: border-box;
-  overflow: visible;
+  .hero.hero2 > div:last-child > div {
+    font-size: 1.25rem;
+    min-height: 60px;
+    max-width: 95vw;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: auto;
+    padding: 0;
+  }
+
+  .hero.hero2 h1,
+  .hero.hero2 > div:last-child > div > *:first-child {
+    font-size: 2rem;
+    padding: 0;
+    text-align: left;
+  }
+
+  .hero.hero2 > div:first-child::after {
+    background: linear-gradient(
+      to left,
+      rgb(15 34 54 / 0%) 68%,
+      rgb(15 34 54 / 20%) 82%,
+      rgb(15 34 54 / 50%) 90%,
+      rgb(15 34 54 / 100%) 100%
+    );
+  }
 }
