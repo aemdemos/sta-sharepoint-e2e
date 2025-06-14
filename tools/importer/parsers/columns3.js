@@ -1,27 +1,43 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the columns block inside the wrapper
-  const columnsBlock = element.querySelector('.columns.block');
-  if (!columnsBlock) return;
+  // Find the .columns.block inside the wrapper
+  const block = element.querySelector('.columns.block');
+  if (!block) return;
 
-  // Get all the first-level row divs
-  const rowDivs = Array.from(columnsBlock.children);
+  // Find all direct >div children representing the rows of columns
+  const rowDivs = Array.from(block.querySelectorAll(':scope > div'));
+  if (!rowDivs.length) return;
 
-  // Prepare the header row with a single cell
+  // The columns count is determined by the number of children in the first row
+  const firstRowCols = Array.from(rowDivs[0].querySelectorAll(':scope > div'));
+  const colCount = firstRowCols.length;
+
+  // Header row: single cell, to be interpreted as spanning all columns
   const headerRow = ['Columns (columns3)'];
 
-  // For each row, get its direct children as columns
-  const contentRows = rowDivs.map(row => {
-    // Each row is a <div> containing two columns (divs)
-    // We want those direct children as separate cells
-    const cols = Array.from(row.children);
-    return cols;
+  // Now collect each row's columns as arrays (cells)
+  const tableRows = rowDivs.map(rowDiv => {
+    const cells = Array.from(rowDiv.querySelectorAll(':scope > div'));
+    // If a row has fewer cells, pad with empty cells to match colCount
+    while (cells.length < colCount) {
+      const emptyDiv = document.createElement('div');
+      cells.push(emptyDiv);
+    }
+    return cells;
   });
 
-  // Compose the table: header row (single cell), then each row with two cells
-  const tableArray = [headerRow, ...contentRows];
+  // Compose the table: header row as a single-cell array, then colCount-cell arrays per row
+  const cells = [headerRow, ...tableRows];
+  const table = WebImporter.DOMUtils.createTable(cells, document);
 
-  // Create table and replace the element
-  const table = WebImporter.DOMUtils.createTable(tableArray, document);
+  // EXPLICITLY set colspan for header row if the createTable function does not handle it
+  // (This is a workaround for downstream systems that expect <th colspan=N> for header row)
+  if (colCount > 1) {
+    const th = table.querySelector('tr th');
+    if (th) {
+      th.setAttribute('colspan', colCount);
+    }
+  }
+
   element.replaceWith(table);
 }

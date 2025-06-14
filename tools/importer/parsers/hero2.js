@@ -1,79 +1,49 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the inner hero block, or use the first top-level div that contains the block
-  let blockDiv = element;
-  // Sometimes extra wrappers, so find the deepest hero block
-  let heroBlock = blockDiv.querySelector('.hero.block');
-  if (heroBlock) {
-    blockDiv = heroBlock;
+  // Find the .hero.block section
+  let heroBlock = element.querySelector('.hero.block');
+  if (!heroBlock) heroBlock = element;
+
+  // Find the central content container
+  let contentDiv = heroBlock.querySelector('div > div');
+  if (!contentDiv) contentDiv = heroBlock;
+
+  // Get the <picture> for the image row
+  const picture = contentDiv.querySelector('picture');
+
+  // Find the first heading (h1-h3) for the content row
+  let heading = null;
+  for (let i = 0; i < contentDiv.children.length; i++) {
+    const child = contentDiv.children[i];
+    if (/^H[1-3]$/i.test(child.tagName)) {
+      heading = child;
+      break;
+    }
   }
 
-  // Find the innermost content container (usually a div inside .hero.block)
-  let mainBlockDiv = blockDiv.querySelector('div');
-  if (!mainBlockDiv) mainBlockDiv = blockDiv;
-
-  // Find the first picture/img for the image row
-  let pictureEl = mainBlockDiv.querySelector('picture');
-  let imgEl = pictureEl ? pictureEl.querySelector('img') : mainBlockDiv.querySelector('img');
-
-  // Prepare the image row content (prefer picture element if present)
-  let imageCell = '';
-  if (pictureEl) {
-    imageCell = pictureEl;
-  } else if (imgEl) {
-    imageCell = imgEl;
-  } else {
-    imageCell = '';
-  }
-
-  // Prepare content for the last row: headings, paragraphs, etc.
-  // Only after the image element in source order
-  let foundPicture = false;
-  let contentEls = [];
-  for (const child of mainBlockDiv.children) {
-    if (!foundPicture) {
-      if (child.tagName === 'PICTURE' || (child.querySelector && child.querySelector('picture'))) {
-        foundPicture = true;
+  // --- FIX: If the heading is inside a child div (as in <div><h1>...</h1></div>), find it!
+  if (!heading) {
+    for (let i = 0; i < contentDiv.children.length; i++) {
+      const child = contentDiv.children[i];
+      if (child.children && child.children.length) {
+        for (let j = 0; j < child.children.length; j++) {
+          const grandchild = child.children[j];
+          if (/^H[1-3]$/i.test(grandchild.tagName)) {
+            heading = grandchild;
+            break;
+          }
+        }
       }
-      continue;
-    }
-    // Only add nodes that have relevant content (headings, non-empty paragraphs, etc)
-    if (
-      child.matches('h1,h2,h3,h4,h5,h6') ||
-      (child.matches('p') && child.textContent.trim())
-    ) {
-      contentEls.push(child);
+      if (heading) break;
     }
   }
 
-  // Edge case: if image is not present, just gather all content (might be rare)
-  if (!pictureEl && contentEls.length === 0) {
-    // Fallback: include all headings/paragraphs
-    for (const child of mainBlockDiv.children) {
-      if (
-        child.matches('h1,h2,h3,h4,h5,h6') ||
-        (child.matches('p') && child.textContent.trim())
-      ) {
-        contentEls.push(child);
-      }
-    }
-  }
-
-  // If still no content, add empty string
-  if (contentEls.length === 0) {
-    contentEls = [''];
-  }
-
-  // Build the hero block table: 1 column, 3 rows
-  // 1st row: Header exactly 'Hero'
-  // 2nd row: Image (or empty)
-  // 3rd row: Content (heading, paragraph, etc)
-  const tableRows = [
+  const cells = [
     ['Hero'],
-    [imageCell],
-    [contentEls]
+    [picture ? picture : ''],
+    [heading ? heading : ''],
   ];
 
-  const table = WebImporter.DOMUtils.createTable(tableRows, document);
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
