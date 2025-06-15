@@ -1,3 +1,4 @@
+
 /* Columns block layout */
 
 .columns {
@@ -57,14 +58,17 @@
 }
 
 .columns.columns3 {
-  padding: 78px 0 78px 56px;
-  margin: 0 auto;
-  background: #fff;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 64px;
+  padding: 78px 0 78px 48px;
+  background: #fff;
+  box-sizing: border-box;
+  width: 100%;
   max-width: 100%;
+  min-height: 0;
+  height: auto;
+  overflow: visible;
 }
 
 .columns.columns3 > div {
@@ -302,6 +306,7 @@
     padding-left: 18px;
     gap: 44px;
   }
+
   .columns.columns3 > div {
     gap: 14px;
     min-height: 280px;
@@ -310,14 +315,16 @@
 
 @media (width <= 800px) {
   .columns.columns3 {
-    padding: 24px 0 32px 0;
+    padding: 24px 0 32px;
     gap: 32px;
   }
+
   .columns.columns3 > div {
     flex-direction: column;
     gap: 18px;
     min-height: unset;
   }
+
   .columns.columns3 > div > div,
   .columns.columns3 > div > div:not(.columns-img-col),
   .columns.columns3 > div > div.columns-img-col {
@@ -326,9 +333,188 @@
     padding: 0;
     align-items: flex-start;
   }
+
   .columns.columns3 .columns-img-col picture,
   .columns.columns3 .columns-img-col img {
     max-width: 100%;
     min-width: 0;
   }
 }
+
+
+.columns.columns3 {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  padding: 78px 0 78px 48px;
+  background: #fff;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  height: auto;
+  overflow: visible;
+}
+
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 40px; /* reduced for better balance */
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+/* Make both columns share space more equally */
+.columns.columns3 > div > div {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+  gap: 0;
+  height: auto;
+}
+
+/* Remove max-width on text columns to allow equal width */
+.columns.columns3 > div > div:not(.columns-img-col) {
+  max-width: none;
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  min-height: 0;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* Keep image columns flexible and images contained */
+.columns.columns3 .columns-img-col {
+  flex: 1 1 0;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  align-items: flex-start;
+  justify-content: flex-end;
+  background: transparent;
+  display: flex;
+  box-sizing: border-box;
+  height: auto;
+}
+
+.columns.columns3 .columns-img-col picture,
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0;
+  background: transparent;
+}
+
+/* Typography */
+.columns.columns3 p {
+  margin: 0 0 18px;
+  color: #222;
+  font-size: 22px;
+  font-family: var(--body-font-family);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.columns.columns3 > div > div:not(.columns-img-col) > p:first-child {
+  margin-bottom: 6px;
+  font-size: 22px;
+  color: #222;
+  text-align: left;
+  line-height: 1.2;
+  width: 100%;
+}
+
+.columns.columns3 ul {
+  list-style: disc inside;
+  margin: 8px 0 0 22px;
+  padding: 0;
+  font-size: 18px;
+  color: #222;
+}
+
+.columns.columns3 ul li {
+  margin-bottom: 8px;
+  font-size: 18px;
+  color: #222;
+}
+
+/* Button spacing and appearance */
+.columns.columns3 .button-container {
+  margin-top: 24px;
+  display: block;
+}
+
+.columns.columns3 .button {
+  background: #36F;
+  color: #fff;
+  border: none;
+  border-radius: 2em;
+  padding: 0.7em 2em;
+  font-size: 1rem;
+  font-weight: 500;
+  min-width: 120px;
+  line-height: 1.25;
+  text-align: center;
+  transition: background 0.2s;
+  box-shadow: none;
+  margin: 0;
+  display: inline-block;
+}
+
+.columns.columns3 .button.secondary {
+  background: #fff;
+  color: #222;
+  border: 2px solid #222;
+}
+
+.columns.columns3 .button.secondary:hover,
+.columns.columns3 .button.secondary:focus {
+  background: #222;
+  color: #fff;
+}
+
+.columns.columns3 .button:hover,
+.columns.columns3 .button:focus {
+  background: #274bd7;
+}
+
+/* Responsive: stack rows and columns on smaller screens */
+@media (width <= 900px) {
+  .columns.columns3 {
+    padding: 32px 0;
+    gap: 32px;
+  }
+
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .columns.columns3 > div > div,
+  .columns.columns3 .columns-img-col {
+    max-width: 100%;
+    flex-basis: auto;
+    padding: 0;
+    align-items: flex-start;
+    height: auto;
+    min-height: 0;
+  }
+
+  .columns.columns3 .columns-img-col img,
+  .columns.columns3 .columns-img-col picture {
+    max-width: 100%;
+  }
+}
+
