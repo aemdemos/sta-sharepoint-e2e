@@ -1,49 +1,32 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the .hero.block section
-  let heroBlock = element.querySelector('.hero.block');
-  if (!heroBlock) heroBlock = element;
+  // Find the main hero content
+  let heroContentWrapper = element.querySelector('.hero-wrapper .hero.block > div > div');
+  if (!heroContentWrapper) {
+    const heroBlockDiv = element.querySelector('.hero-wrapper .hero.block > div');
+    heroContentWrapper = heroBlockDiv || element;
+  }
 
-  // Find the central content container
-  let contentDiv = heroBlock.querySelector('div > div');
-  if (!contentDiv) contentDiv = heroBlock;
-
-  // Get the <picture> for the image row
-  const picture = contentDiv.querySelector('picture');
-
-  // Find the first heading (h1-h3) for the content row
-  let heading = null;
-  for (let i = 0; i < contentDiv.children.length; i++) {
-    const child = contentDiv.children[i];
-    if (/^H[1-3]$/i.test(child.tagName)) {
-      heading = child;
-      break;
+  // Find the image and the first h1 (heading)
+  let imageEl = null;
+  let headingEl = null;
+  const children = Array.from(heroContentWrapper.children);
+  for (const child of children) {
+    if (!imageEl && child.tagName === 'P' && child.querySelector('picture')) {
+      // Use the <picture> element directly (not the wrapping <p>)
+      imageEl = child.querySelector('picture');
+    }
+    if (!headingEl && child.tagName === 'H1' && child.textContent.trim()) {
+      headingEl = child;
     }
   }
 
-  // --- FIX: If the heading is inside a child div (as in <div><h1>...</h1></div>), find it!
-  if (!heading) {
-    for (let i = 0; i < contentDiv.children.length; i++) {
-      const child = contentDiv.children[i];
-      if (child.children && child.children.length) {
-        for (let j = 0; j < child.children.length; j++) {
-          const grandchild = child.children[j];
-          if (/^H[1-3]$/i.test(grandchild.tagName)) {
-            heading = grandchild;
-            break;
-          }
-        }
-      }
-      if (heading) break;
-    }
-  }
-
-  const cells = [
+  // Table rows: header, image, heading
+  const rows = [
     ['Hero'],
-    [picture ? picture : ''],
-    [heading ? heading : ''],
+    [imageEl ? imageEl : ''],
+    [headingEl ? headingEl : '']
   ];
-
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }
