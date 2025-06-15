@@ -45,39 +45,17 @@
 
 /* Merged .hero.hero2 selector */
 .hero.hero2 {
-  position: relative;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  min-height: 380px;
   width: 100vw;
-  background: linear-gradient(120deg, #05253A 0%, #133B52 100%);
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 0;
-}
-
-/* Image background: cover the entire hero, DNA spiral anchored to the right edge */
-.hero.hero2 > div:first-child {
-  position: absolute;
-  inset: 0 0 0 auto;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-  flex: 1 1 62vw;
-  order: 2;
-  width: 128vw;
-  min-width: 340px;
-  max-width: none;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-left: -11vw;
-  box-sizing: border-box;
   min-height: 380px;
-
-  /* overrides for mobile moved to bottom as part of media queries */
+  background: #0a2440;
+  box-sizing: border-box;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 .hero.hero2 > div:last-child {
@@ -94,8 +72,25 @@
   z-index: 2;
   box-sizing: border-box;
   background: transparent;
+}
 
-  /* overrides for mobile moved to bottom as part of media queries */
+.hero.hero2 > div:first-child {
+  position: absolute;
+  inset: 0 0 0 auto;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  flex: 1 1 78vw;
+  order: 2;
+  width: 128vw;
+  min-width: 340px;
+  max-width: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: -11vw;
+  box-sizing: border-box;
+  min-height: 380px;
 }
 
 .hero.hero2 > div:first-child > div,
@@ -123,8 +118,6 @@
   mask-image: linear-gradient(to left, transparent 0%, black 28%, black 100%);
   pointer-events: none;
   transition: mask-image 0.2s, -webkit-mask-image 0.2s;
-
-  /* overrides for mobile moved to bottom as part of media queries */
 }
 
 .hero.hero2 > div:first-child::after {
@@ -161,8 +154,6 @@
   padding: 0 8px 0 6px;
   margin: 0;
   box-sizing: border-box;
-
-  /* overrides for mobile moved to bottom as part of media queries */
 }
 
 .hero.hero2 h1,
@@ -180,8 +171,6 @@
   box-sizing: border-box;
   z-index: 2;
   background: none;
-
-  /* overrides for mobile moved to bottom as part of media queries */
 }
 
 /* Finer gradient fade for text contrast and DNA glow */
