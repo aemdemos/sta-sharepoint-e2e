@@ -43,35 +43,38 @@
   }
 }
 
-/* Merged .hero.hero2 selector */
+/* Merged .hero.hero2 selector and all related rules below into single blocks, preserving specificity and cascade */
 .hero.hero2 {
+  position: relative;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   width: 100vw;
   min-height: 380px;
-  background: #0a2440;
+  background: #0b223a;
   box-sizing: border-box;
   padding: 0;
-  position: relative;
   overflow: hidden;
 }
 
 .hero.hero2 > div:last-child {
-  flex: 0 1 41vw;
   order: 1;
-  display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  min-width: 260px;
-  max-width: 46vw;
-  height: 100%;
   padding: 0 2vw 0 48px;
-  z-index: 2;
+  position: relative;
+  z-index: 3;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 44vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 34px;
+  padding-right: 18px;
+  background: none;
   box-sizing: border-box;
-  background: transparent;
 }
 
 .hero.hero2 > div:first-child {
@@ -82,7 +85,6 @@
   pointer-events: none;
   flex: 1 1 78vw;
   order: 2;
-  width: 128vw;
   min-width: 340px;
   max-width: none;
   display: flex;
@@ -91,33 +93,13 @@
   margin-left: -11vw;
   box-sizing: border-box;
   min-height: 380px;
-}
-
-.hero.hero2 > div:first-child > div,
-.hero.hero2 > div:first-child picture {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 128vw;
-  height: 100%;
-  max-width: none;
-  min-width: 340px;
-  position: relative;
-}
-
-.hero.hero2 > div:first-child img {
-  display: block;
-  width: 128vw;
-  max-width: none;
-  min-width: 340px;
-  height: 380px;
-  max-height: 100%;
-  object-fit: cover;
-  object-position: right center;
-  filter: drop-shadow(0 0 24px rgb(49 183 255 / 50%));
-  mask-image: linear-gradient(to left, transparent 0%, black 28%, black 100%);
-  pointer-events: none;
-  transition: mask-image 0.2s, -webkit-mask-image 0.2s;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: none;
+  margin: 0;
+  padding: 0;
+  width: 70vw;
 }
 
 .hero.hero2 > div:first-child::after {
@@ -135,42 +117,82 @@
   );
 }
 
+.hero.hero2 > div:first-child::before {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg, #0b223a 0%, rgb(11 34 58 / 88%) 28%, rgb(11 34 58 / 0%) 74%);
+  content: '';
+  display: block;
+}
+
+.hero.hero2 > div:first-child > div,
+.hero.hero2 > div:first-child picture {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: none;
+  min-width: 340px;
+  position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.hero.hero2 > div:first-child img {
+  display: block;
+  max-width: none;
+  max-height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  transition: mask-image 0.2s, -webkit-mask-image 0.2s;
+  width: 100%;
+  height: 100%;
+  object-position: 52% center;
+  min-width: 0;
+  background: none;
+  box-shadow: none;
+  filter: none;
+  mask-image: none;
+}
+
 .hero.hero2 > div:last-child > div {
   width: 100%;
   max-width: 540px;
-  color: #fff;
-  font-family: roboto-condensed, Arial, sans-serif;
-  font-weight: 700;
-  font-size: 2.7rem;
-  line-height: 1.15;
-  text-align: left;
   letter-spacing: normal;
-  text-shadow: 0 2px 8px rgb(0 0 0 / 13%);
-  display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
   min-height: 160px;
-  padding: 0 8px 0 6px;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  color: #fff;
+  text-align: left;
+  padding: 0;
   box-sizing: border-box;
+  background: none;
+  text-shadow: none;
 }
 
 .hero.hero2 h1,
 .hero.hero2 > div:last-child > div > *:first-child {
   color: #fff;
-  font-size: 3.7rem;
-  font-family: roboto-condensed, Arial, sans-serif;
-  font-weight: 700;
-  line-height: 1.15;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-  letter-spacing: normal;
-  text-shadow: 0 2px 8px rgb(0 0 0 / 13%);
-  box-sizing: border-box;
   z-index: 2;
+  font-size: 2.5rem;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 0;
+  letter-spacing: normal;
+  text-align: left;
   background: none;
+  box-sizing: border-box;
+  text-shadow: none;
 }
 
 /* Finer gradient fade for text contrast and DNA glow */
@@ -192,10 +214,9 @@
   }
 
   .hero.hero2 > div:first-child {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
+    position: static;
     width: 100vw;
+    z-index: 1;
     min-width: 0;
     max-width: none;
     flex: none;
@@ -211,21 +232,8 @@
     min-height: 0;
   }
 
-  .hero.hero2 > div:last-child {
-    padding-left: 16px;
-    padding-top: 24px;
-    max-width: 100vw;
-    width: 100vw;
-    min-width: 0;
-    justify-content: flex-start;
-    align-items: flex-start;
-    z-index: 3;
-    flex: none;
-    order: unset;
-    height: auto;
-    min-height: 0;
-    box-sizing: border-box;
-    background: transparent;
+  .hero.hero2 > div:first-child::before {
+    display: none;
   }
 
   .hero.hero2 > div:first-child > div,
@@ -251,6 +259,23 @@
     transition: mask-image 0.2s, -webkit-mask-image 0.2s;
   }
 
+  .hero.hero2 > div:last-child {
+    padding-left: 16px;
+    padding-top: 24px;
+    max-width: 100vw;
+    width: 100vw;
+    min-width: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 3;
+    flex: none;
+    order: unset;
+    height: auto;
+    min-height: 0;
+    box-sizing: border-box;
+    background: transparent;
+  }
+
   .hero.hero2 > div:last-child > div {
     font-size: 2rem;
     min-height: 60px;
@@ -268,7 +293,6 @@
     text-align: left;
     letter-spacing: normal;
     text-shadow: 0 2px 8px rgb(0 0 0 / 13%);
-    margin: 0;
     box-sizing: border-box;
   }
 
@@ -281,7 +305,6 @@
     font-family: roboto-condensed, Arial, sans-serif;
     font-weight: 700;
     line-height: 1.15;
-    margin: 0;
     letter-spacing: normal;
     text-shadow: 0 2px 8px rgb(0 0 0 / 13%);
     box-sizing: border-box;
@@ -294,3 +317,5 @@ main > .section,
 main > .section:first-of-type {
   margin-top: 0;
 }
+
+/* ==== GENERATED CSS FROM PREVIOUS RESPONSE ==== */
