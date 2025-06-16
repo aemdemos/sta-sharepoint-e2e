@@ -1,0 +1,53 @@
+name: Backup and Reset to E2E Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      backup_branch_name:
+        description: 'Name of the backup branch (optional)'
+        required: false
+        type: string
+
+jobs:
+  backup-and-reset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'github-actions@github.com'
+
+      - name: Create backup branch
+        id: backup
+        run: |
+          # Get current date in YYYY-MM-DD format
+          DATE=$(date +%Y-%m-%d)
+          # Use provided branch name or default to backup-{date}
+          BRANCH_NAME="${INPUT_BACKUP_BRANCH_NAME:-backup-$DATE}"
+          # Create and push the backup branch
+          git checkout -b $BRANCH_NAME
+          git push origin $BRANCH_NAME
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+      - name: Reset main to specified commit
+        run: |
+          git checkout main
+          git reset --hard ${{ secrets.E2E_WORKFLOW_COMMIT }}
+          git push origin main --force
+
+      - name: Post Slack notification
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "*Backup and Reset Completed* :white_check_mark:\n• Created backup branch: `${{ steps.backup.outputs.branch_name }}`\n• Reset main branch to commit: `${{ secrets.E2E_WORKFLOW_COMMIT }}`"
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }} 
