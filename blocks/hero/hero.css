@@ -45,59 +45,59 @@
 
 /* Merged .hero.hero2 selector and all related rules below into single blocks, preserving specificity and cascade */
 .hero.hero2 {
-  position: relative;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   width: 100vw;
-  min-height: 380px;
+  min-height: 415px;
+  height: 415px;
   background: #0b223a;
   box-sizing: border-box;
   padding: 0;
+  position: relative;
   overflow: hidden;
 }
 
 .hero.hero2 > div:last-child {
+  /* merged properties from both .hero.hero2 > div:last-child selectors */
   order: 1;
   flex-direction: column;
-  padding: 0 2vw 0 48px;
   position: relative;
   z-index: 3;
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 44vw;
+  max-width: 830px;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
-  padding-left: 34px;
-  padding-right: 18px;
   background: none;
   box-sizing: border-box;
+  flex: 0 0 50vw;
+  min-width: 425px;
+  padding: 28px 18px 0 54px;
 }
 
 .hero.hero2 > div:first-child {
-  position: absolute;
-  inset: 0 0 0 auto;
+  /* merged properties from both .hero.hero2 > div:first-child selectors */
+  position: relative;
   height: 100%;
   z-index: 1;
   pointer-events: none;
-  flex: 1 1 78vw;
+  flex: 1 1 50vw;
   order: 2;
   min-width: 340px;
   max-width: none;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-end;
-  margin-left: -11vw;
+  margin-left: -6vw;
   box-sizing: border-box;
   min-height: 380px;
   top: 0;
   right: 0;
   bottom: 0;
   background: none;
-  margin: 0;
+  /* removed 'margin: 0;' from here, since margin-left is already specified above */
   padding: 0;
   width: 70vw;
 }
@@ -130,7 +130,7 @@
 .hero.hero2 > div:first-child > div,
 .hero.hero2 > div:first-child picture {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-end;
   max-width: none;
   min-width: 340px;
@@ -144,14 +144,15 @@
 .hero.hero2 > div:first-child img {
   display: block;
   max-width: none;
-  max-height: 100%;
+  max-height: none;
   object-fit: cover;
   pointer-events: none;
   transition: mask-image 0.2s, -webkit-mask-image 0.2s;
   width: 100%;
   height: 100%;
-  object-position: 52% center;
+  object-position: left center;
   min-width: 0;
+  min-height: 0;
   background: none;
   box-shadow: none;
   filter: none;
@@ -160,14 +161,14 @@
 
 .hero.hero2 > div:last-child > div {
   width: 100%;
-  max-width: 540px;
+  max-width: 780px;
   letter-spacing: normal;
   flex-direction: column;
   min-height: 160px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
-  font-family: var(--heading-font-family);
+  font-family: var(--heading-font-family, roboto-condensed, Arial, sans-serif);
   font-weight: 700;
   font-size: 2.5rem;
   line-height: 1.2;
@@ -184,15 +185,21 @@
   color: #fff;
   z-index: 2;
   font-size: 2.5rem;
-  font-family: var(--heading-font-family);
+  font-family: var(--heading-font-family, roboto-condensed, Arial, sans-serif);
   font-weight: 700;
   line-height: 1.2;
   padding: 0;
+  margin: 0;
   letter-spacing: normal;
   text-align: left;
   background: none;
   box-sizing: border-box;
   text-shadow: none;
+}
+
+.hero.hero2 h1 {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 /* Finer gradient fade for text contrast and DNA glow */
@@ -210,12 +217,23 @@
   .hero.hero2 {
     flex-direction: column;
     min-height: 220px;
+    height: auto;
     width: 100vw;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    max-width: 100vw;
+    min-width: 0;
+    flex: unset;
+    width: 100vw;
+    height: auto;
+    padding: 0;
+    margin-left: 0;
   }
 
   .hero.hero2 > div:first-child {
     position: static;
-    width: 100vw;
     z-index: 1;
     min-width: 0;
     max-width: none;
@@ -227,8 +245,6 @@
     bottom: 0;
     align-items: flex-end;
     justify-content: center;
-    margin-left: 0;
-    padding: 0;
     min-height: 0;
   }
 
@@ -248,8 +264,8 @@
   }
 
   .hero.hero2 > div:first-child img {
-    width: 120vw;
     min-width: 0;
+    width: 100vw;
     height: 160px;
     object-fit: contain;
     object-position: center bottom;
@@ -257,13 +273,16 @@
     pointer-events: none;
     display: block;
     transition: mask-image 0.2s, -webkit-mask-image 0.2s;
+    max-height: none;
+    background: none;
+    box-shadow: none;
+    filter: none;
   }
 
   .hero.hero2 > div:last-child {
+    padding-top: 20px;
     padding-left: 16px;
-    padding-top: 24px;
     max-width: 100vw;
-    width: 100vw;
     min-width: 0;
     justify-content: flex-start;
     align-items: flex-start;
@@ -310,6 +329,7 @@
     box-sizing: border-box;
     z-index: 2;
     background: none;
+    margin: 0;
   }
 }
 
@@ -317,5 +337,3 @@ main > .section,
 main > .section:first-of-type {
   margin-top: 0;
 }
-
-/* ==== GENERATED CSS FROM PREVIOUS RESPONSE ==== */
