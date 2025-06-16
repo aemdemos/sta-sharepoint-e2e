@@ -43,63 +43,62 @@
   }
 }
 
-/* Merged .hero.hero2 selector and all related rules below into single blocks, preserving specificity and cascade */
+/* Merged .hero.hero2 related selectors below while preserving specificity and cascade */
 .hero.hero2 {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: flex-start;
   width: 100vw;
-  min-height: 415px;
-  height: 415px;
-  background: #0b223a;
+  height: 300px;
+  min-height: 300px;
+  background: radial-gradient(circle at 70% 50%, #18354e 60%, #0b1b28 100%);
   box-sizing: border-box;
   padding: 0;
-  position: relative;
   overflow: hidden;
+  position: relative;
 }
 
 .hero.hero2 > div:last-child {
-  /* merged properties from both .hero.hero2 > div:last-child selectors */
   order: 1;
   flex-direction: column;
   position: relative;
-  z-index: 3;
-  max-width: 830px;
   height: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   background: none;
   box-sizing: border-box;
-  flex: 0 0 50vw;
-  min-width: 425px;
-  padding: 28px 18px 0 54px;
+  flex: 0 0 22%;
+  max-width: 26%;
+  min-width: 0;
+  padding: 10px 0 0 26px;
+  margin-right: -3vw;
+  z-index: 2;
 }
 
 .hero.hero2 > div:first-child {
-  /* merged properties from both .hero.hero2 > div:first-child selectors */
   position: relative;
   height: 100%;
   z-index: 1;
   pointer-events: none;
-  flex: 1 1 50vw;
   order: 2;
-  min-width: 340px;
   max-width: none;
   display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
-  margin-left: -6vw;
   box-sizing: border-box;
   min-height: 380px;
   top: 0;
   right: 0;
   bottom: 0;
   background: none;
-  /* removed 'margin: 0;' from here, since margin-left is already specified above */
   padding: 0;
   width: 70vw;
+  flex: 1 1 78%;
+  min-width: 0;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-left: -3vw;
+  overflow: visible;
 }
 
 .hero.hero2 > div:first-child::after {
@@ -130,8 +129,6 @@
 .hero.hero2 > div:first-child > div,
 .hero.hero2 > div:first-child picture {
   display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
   max-width: none;
   min-width: 340px;
   position: relative;
@@ -139,29 +136,33 @@
   z-index: 1;
   width: 100%;
   height: 100%;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .hero.hero2 > div:first-child img {
   display: block;
-  max-width: none;
-  max-height: none;
   object-fit: cover;
   pointer-events: none;
   transition: mask-image 0.2s, -webkit-mask-image 0.2s;
-  width: 100%;
   height: 100%;
-  object-position: left center;
   min-width: 0;
   min-height: 0;
   background: none;
   box-shadow: none;
-  filter: none;
   mask-image: none;
+  object-position: bottom right;
+  width: 108%;
+  filter: brightness(0.97) contrast(1.2) saturate(1.23);
+  margin-left: 0;
+  margin-bottom: 0;
+  z-index: 1;
+  max-width: unset;
+  max-height: unset;
 }
 
 .hero.hero2 > div:last-child > div {
   width: 100%;
-  max-width: 780px;
   letter-spacing: normal;
   flex-direction: column;
   min-height: 160px;
@@ -178,6 +179,7 @@
   box-sizing: border-box;
   background: none;
   text-shadow: none;
+  max-width: 700px;
 }
 
 .hero.hero2 h1,
@@ -200,6 +202,11 @@
 .hero.hero2 h1 {
   margin-top: 0;
   margin-bottom: 0;
+  font-family: var(--heading-font-family, Montserrat, Arial, sans-serif);
+  font-size: 2.8rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0;
 }
 
 /* Finer gradient fade for text contrast and DNA glow */
