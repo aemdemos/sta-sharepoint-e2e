@@ -58,17 +58,12 @@
 
 /* .columns.columns3 merged selector starts here */
 .columns.columns3 {
-  display: flex;
-  flex-direction: column;
-  gap: 44px;
-  padding: 40px 0 0 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 56px 0 0;
+  gap: 48px;
   background: #fff;
   box-sizing: border-box;
-  width: 100%;
-  max-width: 100%;
-  min-height: 0;
-  height: auto;
-  overflow: visible;
 }
 
 .columns.columns3 > div {
