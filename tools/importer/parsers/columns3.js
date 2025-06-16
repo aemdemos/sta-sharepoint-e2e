@@ -1,29 +1,30 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the columns block inside the given element
+  // Find the columns block inside the wrapper (should be only one)
   const columnsBlock = element.querySelector('.columns.block');
   if (!columnsBlock) return;
 
-  // Get the two main rows (each row is a <div> with two columns inside)
-  const rowDivs = Array.from(columnsBlock.querySelectorAll(':scope > div'));
-  if (rowDivs.length !== 2) return;
-
-  // For each row, extract its two column divs
-  const row1Columns = Array.from(rowDivs[0].querySelectorAll(':scope > div'));
-  const row2Columns = Array.from(rowDivs[1].querySelectorAll(':scope > div'));
-
-  // Defensive: Only proceed if each row has exactly 2 columns
-  if (row1Columns.length !== 2 || row2Columns.length !== 2) return;
-
-  // Build the table rows
+  // Table header matches the block name and variant
   const headerRow = ['Columns (columns3)'];
-  const contentRow1 = [row1Columns[0], row1Columns[1]];
-  const contentRow2 = [row2Columns[0], row2Columns[1]];
+  const contentRows = [];
 
-  const table = WebImporter.DOMUtils.createTable([
-    headerRow,
-    contentRow1,
-    contentRow2,
-  ], document);
+  // Each direct child <div> of the columns block is a "row" in the columns grid
+  const rowDivs = Array.from(columnsBlock.querySelectorAll(':scope > div'));
+
+  for (const rowDiv of rowDivs) {
+    // Each rowDiv has a set of <div>s for columns in this row
+    const columnDivs = Array.from(rowDiv.querySelectorAll(':scope > div'));
+    // Defensive: If no divs, treat the rowDiv itself as a single column
+    if (columnDivs.length === 0) {
+      contentRows.push([rowDiv]);
+    } else {
+      contentRows.push(columnDivs);
+    }
+  }
+
+  // Compose the final table structure
+  const tableRows = [headerRow, ...contentRows];
+
+  const table = WebImporter.DOMUtils.createTable(tableRows, document);
   element.replaceWith(table);
 }
