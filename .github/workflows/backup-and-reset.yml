@@ -1,6 +1,8 @@
 name: Backup and Reset to E2E Workflow
 
 on:
+  schedule:
+    - cron: '0 9 * * *'  # every day at 9:00 AM UTC (4 hours after E2E test)
   workflow_dispatch:
     inputs:
       backup_branch_name:
