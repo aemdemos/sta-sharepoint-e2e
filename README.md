@@ -19,6 +19,7 @@ npm i
 npm run lint
 ```
 
+
 ## Local development
 
 1. Install the [AEM CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/aem-cli`
