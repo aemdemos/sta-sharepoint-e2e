@@ -17,6 +17,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
+          token: ${{ secrets.WORKFLOW_PAT }}
 
       - name: Set up Git
         run: |
