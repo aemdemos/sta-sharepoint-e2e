@@ -1,4 +1,3 @@
-
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -42,6 +41,11 @@
 /* .hero.hero2 merged below */
 
 /* Headline wrapper: left/top, above image */
+.hero.hero2 > div {
+  margin: 0;
+  padding-bottom: 0;
+}
+
 .hero.hero2 > div:last-child {
   flex: 1 1 0;
   display: flex;
@@ -52,6 +56,10 @@
   padding-top: 40px;
   z-index: 2;
   order: 1;
+  position: relative;
+  max-width: 700px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 /* Headline styling */
@@ -63,42 +71,55 @@
   line-height: 1.1;
   max-width: 600px;
   letter-spacing: -1px;
-  font-family: var(--heading-font-family, 'roboto-condensed', Arial, sans-serif);
+  font-family: var(--heading-font-family, roboto-condensed, Arial, sans-serif);
+  text-align: left;
+  align-self: flex-start;
 }
 
 /* DNA image wrapper: absolute, overflows left for fade/bleed effect */
 .hero.hero2 > div:first-child {
   position: absolute;
-  top: 0;
-  right: 0;
+
+  /* Removed top, right to avoid overriding with inset */
+  inset: 0 0 0 35vw;
   height: 100%;
   width: 900px;
   min-width: 480px;
   max-width: none;
   display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
   pointer-events: none;
   z-index: 1;
   order: 2;
+  margin: 0;
+  padding: 0;
+  justify-content: flex-end;
+  align-items: stretch;
 }
 
 /* DNA image: let it overflow left, mask for gradual fade */
 .hero.hero2 picture,
 .hero.hero2 img {
   display: block;
-  height: 100%;
-  width: auto;
   min-width: 800px;
   max-width: none;
-  position: relative;
-  left: -200px;
+
+  /* Removed left to avoid overriding with inset */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  box-shadow: none;
+  filter: none;
+  mask-image: none;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .hero.hero2 img {
   object-fit: cover;
   filter: drop-shadow(0 0 40px #3fa8ffbb);
-  mask-image: linear-gradient(to left, transparent 0%, black 25%, black 100%);
   mask-image: linear-gradient(to left, transparent 0%, black 25%, black 100%);
 }
 
@@ -108,6 +129,7 @@
     min-height: 320px;
     padding: 24px 0;
     width: 100%;
+    align-items: flex-start;
   }
 
   .hero.hero2 > div:first-child {
@@ -118,6 +140,11 @@
     height: auto;
     pointer-events: auto;
     order: 1;
+
+    /* Removed left to avoid overriding with position: static */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
   }
 
   .hero.hero2 > div:last-child {
@@ -126,6 +153,9 @@
     justify-content: center;
     align-items: flex-start;
     order: 2;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
   }
 
   .hero.hero2 img,
@@ -134,9 +164,10 @@
     max-width: 340px;
     min-width: 0;
     height: auto;
-    left: 0;
+
+    /* Removed left to avoid overriding with position: static */
     mask-image: none;
-    mask-image: none;
+    position: static;
   }
 
   .hero.hero2 h1 {
@@ -145,16 +176,18 @@
   }
 }
 
-/* ===== MERGED SELECTOR BELOW ===== */
+/* ============= MERGED SELECTORS BELOW ============= */
 
 .hero.hero2 {
-  position: relative;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: flex-start;
   width: 100vw;
   min-height: 380px;
-  background: radial-gradient(circle at 60% 40%, #183451 60%, #112940 100%);
+  background: radial-gradient(ellipse at 70% 50%, #00304d 60%, #071c2a 100%);
   overflow: hidden;
   padding: 0;
+  box-sizing: border-box;
+  position: relative;
 }
