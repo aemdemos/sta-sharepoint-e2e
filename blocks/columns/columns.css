@@ -1,4 +1,4 @@
-
+/* Columns styling */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -34,15 +34,98 @@
 }
 
 .columns.columns3 {
-  padding: 64px 4vw 0;
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  padding: 56px 0 0;
   margin: 0 auto;
   max-width: 100%;
   box-sizing: border-box;
 }
- 
+
 .columns.columns3 > div {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 48px;
+  width: 100%;
+  min-width: 0;
+}
+
+.columns.columns3 > div:not(:last-child) {
+  margin-bottom: 72px;
+}
+
+.columns.columns3 .columns-img-col {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.columns.columns3 .columns-img-col picture,
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  display: block;
+  margin: 0;
+}
+
+.columns.columns3 p,
+.columns.columns3 ul,
+.columns.columns3 li {
+  color: #222;
+  font-size: 20px;
+  text-align: left;
+  margin-top: 0;
+  margin-bottom: 18px;
+  line-height: 1.6;
+  font-family: var(--body-font-family);
+}
+
+.columns.columns3 ul {
+  margin-top: 0;
+  margin-bottom: 22px;
+  padding-left: 18px;
+}
+
+.columns.columns3 li {
+  margin-bottom: 8px;
+}
+
+.columns.columns3 .button-container {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.columns.columns3 .button,
+.columns.columns3 a.button {
+  font-size: 18px;
+  padding: 16px 36px;
+  border-radius: 28px;
+  font-weight: bold;
+  background: #36f;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  text-decoration: none;
+  cursor: pointer;
+  margin: 0;
+  display: inline-block;
+  line-height: 1.25;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 88px;
+}
+
+.columns.columns3 .button.secondary,
+.columns.columns3 a.button.secondary {
+  background: transparent;
+  color: #222;
+  border: 2px solid #222;
 }
 
 @media (width >= 900px) {
@@ -65,66 +148,67 @@
     padding-bottom: 0;
   }
 
+  .columns.columns3 > div:nth-child(2) {
+    align-items: stretch;
+  }
+
+  .columns.columns3 > div > div:not(.columns-img-col) {
+    flex: 0 1 370px;
+    max-width: 370px;
+    min-width: 240px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    display: flex;
+  }
+
   .columns.columns3 > div > .columns-img-col {
-    align-items: center;
+    flex: 1 1 0;
+    min-width: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+    display: flex;
+  }
+
+  .columns.columns3 > div:nth-child(2) > div:not(.columns-img-col) {
     justify-content: center;
+    min-height: 440px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .columns.columns3 .columns-img-col picture,
+  .columns.columns3 .columns-img-col img {
+    width: 100%;
+    height: auto;
+    max-height: 440px;
+    object-fit: contain;
+    margin: 0;
+    display: block;
   }
 }
 
-.columns.columns3 > div:not(:last-child) {
-  margin-bottom: 72px;
-}
+@media (width <= 900px) {
+  .columns.columns3 {
+    gap: 32px;
+    padding: 24px 0 0;
+  }
 
-.columns.columns3 .columns-img-col {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 28px;
+  }
 
-.columns.columns3 .columns-img-col picture,
-.columns.columns3 .columns-img-col img {
-  width: 100%;
-  max-width: 480px;
-  height: auto;
-  display: block;
-  margin: 0;
-}
+  .columns.columns3 > div > div,
+  .columns.columns3 > div > .columns-img-col {
+    flex: 1 1 0;
+    max-width: 100%;
+    min-width: 0;
+    min-height: unset;
+    justify-content: flex-start;
+  }
 
-.columns.columns3 p,
-.columns.columns3 ul,
-.columns.columns3 li {
-  color: var(--text-color);
-  font-size: var(--body-font-size-xs);
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.columns.columns3 ul {
-  margin-top: 6px;
-  margin-bottom: 10px;
-  padding-left: 20px;
-}
-
-.columns.columns3 .button-container {
-  margin-top: 18px;
-}
-
-.columns.columns3 .button,
-.columns.columns3 a.button {
-  font-size: 18px;
-  padding: 12px 32px;
-  border-radius: 24px;
-  font-weight: 600;
-  line-height: 1.25;
-  box-sizing: border-box;
-  max-width: 100%;
-  min-width: 88px;
-}
-
-.columns.columns3 .button.secondary,
-.columns.columns3 a.button.secondary {
-  background-color: #fff;
-  color: var(--text-color);
-  border: 2px solid var(--text-color);
+  .columns.columns3 .columns-img-col picture,
+  .columns.columns3 .columns-img-col img {
+    max-height: none;
+  }
 }
