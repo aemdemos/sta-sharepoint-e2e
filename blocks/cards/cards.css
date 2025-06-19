@@ -1,4 +1,4 @@
-
+/* Base grid styles for cards */
 .cards > ul {
   list-style: none;
   margin: 0;
@@ -27,12 +27,12 @@
   object-fit: cover;
 }
 
+/* Cards4 styles (merged duplicate selectors) */
 .cards.cards4 {
   background: #fafafa;
   padding: 0;
 }
 
-/* Strict four-column grid layout, even consistent spacing */
 .cards.cards4 > ul {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -43,41 +43,45 @@
   place-items: stretch stretch;
 }
 
-/* Remove width/max-width/min-width to let grid control sizing */
 .cards.cards4 > ul > li {
   background: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 4px;
+  border-radius: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   margin: 0;
+  flex: 0 0 calc(25% - 24px);
+  max-width: calc(25% - 24px);
+  min-width: 240px;
 }
 
-/* Card image region: always fixed 3:2 aspect ratio */
 .cards.cards4 .cards-card-image {
   width: 100%;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 16 / 9;
+  background: #eaeaea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   line-height: 0;
-  display: block;
 }
 
 .cards.cards4 > ul > li img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 16 / 9;
   display: block;
 }
 
-/* Card body and typography */
 .cards.cards4 .cards-card-body {
   padding: 24px;
   margin: 0;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   flex: 1 1 auto;
 }
 
@@ -86,18 +90,29 @@
   font-weight: 700;
   color: #212121;
   line-height: 1.2;
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   display: block;
 }
 
 .cards.cards4 .cards-card-body p:not(:first-child) {
   font-size: 16px;
-  color: #616161;
+  color: #444;
   margin: 0;
   line-height: 1.5;
 }
 
 /* Responsive: 2 columns on medium, 1 on small screens, keep gap proportional */
+@media (width <= 1100px) {
+  .cards.cards4 > ul > li {
+    flex: 0 0 calc(50% - 12px);
+    max-width: calc(50% - 12px);
+  }
+
+  .cards.cards4 > ul {
+    gap: 24px;
+  }
+}
+
 @media (width <= 1024px) {
   .cards.cards4 > ul {
     grid-template-columns: repeat(2, 1fr);
@@ -109,6 +124,11 @@
   .cards.cards4 > ul {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .cards.cards4 > ul > li {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 
   .cards.cards4 .cards-card-body {
