@@ -1,3 +1,4 @@
+
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -34,4 +35,126 @@
   .hero {
     padding: 40px 32px;
   }
+}
+
+/* ========== GENERATED CSS ========== */
+
+/* .hero.hero2 merged below */
+
+/* Headline wrapper: left/top, above image */
+.hero.hero2 > div:last-child {
+  flex: 1 1 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  padding-left: 48px;
+  padding-top: 40px;
+  z-index: 2;
+  order: 1;
+}
+
+/* Headline styling */
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+  max-width: 600px;
+  letter-spacing: -1px;
+  font-family: var(--heading-font-family, 'roboto-condensed', Arial, sans-serif);
+}
+
+/* DNA image wrapper: absolute, overflows left for fade/bleed effect */
+.hero.hero2 > div:first-child {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 900px;
+  min-width: 480px;
+  max-width: none;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  pointer-events: none;
+  z-index: 1;
+  order: 2;
+}
+
+/* DNA image: let it overflow left, mask for gradual fade */
+.hero.hero2 picture,
+.hero.hero2 img {
+  display: block;
+  height: 100%;
+  width: auto;
+  min-width: 800px;
+  max-width: none;
+  position: relative;
+  left: -200px;
+}
+
+.hero.hero2 img {
+  object-fit: cover;
+  filter: drop-shadow(0 0 40px #3fa8ffbb);
+  mask-image: linear-gradient(to left, transparent 0%, black 25%, black 100%);
+  mask-image: linear-gradient(to left, transparent 0%, black 25%, black 100%);
+}
+
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 320px;
+    padding: 24px 0;
+    width: 100%;
+  }
+
+  .hero.hero2 > div:first-child {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    pointer-events: auto;
+    order: 1;
+  }
+
+  .hero.hero2 > div:last-child {
+    padding-left: 24px;
+    padding-top: 24px;
+    justify-content: center;
+    align-items: flex-start;
+    order: 2;
+  }
+
+  .hero.hero2 img,
+  .hero.hero2 picture {
+    width: 100%;
+    max-width: 340px;
+    min-width: 0;
+    height: auto;
+    left: 0;
+    mask-image: none;
+    mask-image: none;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 32px;
+    max-width: 100%;
+  }
+}
+
+/* ===== MERGED SELECTOR BELOW ===== */
+
+.hero.hero2 {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100vw;
+  min-height: 380px;
+  background: radial-gradient(circle at 60% 40%, #183451 60%, #112940 100%);
+  overflow: hidden;
+  padding: 0;
 }
