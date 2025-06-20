@@ -1,3 +1,4 @@
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,106 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+.columns.columns3 {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+  box-sizing: border-box;
+}
+
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: column;
+  gap: 64px; /* vertical gap between the two rows */
+}
+
+/* Each direct child div is a row: left and right columns side by side */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: row;
+  gap: 56px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Left and right columns: balance widths for both cells */
+.columns.columns3 > div > div > div {
+  flex: 0 1 48%;
+  max-width: 560px;
+  min-width: 320px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* --- Top row: Ensure left column stacks its content vertically --- */
+.columns.columns3 > div > div:first-child > div:first-child {
+  align-items: flex-start;
+  margin-right: 0;
+}
+
+.columns.columns3 > div > div:first-child > div:first-child > * {
+  margin-bottom: 20px;
+}
+
+.columns.columns3 > div > div:first-child > div:first-child > *:last-child {
+  margin-bottom: 0;
+}
+
+.columns.columns3 .button-container {
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+/* --- Top row: image should not stretch too wide --- */
+.columns.columns3 > div > div:first-child > div:last-child picture,
+.columns.columns3 > div > div:first-child > div:last-child img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- Bottom row: image column --- */
+.columns.columns3 > div > div:last-child > div:first-child picture,
+.columns.columns3 > div > div:last-child > div:first-child img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- Bottom row: preview column --- */
+.columns.columns3 > div > div:last-child > div:last-child {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Responsive: Stack on mobile and reduce padding/gaps */
+@media (width <= 900px) {
+  .columns.columns3 {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .columns.columns3 > div {
+    gap: 40px;
+  }
+
+  .columns.columns3 > div > div {
+    flex-direction: column;
+    gap: 32px;
+    align-items: stretch;
+  }
+
+  .columns.columns3 > div > div > div {
+    max-width: 100%;
+    min-width: 0;
   }
 }
