@@ -1,3 +1,4 @@
+
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -34,4 +35,116 @@
   .hero {
     padding: 40px 32px;
   }
+}
+
+/* --- Generated CSS (except for .hero.hero2, which is merged below) --- */
+
+.hero.hero2 > div:last-child {
+  flex: 1 1 48%;
+  order: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  padding-left: 3vw;
+  padding-top: 3vw;
+  padding-bottom: 3vw;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.hero.hero2 > div:first-child {
+  flex: 1 1 52%;
+  order: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+.hero.hero2 picture,
+.hero.hero2 img {
+  display: block;
+  height: 90%;
+  max-height: 380px;
+  min-height: 200px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: right center;
+  margin-right: 0;
+}
+
+.hero.hero2 picture {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.hero.hero2 img {
+  max-width: none;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2.7rem;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.15;
+  font-family: var(--heading-font-family, "roboto-condensed", sans-serif);
+  text-align: left;
+}
+
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: unset;
+    width: 100%;
+  }
+
+  .hero.hero2 > div {
+    width: 100%;
+    padding-left: 1.2rem;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    order: unset;
+    height: auto;
+  }
+
+  .hero.hero2 picture,
+  .hero.hero2 img {
+    height: auto;
+    max-height: 300px;
+    width: 100%;
+    object-fit: contain;
+    object-position: center top;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 2rem;
+  }
+}
+
+/* --- Merged .hero.hero2 selector --- */
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 380px;
+  background: radial-gradient(ellipse at 60% 40%, #18344a 60%, #0e2233 100%);
+  overflow: hidden;
+  width: 100vw;
+  box-sizing: border-box;
+  position: relative;
 }
