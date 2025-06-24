@@ -35,3 +35,121 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  min-height: 415px;
+  background: linear-gradient(120deg, #0a2236 0%, #133c5e 100%);
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.hero.hero2 > div:last-child {
+  flex: 0 0 33%;
+  max-width: 420px;
+  min-width: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 56px;
+  padding-right: 32px;
+  z-index: 2;
+  background: none;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.15;
+  letter-spacing: 0;
+  text-align: left;
+  max-width: 100%;
+}
+
+.hero.hero2 > div:first-child {
+  flex: 1 1 67%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  overflow: hidden;
+  z-index: 1;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+}
+
+.hero.hero2 > div:first-child > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.hero.hero2 picture {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.hero.hero2 img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  max-width: none;
+  max-height: none;
+}
+
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 320px;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+  }
+
+  .hero.hero2 > div:last-child {
+    align-items: flex-start;
+    text-align: center;
+    padding-top: 32px;
+    padding-bottom: 16px;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 2rem;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .hero.hero2 > div:first-child > div,
+  .hero.hero2 picture {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero.hero2 img {
+    object-position: center center;
+  }
+}
