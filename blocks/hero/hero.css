@@ -1,8 +1,10 @@
+/* --- HERO CONTAINER AND WRAPPER --- */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
 }
 
+/* --- HERO BASE STYLES --- */
 .hero {
   position: relative;
   padding: 40px 24px;
@@ -36,53 +38,49 @@
   }
 }
 
+/* --- .hero.hero2 MERGED SELECTOR START --- */
 .hero.hero2 {
   display: flex;
   flex-direction: row;
-  align-items: stretch;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 100%;
-  min-height: 415px;
+  min-height: 320px;
   background: linear-gradient(120deg, #0a2236 0%, #133c5e 100%);
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
+  position: relative;
 }
 
 .hero.hero2 > div:last-child {
-  flex: 0 0 33%;
+  order: 1;
+  flex: 0 0 67%;
+  min-width: 520px;
   max-width: 420px;
-  min-width: 280px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-start;
-  padding-left: 56px;
+  padding-left: 96px;
   padding-right: 32px;
+  padding-top: 148px;
   z-index: 2;
   background: none;
 }
 
-.hero.hero2 h1 {
-  color: #fff;
-  font-size: 2.5rem;
-  font-family: var(--heading-font-family);
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.15;
-  letter-spacing: 0;
-  text-align: left;
-  max-width: 100%;
-}
-
 .hero.hero2 > div:first-child {
-  flex: 1 1 67%;
+  order: 2;
+  flex: 1 1 33%;
   display: flex;
-  align-items: stretch;
   justify-content: flex-end;
+  align-items: stretch;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
   overflow: hidden;
   z-index: 1;
-  min-width: 0;
   min-height: 0;
-  padding: 0;
 }
 
 .hero.hero2 > div:first-child > div {
@@ -101,46 +99,63 @@
   justify-content: flex-end;
 }
 
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2.3rem;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.21;
+  letter-spacing: 0;
+  text-align: left;
+  max-width: 90%;
+  text-shadow: 0 2px 8px rgb(10 34 54 / 12%);
+}
+
 .hero.hero2 img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: right center;
+  object-position: center center;
   max-width: none;
   max-height: none;
 }
 
+/* --- RESPONSIVE .hero.hero2 --- */
 @media (width <= 900px) {
   .hero.hero2 {
     flex-direction: column;
-    min-height: 320px;
+    min-height: 240px;
   }
 
   .hero.hero2 > div:first-child,
   .hero.hero2 > div:last-child {
+    order: unset;
     flex: none;
     width: 100%;
     min-width: 0;
     min-height: 0;
     padding-left: 0;
     padding-right: 0;
+    padding-top: 0;
     justify-content: center;
+    align-items: center;
   }
 
   .hero.hero2 > div:last-child {
     align-items: flex-start;
     text-align: center;
-    padding-top: 32px;
-    padding-bottom: 16px;
+    padding: 32px 14px 16px;
     max-width: 100%;
     min-width: 0;
   }
 
   .hero.hero2 h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     max-width: 100%;
-    text-align: center;
+    text-align: left;
+    line-height: 1.18;
   }
 
   .hero.hero2 > div:first-child > div,
@@ -153,3 +168,5 @@
     object-position: center center;
   }
 }
+
+/* --- END HERO2 MERGE --- */
