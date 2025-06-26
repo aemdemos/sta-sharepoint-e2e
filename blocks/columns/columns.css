@@ -1,4 +1,5 @@
 
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -33,12 +34,16 @@
   }
 }
 
+/* merged selector */
 .columns.columns3 {
+  background: #fff;
   width: 100%;
   max-width: 1200px;
   margin: 56px auto 64px;
   box-sizing: border-box;
-  background: var(--background-color);
+  padding: 0;
+  padding-top: 48px;
+  padding-bottom: 48px;
 }
 
 /* 1. Main block: create two stacked rows */
@@ -60,6 +65,7 @@
   justify-content: stretch;
   align-items: flex-start;
   width: 100%;
+  min-height: 360px;
   box-sizing: border-box;
 }
 
@@ -73,22 +79,42 @@
   justify-content: flex-start;
 }
 
-/* 4. Ensure button sits below the list, not inline */
+/* Left column wider and padded for balance */
+.columns.columns3 > div > div > div:first-child {
+  flex: 1.15 1 0;
+  min-width: 280px;
+  max-width: 530px;
+  padding-left: 24px;
+  box-sizing: border-box;
+}
+
+/* Right column image: no top margin so aligns perfectly with left content */
+.columns.columns3 > div > div > div:last-child picture,
+.columns.columns3 > div > div > div:last-child img {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Remove top margin from first paragraph in left column for perfect alignment */
+.columns.columns3 > div > div > div:first-child > p:first-child {
+  margin-top: 0;
+}
+
+/* Slightly denser grouping of heading, list, button */
+.columns.columns3 > div > div:first-child > div:first-child > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+/* List styling: spacing and alignment */
 .columns.columns3 ul {
-  margin-bottom: 24px;
+  list-style-type: disc;
+  padding-left: 24px;
+  margin: 0 0 8px;
+  font-size: 20px;
+  color: #212121;
 }
 
-.columns.columns3 .button-container {
-  margin-top: 0;
-  margin-bottom: 36px;
-}
-
-.columns.columns3 .button {
-  display: inline-block;
-  margin-top: 0;
-}
-
-/* 5. Left-align all text */
+/* All text left-aligned and correct sizing */
 .columns.columns3 p,
 .columns.columns3 ul,
 .columns.columns3 li {
@@ -96,9 +122,45 @@
   margin-left: 0;
   margin-right: 0;
   font-family: var(--body-font-family);
-  color: var(--text-color);
-  font-size: var(--body-font-size-s);
+  color: #212121;
+  font-size: 20px;
   line-height: 1.6;
+}
+
+/* 4. Ensure button sits below the list, not inline */
+.columns.columns3 ul {
+  margin-bottom: 24px;
+}
+
+.columns.columns3 .button-container {
+  margin-top: 0;
+  margin-bottom: 0;
+  display: block;
+}
+
+/* Button styling (override for specificity, keep base look) */
+.columns.columns3 .button {
+  display: inline-block;
+  background: #3861fb;
+  color: #fff;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 22px;
+  padding: 10px 32px;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+  min-width: 80px;
+  margin-top: 0;
+}
+
+.columns.columns3 .button.secondary {
+  background: #fff;
+  color: #212121;
+  border: 2px solid #212121;
+  margin-top: 0;
 }
 
 /* 6. Responsive full-width images */
@@ -108,9 +170,10 @@
   width: 100%;
   max-width: 100%;
   height: auto;
-  margin: 0 0 32px;
-  object-fit: cover;
+  margin-bottom: 0;
+  object-fit: contain;
   border-radius: 0;
+  align-self: flex-start;
 }
 
 /* 7. IMAGE ORDER FIX: swap images with flexbox for original look */
@@ -135,27 +198,31 @@
 
 /* 8. Button and "preview" text grouping (tighter) */
 .columns.columns3 > div > div:last-child > div:last-child > p {
-  margin-bottom: 10px;
-}
-
-.columns.columns3 .button.secondary {
-  margin-top: 0;
+  margin-bottom: 12px;
 }
 
 /* 9. Responsive: Stack columns on mobile */
 @media (width <= 900px) {
   .columns.columns3 {
-    padding: 0 4vw;
     max-width: 100vw;
+    margin: 32px 0 40px;
+    padding: 0 12px;
   }
 
   .columns.columns3 > div > div {
     flex-direction: column;
     gap: 32px;
+    align-items: stretch;
+    min-height: unset;
   }
 
-  .columns.columns3 > div {
-    padding: 0;
-    gap: 40px;
+  .columns.columns3 > div > div > div,
+  .columns.columns3 > div > div:first-child > div:first-child,
+  .columns.columns3 > div > div:last-child > div:last-child {
+    max-width: 100%;
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
+
