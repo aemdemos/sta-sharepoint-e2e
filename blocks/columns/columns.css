@@ -1,3 +1,4 @@
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,132 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+.columns.columns3 {
+  width: 100%;
+  max-width: 1200px;
+  margin: 56px auto 64px;
+  box-sizing: border-box;
+  background: var(--background-color);
+}
+
+/* 1. Main block: create two stacked rows */
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  align-items: stretch;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* 2. Each row: two columns side by side, with spacing */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  justify-content: stretch;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 3. Each column: stack content vertically, fill space */
+.columns.columns3 > div > div > div {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* 4. Ensure button sits below the list, not inline */
+.columns.columns3 ul {
+  margin-bottom: 24px;
+}
+
+.columns.columns3 .button-container {
+  margin-top: 0;
+  margin-bottom: 36px;
+}
+
+.columns.columns3 .button {
+  display: inline-block;
+  margin-top: 0;
+}
+
+/* 5. Left-align all text */
+.columns.columns3 p,
+.columns.columns3 ul,
+.columns.columns3 li {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+  font-family: var(--body-font-family);
+  color: var(--text-color);
+  font-size: var(--body-font-size-s);
+  line-height: 1.6;
+}
+
+/* 6. Responsive full-width images */
+.columns.columns3 picture,
+.columns.columns3 img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0 0 32px;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* 7. IMAGE ORDER FIX: swap images with flexbox for original look */
+
+/* Top row: right column should show blue DNA image */
+.columns.columns3 > div > div:first-child > div:last-child {
+  order: 2;
+}
+
+.columns.columns3 > div > div:first-child > div:first-child {
+  order: 1;
+}
+
+/* Bottom row: left column should show gold DNA image */
+.columns.columns3 > div > div:last-child > div:first-child {
+  order: 1;
+}
+
+.columns.columns3 > div > div:last-child > div:last-child {
+  order: 2;
+}
+
+/* 8. Button and "preview" text grouping (tighter) */
+.columns.columns3 > div > div:last-child > div:last-child > p {
+  margin-bottom: 10px;
+}
+
+.columns.columns3 .button.secondary {
+  margin-top: 0;
+}
+
+/* 9. Responsive: Stack columns on mobile */
+@media (width <= 900px) {
+  .columns.columns3 {
+    padding: 0 4vw;
+    max-width: 100vw;
+  }
+
+  .columns.columns3 > div > div {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns.columns3 > div {
+    padding: 0;
+    gap: 40px;
   }
 }
