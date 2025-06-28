@@ -1,3 +1,4 @@
+/* Base Cards Styles */
 
 .cards > ul {
   list-style: none;
@@ -27,19 +28,28 @@
   object-fit: cover;
 }
 
+/* Cards4 Block Styles (merged all duplicate selectors) */
+
 .cards.cards4 {
-  margin-top: 32px;
+  background: #f5f5f5;
+  margin-top: 0;
+  padding-top: 0;
   margin-bottom: 32px;
 }
 
 .cards.cards4 > ul {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  padding: 0;
+  gap: 24px;
+  justify-content: start;
+  align-items: stretch;
   margin: 0;
+  padding: 0;
   list-style: none;
-  place-items: stretch stretch;
+  width: 100%;
+  box-sizing: border-box;
+
+  /* Removed place-items to avoid shorthand overriding align-items */
 }
 
 @media (width <= 1100px) {
@@ -59,32 +69,48 @@
   flex-direction: column;
   background: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgb(60 60 60 / 7%);
-  overflow: hidden;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
   min-width: 0;
+  max-width: 100%;
   padding: 0;
-  height: 100%;
+  margin: 0;
+  height: auto;
+  box-sizing: border-box;
 }
 
 .cards.cards4 .cards-card-image {
   width: 100%;
-  height: 180px;
-  min-height: 180px;
-  max-height: 180px;
+  height: 210px;
+  min-height: 210px;
+  max-height: 210px;
+  border-radius: 0;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #eee;
+  background: transparent;
+  display: block;
 }
 
-.cards.cards4 .cards-card-image img,
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  background: transparent;
+  min-height: 0;
+  min-width: 0;
+  visibility: visible;
+  opacity: 1;
+}
+
 .cards.cards4 .cards-card-image picture > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 0;
+  background: transparent;
   min-height: 0;
   min-width: 0;
   visibility: visible;
@@ -92,24 +118,26 @@
 }
 
 .cards.cards4 .cards-card-body {
-  padding: 20px 18px 22px;
+  padding: 16px;
+  margin: 0;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  margin: 0;
 }
 
 .cards.cards4 .cards-card-body p:first-child {
+  font-family: var(--body-font-family);
   font-weight: 700;
   font-size: 18px;
-  color: #000;
-  margin: 0 0 8px;
-  line-height: 1.25;
+  color: #131313;
+  line-height: 1.6;
+  margin: 0 0 14.4px;
 }
 
 .cards.cards4 .cards-card-body p:not(:first-child) {
-  font-size: 15px;
-  color: #333;
-  margin: 0;
-  line-height: 1.45;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  color: #131313;
+  line-height: 1.6;
+  margin: 0 0 4.5px;
 }
