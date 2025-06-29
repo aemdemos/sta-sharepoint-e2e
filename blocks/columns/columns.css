@@ -1,6 +1,10 @@
+/* Merge duplicate selectors and order (no-descending-specificity, no-duplicate-selectors) */
+
 .columns > div {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 24px;
 }
 
 .columns img {
@@ -15,8 +19,10 @@
   order: 0;
 }
 
+/* .columns.columns3 block, merged and placed before its children */
 .columns.columns3 {
-  /* merged declarations from both base and generated CSS */
+  padding: 48px 0 40px;
+  background: #fff;
 }
 
 .columns.columns3 img {
@@ -156,5 +162,142 @@
   .columns.columns3 > div > div {
     display: block;
     padding: 0;
+  }
+}
+
+/* BEGIN generated CSS (unchanged except for the merged selector below) */
+
+/* Main layout: spaced but balanced */
+.columns.columns3 > div {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Each row: now with more balanced columns and less cramped content */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* --- FIRST ROW: left = text/list/button, right = blue DNA image --- */
+.columns.columns3 > div > div:first-child > div:first-child {
+  flex: 0 1 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-left: 36px;
+  padding-right: 0;
+  min-width: 300px;
+  max-width: 520px;
+}
+
+/* Space out elements in the stack */
+.columns.columns3 > div > div:first-child > div:first-child > * + * {
+  margin-top: 20px;
+}
+
+.columns.columns3 > div > div:first-child > div:first-child .button-container {
+  margin-top: 28px;
+  margin-bottom: 0;
+}
+
+/* Blue DNA image: right column */
+.columns.columns3 > div > div:first-child > div:last-child {
+  flex: 1 1 55%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0;
+  min-width: 0;
+}
+
+/* Blue DNA image sizing */
+.columns.columns3 > div > div:first-child > div:last-child picture,
+.columns.columns3 > div > div:first-child > div:last-child img {
+  width: 100%;
+  max-width: 100%;
+  min-width: 340px;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* --- SECOND ROW: left = gold DNA image, right = preview text/button --- */
+.columns.columns3 > div > div:last-child > div:first-child {
+  flex: 1 1 55%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+  min-width: 0;
+}
+
+/* Gold DNA image sizing */
+.columns.columns3 > div > div:last-child > div:first-child picture,
+.columns.columns3 > div > div:last-child > div:first-child img {
+  width: 100%;
+  max-width: 100%;
+  min-width: 340px;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  border-radius: 0;
+}
+
+/* Preview text/button: right column, optically higher vertical alignment */
+.columns.columns3 > div > div:last-child > div:last-child {
+  flex: 0 1 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-width: 300px;
+  max-width: 520px;
+  padding-left: 36px;
+  padding-right: 0;
+  height: 280px;
+  margin-top: 18px; /* Nudge up for better optical centering */
+}
+
+/* Stack preview text and button with space */
+.columns.columns3 > div > div:last-child > div:last-child > * + * {
+  margin-top: 16px;
+}
+
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    gap: 20px;
+  }
+
+  .columns.columns3 > div > div {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .columns.columns3 > div > div > div {
+    padding: 0;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    margin-top: 0;
+  }
+
+  .columns.columns3 > div > div > div img,
+  .columns.columns3 > div > div > div picture {
+    min-width: 0;
+    width: 100%;
+    height: auto;
+    min-height: 140px;
+    max-height: 400px;
   }
 }
