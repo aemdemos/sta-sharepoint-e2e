@@ -35,3 +35,120 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 380px;
+  width: 100%;
+  background: none;
+  box-sizing: border-box;
+  padding: 0;
+  position: relative;
+}
+
+/* TEXT COLUMN - on the left */
+.hero.hero2 > div:last-child {
+  flex: 1 1 43%;
+  order: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  box-sizing: border-box;
+  padding-left: 28px;
+  padding-top: 28px;
+  padding-bottom: 20px;
+  background: none;
+}
+
+/* IMAGE COLUMN - DNA image on the right */
+.hero.hero2 > div:first-child {
+  flex: 1 1 57%;
+  order: 2;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  min-width: 0;
+  overflow: hidden;
+  background: none;
+}
+
+.hero.hero2 > div:first-child > div,
+.hero.hero2 > div:first-child picture {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+}
+
+.hero.hero2 > div:first-child picture,
+.hero.hero2 > div:first-child img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: 70% center;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-family: var(--heading-font-family), sans-serif;
+  font-weight: 700;
+  font-size: 2.7rem;
+  line-height: 1.13;
+  margin: 0;
+  max-width: 700px;
+  text-align: left;
+}
+
+/* Responsive stacking for smaller screens */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 320px;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    order: unset;
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .hero.hero2 > div:last-child {
+    padding: 20px 8px 6px;
+  }
+
+  .hero.hero2 > div:first-child {
+    min-height: 180px;
+    max-height: 220px;
+    height: auto;
+  }
+
+  .hero.hero2 > div:first-child picture,
+  .hero.hero2 > div:first-child img {
+    min-height: 180px;
+    max-height: 220px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: 70% top;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 2rem;
+    max-width: 100%;
+    text-align: left;
+  }
+}
