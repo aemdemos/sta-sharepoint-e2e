@@ -1,4 +1,4 @@
-.cards > ul {
+ .cards > ul {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -24,4 +24,97 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.cards.cards4 {
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+}
+
+.cards.cards4 > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  max-width: 1200px;
+  place-items: stretch stretch;
+}
+
+@media (width <= 1100px) {
+  .cards.cards4 > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 700px) {
+  .cards.cards4 > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cards.cards4 > ul > li {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  background: #f3f3f3;
+  flex-shrink: 0;
+}
+
+.cards.cards4 > ul > li img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cards.cards4 .cards-card-body {
+  padding: 16px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.cards.cards4 .cards-card-body p {
+  color: #424242;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0 0 8px;
+  text-align: left;
+  word-break: normal;
+  white-space: normal;
+}
+
+.cards.cards4 .cards-card-body p strong {
+  color: #212121;
+  font-size: 18px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+  line-height: 1.2;
+  text-align: left;
 }
