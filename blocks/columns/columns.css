@@ -15,10 +15,68 @@
   order: 0;
 }
 
+.columns.columns3 {
+  /* merged declarations from both base and generated CSS */
+}
+
+.columns.columns3 img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .columns > div > .columns-img-col img {
   display: block;
 }
 
+.columns.columns3 > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 700px;
+}
+
+/* Make each inner div a flex column for vertical stacking */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Assign quadrants */
+.columns.columns3 > div > div:first-child {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  padding-right: 24px;
+}
+
+.columns.columns3 > div > div:last-child {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  padding-left: 24px;
+}
+
+/* Top-left: Text, list, button at the top */
+.columns.columns3 > div > div:first-child > * {
+  margin-bottom: 12px;
+}
+
+.columns.columns3 > div > div:first-child > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Blue DNA image: push to the bottom of left stack */
 @media (width >= 900px) {
   .columns > div {
     align-items: center;
@@ -29,5 +87,74 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+
+  .columns.columns3 > div > div:first-child > p:last-of-type {
+    margin-top: auto;
+    width: 100%;
+  }
+
+  .columns.columns3 > div > div:first-child > p:last-of-type picture,
+  .columns.columns3 > div > div:first-child > p:last-of-type img {
+    width: 100%;
+    min-height: 200px;
+    max-height: 320px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Top-right: gold DNA image at the top */
+  .columns.columns3 > div > div:last-child > p:first-child {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .columns.columns3 > div > div:last-child > p:first-child picture,
+  .columns.columns3 > div > div:last-child > p:first-child img {
+    width: 100%;
+    min-height: 200px;
+    max-height: 320px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Bottom-right: preview label and button at the very top of the right stack */
+  .columns.columns3 > div > div:last-child {
+    justify-content: flex-start;
+    align-items: flex-end;
+  }
+
+  .columns.columns3 > div > div:last-child > p:not(:first-child) {
+    align-self: flex-end;
+    margin-top: 0;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  .columns.columns3 > div > div:last-child > p.button-container {
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
+}
+
+/* Reduce whitespace for tighter visual grouping */
+.columns.columns3 > div > div:first-child,
+.columns.columns3 > div > div:last-child {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* On small screens, stack as columns */
+@media (width <= 899px) {
+  .columns.columns3 > div {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    min-height: unset;
+  }
+
+  .columns.columns3 > div > div {
+    display: block;
+    padding: 0;
   }
 }
