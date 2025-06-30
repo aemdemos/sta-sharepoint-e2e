@@ -1,3 +1,4 @@
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,171 @@
     flex: 1;
     order: unset;
   }
+}
+
+.columns.columns3 {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+/* Desktop: two columns side by side, images top-aligned */
+@media (width >= 900px) {
+  .columns.columns3 > div {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 56px;
+  }
+
+  .columns.columns3 > div > div {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 50%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* === Key Change: Images come FIRST in each column, then content === */
+  .columns.columns3 > div > div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Move left image to the top */
+  .columns.columns3 > div > div:first-child > div > p:last-of-type {
+    order: -1;
+    margin: 0 0 32px;
+    align-self: flex-start;
+    width: 100%;
+  }
+
+  .columns.columns3 > div > div:first-child > div > p:last-of-type picture,
+  .columns.columns3 > div > div:first-child > div > p:last-of-type img {
+    display: block;
+    width: 440px;
+    max-width: 95%;
+    height: auto;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  /* Move right image to the top */
+  .columns.columns3 > div > div:last-child > div > p:first-child {
+    order: -1;
+    margin: 0 0 32px;
+    align-self: flex-start;
+    width: 100%;
+  }
+
+  .columns.columns3 > div > div:last-child > div > p:first-child picture,
+  .columns.columns3 > div > div:last-child > div > p:first-child img {
+    display: block;
+    width: 440px;
+    max-width: 100%;
+    height: auto;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  /* Space text/button after image */
+  .columns.columns3 > div > div > div > p:not(:last-of-type, :first-child),
+  .columns.columns3 > div > div > div > ul,
+  .columns.columns3 > div > div > div > .button-container {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+/* Typography and spacing */
+.columns.columns3 > div > div > div > p:first-child {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: var(--text-color);
+}
+
+.columns.columns3 > div > div > div > ul {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 18px;
+  color: var(--text-color);
+  padding-left: 22px;
+  line-height: 1.5;
+}
+
+.columns.columns3 > div > div > div > .button-container {
+  margin-top: 18px;
+  margin-bottom: 0;
+}
+
+/* Button styling */
+.columns.columns3 .button {
+  font-size: 16px;
+  padding: 12px 36px;
+  border-radius: 32px;
+  font-weight: 500;
+  background-color: var(--link-color);
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.columns.columns3 .button.secondary {
+  background: none;
+  border: 2px solid var(--text-color);
+  color: var(--text-color);
+  padding: 12px 36px;
+  border-radius: 32px;
+}
+
+/* Responsive: stack columns on mobile */
+@media (width <= 899px) {
+  .columns.columns3 > div {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns.columns3 > div > div {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .columns.columns3 > div > div > div {
+    display: block;
+  }
+
+  .columns.columns3 > div > div > div > p:last-of-type,
+  .columns.columns3 > div > div > div > p:first-child {
+    margin-bottom: 16px;
+  }
+}
+
+/* Make images fill available width and stay visually balanced */
+.columns.columns3 picture img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Remove any excess vertical spacing below columns */
+.columns.columns3 > div > div {
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
