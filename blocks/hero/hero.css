@@ -35,3 +35,142 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 330px;
+  background: linear-gradient(120deg, #0f2945 0%, #183b5e 100%);
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.hero.hero2 > div:last-of-type {
+  flex: 1 1 42%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 2;
+  min-width: 0;
+  padding-left: 64px;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 2.2rem;
+  line-height: 1.15;
+  margin: 0;
+  text-align: left;
+  max-width: 100%;
+}
+
+.hero.hero2 > div:first-of-type {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 84%;
+  height: 100%;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+}
+
+.hero.hero2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  filter: brightness(1.13) saturate(1.05);
+  opacity: 0.99;
+  mask-image: linear-gradient(to left, black 61%, transparent 100%);
+  border: none;
+  box-shadow: none;
+  background: none;
+}
+
+.hero.hero2 picture,
+.hero.hero2 picture > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  max-width: none;
+  max-height: none;
+}
+
+.hero.hero2 picture {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: unset;
+    padding: 24px 12px;
+  }
+
+  .hero.hero2 > div:first-of-type {
+    position: static;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    margin-bottom: 16px;
+    display: block;
+    pointer-events: none;
+  }
+
+  .hero.hero2 img {
+    width: 100%;
+    height: auto;
+    max-width: 100vw;
+    max-height: 180px;
+    min-width: 0;
+    min-height: 0;
+    mask-image: none;
+    opacity: 1;
+    filter: none;
+    display: block;
+  }
+
+  .hero.hero2 picture,
+  .hero.hero2 picture > img {
+    width: 100%;
+    height: auto;
+    max-width: 100vw;
+    max-height: 180px;
+    min-width: 0;
+    min-height: 0;
+    mask-image: none;
+    opacity: 1;
+    filter: none;
+    display: block;
+  }
+
+  .hero.hero2 > div:last-of-type {
+    padding: 0 0 24px;
+    margin: 0 auto;
+    width: 100%;
+    justify-content: center;
+    flex: 1 1 42%;
+    align-items: center;
+    z-index: 2;
+    min-width: 0;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.25rem;
+    text-align: center;
+    max-width: 100%;
+    color: #fff;
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0;
+  }
+}
