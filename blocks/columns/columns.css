@@ -1,10 +1,19 @@
+.columns img {
+  width: 100%;
+}
+
+.columns.columns3 img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0;
+  object-fit: contain;
+}
+
 .columns > div {
   display: flex;
   flex-direction: column;
-}
-
-.columns img {
-  width: 100%;
 }
 
 .columns > div > div {
@@ -29,5 +38,128 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+.columns.columns3 {
+  /* Merged declarations from both base and generated CSS */
+
+  /* No properties to merge from base; only generated CSS applies here */
+}
+
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0;
+}
+
+@media (width >= 900px) {
+  /* Each row is a flex row: tighter horizontal gap, visually balanced cell sizes */
+  .columns.columns3 > div > div {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    gap: 5vw;
+    margin-bottom: 0;
+  }
+
+  /* Top row left: wider min/max for more balance */
+  .columns.columns3 > div > div:first-child > div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 370px;
+    max-width: 420px;
+    flex: 1 1 420px;
+    padding-top: 0.7em;
+    gap: 0.25em;
+  }
+
+  /* Top row right: slightly less wide, center image vertically with text */
+  .columns.columns3 > div > div:first-child > div:last-child {
+    flex: 1.4 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 0;
+    max-width: none;
+  }
+
+  /* Bottom row left: gold image, fill space */
+  .columns.columns3 > div > div:last-child > div:first-child {
+    flex: 1.4 1 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 0;
+    max-width: none;
+  }
+
+  /* Bottom row right: preview text/button, left align, tightly grouped and not too wide */
+  .columns.columns3 > div > div:last-child > div:last-child {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 250px;
+    max-width: 340px;
+    flex: 1 1 340px;
+    padding-bottom: 24px;
+    gap: 0.15em;
+  }
+}
+
+@media (width >= 900px) {
+  .columns.columns3 > div > div > div > * {
+    display: block;
+    width: 100%;
+  }
+}
+
+.columns.columns3 ul {
+  margin-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.columns.columns3 p {
+  margin: 0.4em 0;
+}
+
+.columns.columns3 .button-container {
+  margin: 6px 0 0;
+}
+
+@media (width >= 900px) {
+  .columns.columns3 > div > div:last-child > div:last-child .button-container {
+    margin-top: 8px;
+  }
+}
+
+.columns.columns3 .button.secondary {
+  background: #fff;
+  color: #222;
+  border: 2px solid #222;
+}
+
+@media (width <= 899px) {
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns.columns3 > div > div {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .columns.columns3 > div > div > div {
+    max-width: 100%;
+    width: 100%;
   }
 }
