@@ -1,3 +1,4 @@
+/* Fixed CSS */
 
 .hero-container .hero-wrapper {
   max-width: unset;
@@ -37,76 +38,89 @@
   }
 }
 
+/* --- MERGED SELECTOR: .hero.hero2 --- */
 .hero.hero2 {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-start;
-  background: linear-gradient(90deg, #0a233a 0%, #174165 100%);
-  min-height: 220px;
+  min-height: 380px;
+  height: 380px;
   width: 100%;
+  background: linear-gradient(90deg, #0a223a 60%, #163a5e 100%);
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
+  padding: 0;
 }
 
 .hero.hero2 > div:last-child {
+  /* Merged from both definitions, preserving specificity & cascade order */
   order: 1;
-  flex: 1 1 0;
-  max-width: 50%;
+  flex: 1 1 39%;
+  max-width: 40%;
+  min-width: 200px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
-  min-width: 0;
+  padding-left: 40px;
+  padding-right: 12px;
+  padding-top: 68px;
   height: 100%;
-  padding-left: 56px;
   z-index: 2;
   box-sizing: border-box;
 }
 
 .hero.hero2 h1 {
   color: #fff;
-  font-size: 22px;
-  line-height: 35.2px;
+  font-size: 2.25rem;
   font-weight: bold;
-  margin: 0;
-  text-align: left;
-  font-family: var(--heading-font-family);
-  max-width: 95%;
   letter-spacing: 0.01em;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  max-width: 100%;
+  font-family: var(--heading-font-family, Arial, sans-serif);
+
+  /* Merged font-size/line-height/letter-spacing from both definitions; kept higher specificity values */
+  text-align: left;
 }
 
 .hero.hero2 > div:first-child {
-  order: 2;
-  flex: 1 1 0;
-  max-width: 50%;
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
-  min-width: 0;
+  /* Merged from both definitions, preserving specificity & cascade order */
+  flex: 1 1 61%;
+  max-width: 68%;
+  min-width: 340px;
   height: 100%;
-  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  order: 2;
   padding: 0;
+  margin-left: -5vw;
   z-index: 1;
 }
 
 .hero.hero2 > div:first-child picture,
 .hero.hero2 > div:first-child img {
   display: block;
-  width: 100%;
+  width: 108%;
   height: 100%;
+  object-fit: cover;
   max-width: none;
   max-height: none;
-  object-fit: cover;
-  margin: 0;
   border: none;
   background: none;
+  margin: 0;
 }
 
 @media (width <= 900px) {
   .hero.hero2 {
     flex-direction: column;
     min-height: 0;
+    height: auto;
     padding: 24px 0;
   }
 
@@ -115,25 +129,37 @@
     width: 100%;
     justify-content: center;
     align-items: center;
+    min-width: 0;
     padding: 0;
+    margin-left: 0;
   }
 
   .hero.hero2 > div:last-child {
-    padding-left: 0;
     padding-top: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
     justify-content: center;
     text-align: center;
+    align-items: center;
+    max-width: 100%;
+    flex-basis: 100%;
   }
 
   .hero.hero2 h1 {
-    font-size: 20px;
-    line-height: 30px;
+    white-space: normal;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .hero.hero2 > div:first-child {
     max-width: 100%;
+    flex-basis: 100%;
+    margin-left: 0;
   }
 
   .hero.hero2 > div:first-child picture,
   .hero.hero2 > div:first-child img {
-    height: 120px;
+    height: 160px;
     width: 100%;
   }
 }
