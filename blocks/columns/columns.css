@@ -1,3 +1,4 @@
+/* Columns base styles */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,125 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+/* Columns 3 base layout */
+.columns.columns3 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.columns.columns3 > div:first-child {
+  flex: 0 1 68%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.columns.columns3 > div:last-child {
+  flex: 0 1 30%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  align-items: flex-start;
+  height: auto;
+}
+
+.columns.columns3 > div:first-child > .columns-img-col {
+  margin-top: 32px;
+  width: 100%;
+}
+
+.columns.columns3 > div:first-child .columns-img-col img {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.columns.columns3 > div:last-child > .columns-img-col {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.columns.columns3 > div:last-child .columns-img-col img {
+  width: 100%;
+  max-width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.columns.columns3 ul {
+  margin-left: 1.2em;
+  margin-top: 0.4em;
+  margin-bottom: 1em;
+  color: var(--text-color);
+  font-size: 18px;
+}
+
+.columns.columns3 p {
+  margin-top: 0;
+  margin-bottom: 0.8em;
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.columns.columns3 > div:last-child > div:last-child {
+  margin-top: auto;
+  margin-bottom: 64px;
+  width: 100%;
+}
+
+.columns.columns3 > div:last-child > div:last-child p {
+  margin-top: 0;
+  margin-bottom: 0.8em;
+}
+
+.columns.columns3 .button-container {
+  margin: 0.5em 0 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.columns.columns3 .button {
+  min-width: 86px;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 2em;
+  padding: 0.55em 1.4em;
+  margin: 0;
+}
+
+.columns.columns3 .button.secondary {
+  background-color: #fff;
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
+}
+
+/* Responsive: stack columns for mobile */
+@media (width <= 900px) {
+  .columns.columns3 {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .columns.columns3 > div,
+  .columns.columns3 > div:last-child {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .columns.columns3 > div:last-child > div:last-child {
+    margin-top: 36px;
+    margin-bottom: 0;
+  }
+
+  .columns.columns3 > div:first-child > .columns-img-col {
+    margin-top: 32px;
   }
 }
