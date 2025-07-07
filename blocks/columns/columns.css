@@ -7,6 +7,16 @@
   width: 100%;
 }
 
+.columns.columns3 img {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .columns > div > div {
   order: 1;
 }
@@ -29,5 +39,76 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+/* Merged .columns.columns3 block */
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 56px;
+}
+
+/* Responsive stacking on smaller screens */
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 32px;
+  }
+}
+
+/* Control column width and compact vertical stacking */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+  max-width: 400px;
+}
+
+/* Tighter default vertical spacing */
+.columns.columns3 p,
+.columns.columns3 ul {
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+/* Tighter grouping for list */
+.columns.columns3 ul {
+  padding-left: 22px;
+  margin-bottom: 8px;
+}
+
+/* Reduce gap between left button and image */
+.columns.columns3 > div > div:first-child > p:last-child {
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+/* Shift only the right column's image down, but not the text/button group */
+.columns.columns3 > div > div:nth-child(2) > p:first-child {
+  margin-top: 98px;
+  margin-bottom: 6px;
+}
+
+/* Remove margin between right image and text/button group for tight grouping */
+.columns.columns3 > div > div:nth-child(2) > p:nth-child(2) {
+  margin-top: 0;
+}
+
+/* Remove extra margin below last child in each column */
+.columns.columns3 > div > div > *:last-child {
+  margin-bottom: 0;
+}
+
+@media (width <= 600px) {
+  .columns.columns3 > div > div {
+    max-width: 100%;
+  }
+
+  .columns.columns3 img {
+    max-width: 100%;
   }
 }
