@@ -1,3 +1,4 @@
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,90 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+/* Generated CSS with .columns.columns3 block replaced by the merged version */
+.columns.columns3 {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Each row: side-by-side layout */
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Each cell */
+.columns.columns3 > div > div {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  justify-content: flex-start;
+}
+
+/* Bottom row: center right cell vertically with the image */
+.columns.columns3 > div:nth-child(2) {
+  align-items: center;
+}
+
+.columns.columns3 > div:nth-child(2) > div:nth-child(2) {
+  justify-content: center;
+}
+
+/* Make images fill cell width, but don't overflow */
+.columns.columns3 .columns-img-col {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-width: 100%;
+  border-radius: 0;
+  margin: 0;
+}
+
+/* Remove extra margin from button-container and align left */
+.columns.columns3 .button-container {
+  margin-top: 1.2em;
+  margin-bottom: 0;
+  text-align: left;
+}
+
+/* Compact paragraph and list spacing */
+.columns.columns3 p,
+.columns.columns3 ul {
+  font-size: var(--body-font-size-xs);
+  color: var(--text-color);
+  margin-top: 0;
+  margin-bottom: 0.4em;
+}
+
+/* Responsive: stack columns vertically on small screens */
+@media (width <= 899px) {
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .columns.columns3 {
+    gap: 20px;
+    max-width: 100%;
   }
 }
