@@ -35,3 +35,120 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: 190px;
+  min-height: 190px;
+  background: #09223b;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 100%;
+}
+
+.hero.hero2 > div:last-child {
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+  padding-left: 40px;
+  z-index: 2;
+  height: 100%;
+  order: 1;
+}
+
+.hero.hero2 > div:first-child {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 65vw;
+  min-width: 450px;
+  max-width: 70%;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: visible;
+  flex: unset;
+  height: 100%;
+}
+
+.hero.hero2 > div:first-child picture {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.hero.hero2 > div:first-child img {
+  height: 190px;
+  min-height: 190px;
+  width: auto;
+  max-width: none;
+  object-fit: cover;
+  mask-image: linear-gradient(to left, transparent 0, black 220px, black 100%);
+  display: block;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  z-index: 2;
+}
+
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    height: auto;
+    min-height: 140px;
+  }
+
+  .hero.hero2 > div:first-child {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero.hero2 > div:first-child picture {
+    height: 120px;
+    width: auto;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .hero.hero2 > div:first-child img {
+    height: 120px;
+    width: auto;
+    mask-image: none;
+  }
+
+  .hero.hero2 > div:last-child {
+    padding-left: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+}
