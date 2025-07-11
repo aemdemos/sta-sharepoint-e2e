@@ -1,3 +1,4 @@
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,99 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+/* --- START merged .columns.columns3 selector --- */
+.columns.columns3 {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- END merged .columns.columns3 selector --- */
+
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: stretch;
+  width: 100%;
+  margin: 0;
+}
+
+@media (width >= 900px) {
+  .columns.columns3 > div {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 36px;
+    width: 100%;
+  }
+
+  .columns.columns3 > div > * {
+    flex: 0 0 50%;
+    max-width: 50%;
+    align-self: flex-start;
+    box-sizing: border-box;
+  }
+}
+
+.columns.columns3 .columns-img-col,
+.columns.columns3 .columns-img-col picture,
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  box-sizing: border-box;
+  object-fit: contain;
+}
+
+.columns.columns3 > div > div:not(.columns-img-col) {
+  max-width: none;
+}
+
+.columns.columns3 ul {
+  margin-top: 0.5em;
+  margin-bottom: 0.8em;
+  padding-left: 1.5em;
+}
+
+.columns.columns3 .button-container {
+  margin-top: 1.2em;
+}
+
+.columns.columns3 .button {
+  font-size: 18px;
+  padding: 0.5em 1.5em;
+  border-radius: 2em;
+}
+
+.columns.columns3 .button.secondary {
+  background-color: #fff;
+  border: 2px solid #131313;
+  color: #131313;
+}
+
+.columns.columns3 .button:not(.secondary) {
+  background-color: #3b63fb;
+  color: #fff;
+  border: 2px solid transparent;
+}
+
+@media (width <= 899px) {
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns.columns3 > div > * {
+    max-width: 100%;
+    flex-basis: auto;
   }
 }
