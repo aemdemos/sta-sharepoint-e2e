@@ -31,3 +31,137 @@
     order: unset;
   }
 }
+
+/* Use a flex row for the columns block */
+.columns.columns3.block.columns-2-cols > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 48px;
+  width: 100%;
+}
+
+/* List styles - placed before more specific ul selectors for specificity order */
+.columns.columns3.block.columns-2-cols ul {
+  margin: 0 0 14px 1.2em;
+  padding: 0;
+  font-size: 1rem;
+}
+
+/* Ensure text is compact and aligned left - placed before more specific selectors for specificity order */
+.columns.columns3.block.columns-2-cols p,
+.columns.columns3.block.columns-2-cols li,
+.columns.columns3.block.columns-2-cols ul {
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Each column should stack its content vertically */
+.columns.columns3.block.columns-2-cols > div > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: flex-start;
+
+  /* For layout debugging, remove outline after validation */
+
+  /* outline: 1px dotted #bbb; */
+}
+
+/* Left column: space between text/list/button and image */
+.columns.columns3.block.columns-2-cols > div > div:first-child > p,
+.columns.columns3.block.columns-2-cols > div > div:first-child > ul,
+.columns.columns3.block.columns-2-cols > div > div:first-child > .button-container {
+  margin-bottom: 18px;
+}
+
+/* Remove extra space after the image in left column */
+.columns.columns3.block.columns-2-cols > div > div:first-child > p:last-child {
+  margin-bottom: 0;
+}
+
+/* Right column: space after image, between text and button */
+.columns.columns3.block.columns-2-cols > div > div:last-child > p:first-child {
+  margin-bottom: 28px;
+}
+
+.columns.columns3.block.columns-2-cols > div > div:last-child > p:not(:first-child) {
+  margin-bottom: 14px;
+}
+
+.columns.columns3.block.columns-2-cols > div > div:last-child > .button-container {
+  margin-top: 4px;
+}
+
+/* Remove default margins from all inner elements for tight layout */
+.columns.columns3.block.columns-2-cols > div > div > * {
+  margin-top: 0;
+}
+
+/* Images: fill the column width and be block elements */
+.columns.columns3.block.columns-2-cols img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: none;
+  margin: 0;
+  box-shadow: none;
+}
+
+/* Buttons: consistent style for primary/secondary */
+.columns.columns3.block.columns-2-cols .button {
+  font-size: 1rem;
+  padding: 0.7em 2.2em;
+  border-radius: 2.2em;
+  min-width: 92px;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+  box-shadow: none;
+  font-weight: 500;
+  line-height: 1.2;
+  transition: background 0.2s, color 0.2s;
+}
+
+.columns.columns3.block.columns-2-cols .button.secondary {
+  background: #fff;
+  color: var(--text-color);
+  border: 2px solid #131313;
+}
+
+.columns.columns3.block.columns-2-cols .button:not(.secondary) {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+}
+
+.columns.columns3.block.columns-2-cols .button.secondary:hover,
+.columns.columns3.block.columns-2-cols .button.secondary:focus {
+  background: #f8f8f8;
+}
+
+.columns.columns3.block.columns-2-cols li {
+  margin-bottom: 0.33em;
+}
+
+/* Responsive: stack columns vertically on mobile */
+@media (width <= 900px) {
+  .columns.columns3.block.columns-2-cols > div {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns.columns3.block.columns-2-cols > div > div {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Merged selector for .columns.columns3 */
+.columns.columns3 {
+  /* (No declarations present in either snippet for this selector, so this is intentionally left empty.) */
+}
