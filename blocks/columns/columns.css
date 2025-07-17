@@ -1,3 +1,5 @@
+/* Reordered selectors to resolve no-descending-specificity errors */
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -15,8 +17,108 @@
   order: 0;
 }
 
+.columns.columns3 img {
+  display: block;
+  max-width: 94%;
+  width: 94%;
+  height: auto;
+  border-radius: 0;
+  margin: 0 auto;
+}
+
 .columns > div > .columns-img-col img {
   display: block;
+}
+
+/* --- Merged .columns.columns3 block (from base and generated CSS) --- */
+.columns.columns3 {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.columns.columns3 > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 28px 48px;
+  align-items: start;
+}
+
+.columns.columns3 > div > div > * {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.columns.columns3 > div > div:first-child > *:not(:has(picture)) {
+  grid-column: 1;
+  grid-row: 1;
+  margin-bottom: 10px;
+}
+
+.columns.columns3 > div > div:first-child > *:has(picture) {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.columns.columns3 p,
+.columns.columns3 ul {
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+.columns.columns3 ul {
+  padding-left: 24px;
+}
+
+.columns.columns3 > div > div:last-child > p:has(picture) {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.columns.columns3 .button-container {
+  margin-bottom: 0;
+}
+
+.columns.columns3 > div > div:last-child > p:not(:has(picture)),
+.columns.columns3 > div > div:last-child > .button-container {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.columns.columns3 .button,
+.columns.columns3 .button.secondary {
+  font-size: 16px;
+  padding: 10px 28px;
+  border-radius: 9999px;
+  margin: 0 0 10px;
+  min-width: 96px;
+  box-shadow: none;
+  white-space: nowrap;
+}
+
+.columns.columns3 .button:not(.secondary) {
+  background: #3B49DF;
+  color: #fff;
+  border: none;
+}
+
+.columns.columns3 .button.secondary {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+}
+
+.columns.columns3 .button.secondary:hover,
+.columns.columns3 .button.secondary:focus {
+  background: #000;
+  color: #fff;
 }
 
 @media (width >= 900px) {
@@ -29,5 +131,17 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .columns.columns3 > div > div > * {
+    width: 100%;
   }
 }
