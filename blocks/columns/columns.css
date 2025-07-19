@@ -31,3 +31,92 @@
     order: unset;
   }
 }
+
+.columns.columns3 {
+  /* merged declarations from both base and generated, keeping generated values on conflict */
+}
+
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  align-items: stretch;
+}
+
+/* Each column: vertical stack, image is pushed to bottom to form aligned image row */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  gap: 0;
+  /* Remove extra spacing between stacks */
+}
+
+/* Ensure left alignment */
+.columns.columns3 p,
+.columns.columns3 ul,
+.columns.columns3 li {
+  text-align: left;
+}
+
+/* Push images to align horizontally in both columns */
+.columns.columns3 > div > div > p:has(picture) {
+  margin-top: auto;
+  margin-bottom: 0;
+  /* Ensures image is always at the bottom of the column */
+  padding-top: 0;
+}
+
+/* Give some gap between stacked content, except before the image */
+.columns.columns3 > div > div > *:not(:last-child, p:has(picture)) {
+  margin-bottom: 20px;
+}
+
+/* List spacing */
+.columns.columns3 ul {
+  margin: 0 0 12px 24px;
+  padding: 0;
+}
+
+.columns.columns3 li {
+  margin: 0 0 6px;
+}
+
+.columns.columns3 .button {
+  border-radius: 999px;
+  min-width: 88px;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 10px 32px;
+}
+
+.columns.columns3 .button.secondary {
+  background: #fff;
+  color: #000;
+  border: 2px solid #222;
+  font-weight: 400;
+  box-shadow: none;
+}
+
+/* Consistent image styling */
+.columns.columns3 img,
+.columns > div > .columns-img-col img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  margin: 0;
+}
+
+/* Responsive: stack columns vertically for small screens */
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns.columns3 > div > div > p:has(picture) {
+    margin-top: 20px;
+  }
+}
