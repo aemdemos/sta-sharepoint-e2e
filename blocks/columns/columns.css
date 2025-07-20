@@ -1,3 +1,4 @@
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,97 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+.columns.columns3 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  background: #fff;
+}
+
+/* Each column stacks its contents vertically, hugging the top */
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Remove unwanted margin/padding from the content block */
+.columns.columns3 > div > div:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Make images fill their container, but don't force equal heights between columns */
+.columns.columns3 .columns-img-col {
+  width: 100%;
+}
+
+.columns.columns3 .columns-img-col img,
+.columns.columns3 .columns-img-col picture {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+/* Ensure text/button group in right column is visually separate from image */
+.columns.columns3 > div:last-child > div:not(.columns-img-col) {
+  margin-top: 32px;
+  align-self: flex-start;
+}
+
+/* Button and text spacing */
+.columns.columns3 .button-container {
+  margin-bottom: 0;
+}
+
+.columns.columns3 ul {
+  margin-top: 12px;
+  margin-bottom: 0;
+  padding-left: 22px;
+  font-size: 16px;
+}
+
+/* Consistent font sizing */
+.columns.columns3 p,
+.columns.columns3 ul,
+.columns.columns3 li {
+  font-size: 16px;
+  color: #131313;
+  margin: 0 0 8px;
+}
+
+/* Button style and specificity */
+.columns.columns3 .button {
+  padding: 12px 28px;
+  font-size: 15px;
+  border-radius: 999px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.columns.columns3 .button.secondary {
+  background: #fff;
+  color: #131313;
+  border: 2px solid #131313;
+}
+
+/* Responsive: stack columns on small screens */
+@media (width <= 900px) {
+  .columns.columns3 {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns.columns3 > div {
+    gap: 32px;
   }
 }
