@@ -35,3 +35,116 @@
     padding: 40px 32px;
   }
 }
+
+.hero {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: 400px;
+  background: linear-gradient(90deg, #0c2237 60%, #193559 100%);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+/* Text column (left) */
+.hero > div:last-child {
+  order: 1;
+  flex: 0 1 32%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 42px;
+  padding-top: 36px;
+  padding-bottom: 18px;
+  max-width: 350px;
+  z-index: 1;
+}
+
+.hero h1 {
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: left;
+  line-height: 1.15;
+  text-shadow: 0 2px 6px rgb(0 0 0 / 20%);
+}
+
+/* Image column (right) */
+.hero > div:first-child {
+  order: 2;
+  flex: 1 1 68%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  min-width: 0;
+  height: 100%;
+}
+
+.hero picture {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  position: static;
+  pointer-events: none;
+}
+
+.hero img {
+  width: auto;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  object-fit: cover;
+  display: block;
+  margin-right: 0;
+
+  /* Fade out left edge for smooth background transition */
+  mask-image: linear-gradient(to right, transparent 0%, black 18%, black 100%);
+}
+
+/* Responsive: stack or shrink image/text gracefully on small screens */
+@media (width <= 800px) {
+  .hero {
+    flex-direction: column;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .hero > div:first-child,
+  .hero > div:last-child {
+    order: unset;
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    padding: 18px 16px 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .hero picture {
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero img {
+    width: 100%;
+    height: auto;
+    min-height: 160px;
+    mask-image: none;
+  }
+}
+
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
