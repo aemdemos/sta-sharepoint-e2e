@@ -1,10 +1,27 @@
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+  place-items: stretch stretch;
+}
+
+/* Remove default flex/cell stacking from previous experiments */
 .columns > div {
-  display: flex;
-  flex-direction: column;
+  display: contents;
 }
 
 .columns img {
   width: 100%;
+}
+
+.columns .columns-img-col picture,
+.columns .columns-img-col img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0;
 }
 
 .columns > div > div {
@@ -19,6 +36,65 @@
   display: block;
 }
 
+/* Top left text block */
+.columns > div:first-child > div:first-child {
+  grid-column: 1;
+  grid-row: 1;
+  place-self: stretch start;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 200px;
+  height: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* Top right image */
+.columns > div:first-child > .columns-img-col {
+  grid-column: 2;
+  grid-row: 1;
+  place-self: stretch stretch;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+/* Bottom left image */
+.columns > div:last-child > .columns-img-col {
+  grid-column: 1;
+  grid-row: 2;
+  place-self: stretch stretch;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+/* Bottom right text/preview block */
+.columns > div:last-child > div:not(.columns-img-col) {
+  grid-column: 2;
+  grid-row: 2;
+  place-self: stretch start;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 220px;
+  height: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* Remove extra margin from first element in each text block */
+.columns > div:first-child > div:first-child > *:first-child,
+.columns > div:last-child > div:not(.columns-img-col) > *:first-child {
+  margin-top: 0;
+}
+
+/* Remove extra top margin from ul for left text block */
+.columns > div:first-child > div:first-child > ul {
+  margin-top: 0;
+}
+
 @media (width >= 900px) {
   .columns > div {
     align-items: center;
@@ -29,5 +105,33 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+/* Responsive: Stack vertically on smaller screens */
+@media (width <= 900px) {
+  .columns {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .columns > div {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .columns > div:first-child > div:first-child,
+  .columns > div:last-child > div:not(.columns-img-col),
+  .columns > div:first-child > .columns-img-col,
+  .columns > div:last-child > .columns-img-col {
+    grid-column: unset;
+    grid-row: unset;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+    height: auto;
+    place-self: stretch stretch;
   }
 }
