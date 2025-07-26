@@ -3,25 +3,87 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  align-items: stretch; /* Make all items in a row have equal height */
 }
 
 .cards > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+  height: 100%; /* Ensure full height for .cards-card-body stretch */
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  border-radius: 0;
+  overflow: hidden;
 }
 
 .cards .cards-card-body {
-  margin: 16px;
+  padding: 16px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  margin: 0;
+  justify-content: flex-start;
 }
 
 .cards .cards-card-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
   line-height: 0;
+  flex-shrink: 0;
 }
 
 .cards > ul > li img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.cards .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card title styles: the first <p> in the card body */
+.cards .cards-card-body p:first-child {
+  font-size: 18px;
+  font-weight: 700;
+  color: #101010;
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+/* Card description styles: all <p> after the title */
+.cards .cards-card-body p:not(:first-child) {
+  font-size: 15px;
+  color: #333;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (width <= 1024px) {
+  .cards > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 600px) {
+  .cards > ul {
+    grid-template-columns: 1fr;
+  }
 }
