@@ -5,15 +5,26 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  min-height: 220px;
+  background: radial-gradient(ellipse at 80% 50%, #143752 60%, #0d2232 100%);
+  padding: 0;
+  overflow: hidden;
 }
 
 .hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.08;
+  margin: 0;
+  text-align: left;
+  text-shadow: 0 2px 8px #0006;
+  max-width: 100%;
+  letter-spacing: 0.01em;
 }
 
 .hero picture {
@@ -33,5 +44,71 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+/* DNA image fills hero as background layer, right-aligned */
+.hero > div:first-of-type {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+}
+
+/* The image stretches and keeps DNA on the right */
+.hero picture,
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+  filter: drop-shadow(0 0 12px #33d0ff88);
+  background: transparent;
+}
+
+/* Text column: pushed further top-left, slightly larger, and max width limited */
+.hero > div:last-of-type {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex: 0 1 36vw;
+  max-width: 440px;
+  padding: 32px 0 0 32px;
+  min-width: 0;
+  min-height: 0;
+  background: none;
+}
+
+@media (width <= 900px) {
+  .hero {
+    flex-direction: column;
+    min-height: 320px;
+  }
+
+  .hero > div:first-of-type {
+    height: 60vw;
+    min-height: 180px;
+    max-height: 280px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: unset;
+  }
+
+  .hero > div:last-of-type {
+    padding: 24px 12px 0;
+    max-width: 100%;
+  }
+
+  .hero h1 {
+    text-align: left;
+    font-size: 1.3rem;
+    padding-top: 10vw;
   }
 }
