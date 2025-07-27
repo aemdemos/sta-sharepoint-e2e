@@ -1,10 +1,34 @@
+/* Desktop: 2x2 grid, compact and anchored at the top, with no spanning or stretching */
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 40px;
+  place-items: start start;
+  min-height: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+/* Use contents to pass grid context to grandchildren */
 .columns > div {
-  display: flex;
-  flex-direction: column;
+  display: contents;
 }
 
 .columns img {
   width: 100%;
+}
+
+/* Images: fill width of cell, don't stretch vertically, no overflow */
+.columns .columns-img-col img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 0;
+  margin: 0;
+  max-height: 420px; /* Prevents images from overtaking the grid row */
 }
 
 .columns > div > div {
@@ -15,8 +39,48 @@
   order: 0;
 }
 
+/* Top-left: text/list/button */
+.columns > div:first-child > div:first-child {
+  grid-column: 1;
+  grid-row: 1;
+  place-self: start start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+}
+
+/* Top-right: gold DNA image */
+.columns > div:last-child > .columns-img-col {
+  grid-column: 2;
+  grid-row: 1;
+  place-self: start stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Bottom-left: blue DNA image */
+.columns > div:first-child > .columns-img-col {
+  grid-column: 1;
+  grid-row: 2;
+  place-self: start stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .columns > div > .columns-img-col img {
   display: block;
+}
+
+/* Bottom-right: preview text/button */
+.columns > div:last-child > div:not(.columns-img-col) {
+  grid-column: 2;
+  grid-row: 2;
+  place-self: start start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
 }
 
 @media (width >= 900px) {
@@ -29,5 +93,59 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+/* List and text tweaks for spacing and color */
+.columns ul {
+  margin: 0 0 0 20px;
+  color: #222;
+  font-size: 16px;
+  padding: 0;
+}
+
+.columns p {
+  margin: 0 0 0.5em;
+  color: #222;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Button alignment: left, no extra margin */
+.columns .button-container {
+  margin: 16px 0 0;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.columns .button,
+.columns .button.secondary {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+}
+
+/* Responsive stacking on mobile */
+@media (width <= 899px) {
+  .columns {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .columns > div {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .columns > div > div,
+  .columns > div > .columns-img-col {
+    grid-column: auto;
+    grid-row: auto;
+    place-self: stretch stretch;
+    width: 100%;
+    max-height: none;
   }
 }
