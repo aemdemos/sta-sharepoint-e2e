@@ -5,15 +5,25 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
+  display: flex;
+  align-items: flex-start;
   min-height: 300px;
+  padding: 0;
+  background: #0d2843;
+  overflow: hidden;
 }
 
 .hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  /* Removed margin-left and margin-right to avoid conflict with margin shorthand */
   color: var(--background-color);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+  font-family: var(--heading-font-family);
+  max-width: 90%;
+  text-align: left;
 }
 
 .hero picture {
@@ -33,5 +43,70 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+/* DNA image as immersive background, with extra gradient overlay for left-side contrast */
+.hero > div:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #0d2843;
+}
+
+/* Left-to-right gradient overlay for text contrast, using a pseudo-element */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(13 40 67 / 93%) 0%, rgb(13 40 67 / 60%) 40%, rgb(13 40 67 / 0%) 65%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Text block overlays above background and gradient */
+.hero > div:last-child {
+  position: relative;
+  z-index: 3;
+  flex: 0 1 700px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 32px 0 0 32px;
+  min-width: 0;
+  background: transparent;
+}
+
+.hero > div:last-child > div {
+  width: 100%;
+}
+
+/* Responsive stack for small screens */
+@media (width <= 900px) {
+  .hero {
+    min-height: 220px;
+    flex-direction: column;
+  }
+
+  .hero > div:last-child {
+    padding: 24px 12px 0;
+    max-width: 100%;
+  }
+
+  .hero h1 {
+    font-size: 1.3rem;
+    max-width: 100%;
   }
 }
