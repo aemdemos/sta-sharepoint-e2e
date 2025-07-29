@@ -1,27 +1,108 @@
+.cards {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .cards > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: none;
+  place-items: stretch stretch;
+  box-sizing: border-box;
+}
+
+@media (width <= 1100px) {
+  .cards > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 700px) {
+  .cards > ul {
+    grid-template-columns: 1fr;
+  }
 }
 
 .cards > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
-}
-
-.cards .cards-card-body {
-  margin: 16px;
-}
-
-.cards .cards-card-image {
-  line-height: 0;
+  background: #fff;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: 0;
+  height: 100%;
+  align-items: stretch;
+  justify-content: flex-start;
+  margin: 0;
 }
 
 .cards > ul > li img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.cards .cards-card-image {
+  width: 100%;
+  height: 148px;
+  min-height: 148px;
+  max-height: 148px;
+  overflow: hidden;
+  line-height: 0;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.cards .cards-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  padding: 0;
+}
+
+.cards .cards-card-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 14px 16px 16px;
+  margin: 0;
+  width: 100%;
+  line-height: 1.32;
+}
+
+.cards .cards-card-body p {
+  margin: 0 0 5px;
+  padding: 0;
+}
+
+.cards .cards-card-body p:first-child {
+  font-size: 16px;
+  color: #1a1a1a;
+  font-weight: 700;
+  margin: 0 0 5px;
+  line-height: 1.22;
+}
+
+.cards .cards-card-body p:not(:first-child) {
+  font-size: 14px;
+  color: #444;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.32;
+  padding: 0;
 }
