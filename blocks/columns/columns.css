@@ -31,3 +31,122 @@
     order: unset;
   }
 }
+
+
+.columns .block.columns-2-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 48px; /* row-gap, column-gap */
+  align-items: start;
+  padding: 0 24px;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .columns .block.columns-2-cols {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 8px;
+  }
+}
+
+/* Columns: stack vertically, top/left aligned, tight gap */
+.columns .block.columns-2-cols > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* REMOVE ALL TOP MARGIN from first content in left column to achieve flush alignment */
+.columns .block.columns-2-cols > div:first-child > div:first-child,
+.columns .block.columns-2-cols > div:first-child > div:first-child > p:first-child,
+.columns .block.columns-2-cols > div:first-child > div:first-child > *:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Remove extra margin from paragraphs, lists, and button containers */
+.columns .block.columns-2-cols p,
+.columns .block.columns-2-cols ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.columns .block.columns-2-cols ul {
+  margin-top: 2px;
+  padding-left: 22px;
+}
+.columns .block.columns-2-cols .button-container {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+/* Images: fill their columns, no margin/padding */
+.columns .columns-img-col picture,
+.columns .columns-img-col img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: cover;
+  margin: 0;
+  padding: 0;
+}
+
+/* Right column bottom stack: left aligned, no extra margin */
+.columns .block.columns-2-cols > div:last-child > div:last-child {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.columns .block.columns-2-cols > div:last-child > div:last-child > * {
+  margin-left: 0;
+  padding-left: 0;
+}
+.columns .block.columns-2-cols > div:last-child > div:last-child p {
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+/* Remove bottom margin on last img in left column to tighten row gap */
+.columns .block.columns-2-cols > div:first-child > .columns-img-col:last-child {
+  margin-bottom: 0;
+}
+
+/* Button styles: compact and aligned */
+.columns .block.columns-2-cols a.button,
+.columns .block.columns-2-cols a.button.secondary {
+  min-width: 96px;
+  padding: 9px 28px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 999px;
+  box-shadow: none;
+  margin: 0;
+  letter-spacing: normal;
+  display: inline-block;
+}
+
+.columns .block.columns-2-cols a.button.secondary {
+  background: #fff;
+  color: #131313;
+  border: 2px solid #131313;
+}
+
+/* Optional: Slightly reduce side padding on smallest screens for edge space */
+@media (max-width: 600px) {
+  .columns .block.columns-2-cols {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  .columns .block.columns-2-cols > div {
+    gap: 8px;
+  }
+}
