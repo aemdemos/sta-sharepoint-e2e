@@ -4,8 +4,8 @@ This is a project created by AEMY.
 
 ## Environments
 
-- Preview: https://main--sta-aem-boilerplate--aemdemos.aem.page/
-- Live: https://main--sta-aem-boilerplate--aemdemos.aem.live/
+- Preview: https://main--sta-sharepoint-e2e--aemdemos.aem.page/
+- Live: https://main--sta-sharepoint-e2e--aemdemos.aem.live/
 
 ## Installation
 
