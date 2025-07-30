@@ -35,3 +35,152 @@
     padding: 40px 32px;
   }
 }
+
+.hero {
+  display: flex;
+  flex-direction: row;
+  min-height: 220px;
+  width: 100%;
+  padding: 0;
+  align-items: stretch;
+  background: none;
+  position: relative;
+  margin-top: 0; /* Remove extra space above */
+  z-index: 0;
+}
+
+/* Remove extra space above the hero block if present on the parent */
+.hero-container,
+.hero-wrapper {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Gradient overlay for soft transition between text and image */
+.hero::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 49%;
+  z-index: 1;
+  pointer-events: none;
+  /* Extend the dark section further, make gradient smoother and less bright at the edge */
+  background: linear-gradient(
+    to right,
+    #0a2239 0%,
+    #0a2239 92%,
+    rgba(10,34,57,0.74) 96%,
+    rgba(10,34,57,0.4) 98%,
+    rgba(10,34,57,0.0) 100%
+  );
+}
+
+/* ----- TEXT COLUMN ------ */
+.hero > div:last-child {
+  flex: 1 1 45%;
+  order: 1;
+  background: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 1.1rem 0.7rem 1rem 1.7rem;
+  box-sizing: border-box;
+  /* Place text above gradient overlay */
+  position: relative;
+  z-index: 2;
+}
+
+.hero > div:last-child > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.hero h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  font-family: var(--heading-font-family);
+  line-height: 1.15;
+  text-align: left;
+  max-width: 32ch;
+}
+
+/* ---- IMAGE COLUMN ------ */
+.hero > div:first-child {
+  flex: 1 1 55%;
+  order: 2;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  overflow: hidden;
+  min-width: 0;
+  background: none;
+  z-index: 0;
+}
+
+.hero > div:first-child > div,
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hero > div:first-child img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive: stack vertically on small screens */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    min-height: 160px;
+  }
+  .hero::before {
+    width: 100%;
+    height: 62%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(
+      to bottom,
+      #0a2239 0%,
+      #0a2239 88%,
+      rgba(10,34,57,0.74) 96%,
+      rgba(10,34,57,0.4) 98%,
+      rgba(10,34,57,0.0) 100%
+    );
+  }
+  .hero > div:first-child {
+    order: 1;
+    width: 100%;
+    min-height: 120px;
+    max-height: 220px;
+  }
+  .hero > div:last-child {
+    order: 2;
+    width: 100%;
+    padding: 1rem 0.7rem 1rem 1.1rem;
+    min-height: unset;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero > div:first-child {
+    min-height: 80px;
+    max-height: 120px;
+  }
+  .hero h1 {
+    font-size: 1.2rem;
+    padding: 0;
+  }
+}
