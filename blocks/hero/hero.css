@@ -1,3 +1,4 @@
+/* Fixed CSS Code */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -5,15 +6,28 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  display: block;
+  min-height: 230px;
+  width: 100%;
+  padding: 40px 24px; /* Merged padding from duplicate selector */
+  box-sizing: border-box;
+  overflow: hidden;
+  min-height: 300px; /* Merged min-height from duplicate selector */
 }
 
 .hero h1 {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+  letter-spacing: 0;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  color: var(--background-color);
 }
 
 .hero picture {
@@ -34,4 +48,60 @@
   .hero {
     padding: 40px 32px;
   }
+}
+
+/* Image background fills hero */
+.hero > div:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  display: block;
+}
+
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+/* Text block near upper left, adjusted for vertical balance */
+.hero > div:last-child {
+  position: absolute;
+  top: 38px;
+  left: 44px;
+  z-index: 2;
+  width: auto;
+  max-width: 70%;
+  display: flex;
+  align-items: flex-start;
+}
+
+@media (width <= 900px) {
+  .hero {
+    min-height: 140px;
+  }
+
+  .hero > div:last-child {
+    top: 18px;
+    left: 12px;
+    max-width: 95%;
+  }
+
+  .hero h1 {
+    font-size: 1.1rem;
+  }
+}
+
+/* Full width hero, no side padding */
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
 }
