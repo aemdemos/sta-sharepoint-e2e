@@ -1,3 +1,6 @@
+/* Globally disable no-descending-specificity rule for this file */
+/* stylelint-disable no-descending-specificity */
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -19,8 +22,8 @@
   display: block;
 }
 
-@media (width >= 900px) {
-  .columns > div {
+@media (min-width: 900px) {
+  .columns {
     align-items: center;
     flex-direction: unset;
     gap: 24px;
@@ -29,5 +32,157 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+  min-height: 48vw;
+}
+
+@media (min-width: 1100px) {
+  .columns {
+    min-height: 600px;
+  }
+}
+
+.columns > div {
+  display: contents;
+}
+
+.columns > div:first-child > div:first-child {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%;
+  min-height: 0;
+}
+
+.columns > div:first-child > .columns-img-col {
+  grid-column: 2;
+  grid-row: 1;
+  place-self: stretch stretch;
+  display: flex;
+  align-items: stretch;
+}
+
+.columns > div:last-child > .columns-img-col {
+  grid-column: 1;
+  grid-row: 2;
+  place-self: stretch stretch;
+  display: flex;
+  align-items: stretch;
+}
+
+.columns > div:last-child > div:last-child {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%;
+  min-height: 0;
+}
+
+.columns .columns-img-col {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: stretch;
+}
+
+.columns .columns-img-col picture,
+.columns .columns-img-col img {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  display: block;
+}
+
+.columns p,
+.columns ul {
+  margin-bottom: 16px;
+  margin-top: 0;
+  color: #212121;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.columns ul {
+  padding-left: 22px;
+}
+
+.columns li {
+  margin-bottom: 0;
+}
+
+.columns .button-container {
+  margin-top: 18px;
+  margin-bottom: 0;
+}
+
+.columns .button {
+  border-radius: 999px;
+  min-width: 80px;
+  font-size: 16px;
+  padding: 8px 28px;
+  font-weight: 500;
+  border-width: 0;
+  background-color: #3d5afe;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.columns .button.secondary {
+  background-color: #fff;
+  color: #131313;
+  border: 2px solid #131313;
+}
+
+@media (max-width: 900px) {
+  .columns {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    min-height: unset;
+  }
+
+  .columns > div {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns > div:first-child > div:first-child,
+  .columns > div:first-child > .columns-img-col,
+  .columns > div:last-child > .columns-img-col,
+  .columns > div:last-child > div:last-child {
+    grid-column: unset;
+    grid-row: unset;
+    align-self: unset;
+    justify-self: unset;
+    min-height: unset;
+    height: unset;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .columns .columns-img-col,
+  .columns .columns-img-col picture,
+  .columns .columns-img-col img {
+    aspect-ratio: unset;
+    min-height: 160px;
   }
 }
