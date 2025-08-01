@@ -1,3 +1,4 @@
+/* Updated CSS */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -5,8 +6,14 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background: #062241;
+  min-height: 320px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .hero h1 {
@@ -33,5 +40,93 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+/* Text block: left column, align to top-left with generous padding */
+.hero > div:last-child {
+  flex: 1 1 48%;
+  order: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 40px 1vw 0 3vw;
+  min-width: 0;
+  z-index: 2;
+}
+
+.hero > div:last-child h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+  text-align: left;
+  max-width: 95%;
+  word-break: break-word;
+  align-self: flex-start;
+}
+
+/* Image block: right column, image fills and crops to block */
+.hero > div:first-child {
+  flex: 1 1 52%;
+  order: 2;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  min-width: 0;
+  z-index: 1;
+  padding: 0;
+}
+
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+}
+
+/* Responsive: stack vertically on small screens, image shrinks */
+@media (width <= 900px) {
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 0;
+  }
+
+  .hero > div:first-child,
+  .hero > div:last-child {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 5vw;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .hero > div:last-child {
+    padding: 4vw 5vw 2vw;
+    align-items: center;
+  }
+
+  .hero > div:last-child h1 {
+    font-size: 1.4rem;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    max-width: 90vw;
+    max-height: 240px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    object-fit: contain;
   }
 }
