@@ -1,3 +1,4 @@
+/* Fixed CSS Code */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,126 @@
     flex: 1;
     order: unset;
   }
+}
+
+.columns > .block.columns-2-cols {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* Each row: side by side, top-aligned */
+.columns > .block.columns-2-cols > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2.5rem;
+  width: 100%;
+}
+
+/* First row: left (text) 34%, right (image) 66% for stronger image emphasis */
+.columns > .block.columns-2-cols > div:first-child > div:first-child {
+  flex: 0 1 34%;
+  max-width: 38%;
+}
+
+.columns > .block.columns-2-cols > div:first-child > div:last-child {
+  flex: 1 1 66%;
+  max-width: 100%;
+}
+
+/* Second row: left (image) 66%, right (text) 34% */
+.columns > .block.columns-2-cols > div:last-child > div:first-child {
+  flex: 1 1 66%;
+  max-width: 100%;
+}
+
+.columns > .block.columns-2-cols > div:last-child > div:last-child {
+  flex: 0 1 34%;
+  max-width: 38%;
+  margin-left: 1.75rem; /* slightly increased for optimum optical gap */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}
+
+/* Ensure image fills its column */
+.columns > div > .columns-img-col img,
+.columns .columns-img-col img,
+.columns .columns-img-col picture {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  max-width: 100%;
+}
+
+/* Responsive: stack columns vertically on smaller screens */
+@media (width <= 900px) {
+  .columns > .block.columns-2-cols > div {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .columns > .block.columns-2-cols {
+    gap: 1.5rem;
+  }
+
+  /* Remove fixed column widths and margin for stacking */
+  .columns > .block.columns-2-cols > div > div {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin-left: 0;
+    display: block;
+    min-height: unset;
+    justify-content: flex-start;
+  }
+}
+
+/* Button and button.secondary styled for clarity and correct shape */
+.columns .button {
+  border-radius: 9999px;
+  font-size: 1rem;
+  padding: 0.5em 1.5em;
+  min-width: 96px;
+  min-height: 40px;
+  box-sizing: border-box;
+}
+
+.columns .button.secondary {
+  background: #fff;
+  color: #000;
+  border: 1.5px solid #000;
+  border-radius: 1.5em;
+  min-width: 96px;
+  min-height: 40px;
+}
+
+/* Typography tweaks for clarity */
+.columns p,
+.columns ul {
+  color: #222;
+  font-family: var(--body-font-family, 'Inter', Arial, sans-serif);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.columns ul {
+  padding-left: 1.5em;
+  list-style-type: disc;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+}
+
+/* Spacing under button containers for left column */
+.columns .button-container {
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+}
+
+/* Remove margin between rows for clean grid look */
+.columns > .block.columns-2-cols > div:first-child > div:first-child,
+.columns > .block.columns-2-cols > div:not(:last-child) {
+  margin-bottom: 0;
 }
