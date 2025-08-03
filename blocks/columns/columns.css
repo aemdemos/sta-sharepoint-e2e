@@ -1,5 +1,6 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
-  display: flex;
+  display: contents;
   flex-direction: column;
 }
 
@@ -29,5 +30,135 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 24px 40px;
+  place-items: start start;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Grid placement for the four main cells */
+.columns > div:nth-child(1) > div:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.columns > div:nth-child(1) > div:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.columns > div:nth-child(2) > div:nth-child(1) {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.columns > div:nth-child(2) > div:nth-child(2) {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Layout for image cells: center horizontally, limit width and height for balance */
+.columns .columns-img-col {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: start;
+  width: 100%;
+}
+
+.columns .columns-img-col picture,
+.columns .columns-img-col img {
+  display: block;
+  width: 100%;
+  max-width: 440px;
+  max-height: 300px;
+  height: auto;
+  object-fit: cover;
+  margin: 0 auto;
+  border-radius: 0;
+}
+
+/* Text/button cells: left-aligned, but vertically centered relative to image cells for visual balance */
+.columns > div:nth-child(1) > div:nth-child(1),
+.columns > div:nth-child(2) > div:nth-child(2) {
+  place-self: center start;
+  max-width: 340px;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Ensure lists and text have no unexpected margins */
+.columns ul {
+  margin: 0 0 18px 18px;
+  padding-left: 18px;
+}
+
+.columns li {
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+.columns .button-container {
+  margin: 20px 0 0;
+}
+
+/* Buttons: match mockup, no width overflow */
+.columns .button,
+.columns .button.secondary {
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 2.4em;
+  padding: 9px 24px;
+  min-width: 88px;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* Responsive: stack single column on small screens, allow images to grow a bit more */
+@media (width <= 900px) {
+  .columns {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 24px 0;
+    max-width: 100%;
+  }
+
+  .columns > div:nth-child(1) > div:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .columns > div:nth-child(1) > div:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .columns > div:nth-child(2) > div:nth-child(1) {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .columns > div:nth-child(2) > div:nth-child(2) {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .columns .columns-img-col img {
+    max-width: 100%;
+    max-height: 60vw;
+  }
+
+  .columns > div:nth-child(1) > div:nth-child(1),
+  .columns > div:nth-child(2) > div:nth-child(2) {
+    max-width: 100%;
   }
 }
