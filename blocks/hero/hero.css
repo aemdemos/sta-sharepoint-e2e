@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -5,15 +6,75 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  width: 100%;
+  min-height: 180px;
+  padding: 0;
+  display: block;
+  overflow: hidden;
 }
 
 .hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  text-align: left;
+  font-family: var(--heading-font-family, sans-serif);
+}
+
+.hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.hero > div:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Align text block toward top with generous top and left padding for a slightly-above-center effect */
+.hero > div:last-child {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;     /* align block to top */
+  height: 100%;
+  min-height: 180px;
+}
+
+.hero > div:last-child > div {
+  padding-top: 48px;           /* move headline above center */
+  padding-left: 48px;
+  max-width: 1000px;
+}
+
+@media (width >= 900px) {
+  .hero {
+    padding: 40px 32px;
+  }
+
+  .hero > div:last-child > div {
+    padding-top: 64px;
+    padding-left: 72px;
+    max-width: 1100px;
+  }
+
+  .hero h1 {
+    font-size: 2.25rem;
+  }
 }
 
 .hero picture {
@@ -28,10 +89,4 @@
   object-fit: cover;
   width: 100%;
   height: 100%;
-}
-
-@media (width >= 900px) {
-  .hero {
-    padding: 40px 32px;
-  }
 }
