@@ -1,27 +1,101 @@
+/* Grid: fixed columns, stretch cards, responsive */
+.cards {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .cards > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  align-items: stretch;
 }
 
+@media (width <= 1024px) {
+  .cards > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 600px) {
+  .cards > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card: equal heights, no extra margin */
 .cards > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
-}
-
-.cards .cards-card-body {
-  margin: 16px;
-}
-
-.cards .cards-card-image {
-  line-height: 0;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  min-height: 320px;
+  margin: 0;
 }
 
 .cards > ul > li img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+/* Image: aspect and fill */
+.cards .cards-card-image {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: #f5f5f5;
+  display: block;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.cards .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: 3/2;
+  vertical-align: middle;
+}
+
+/* Card body: near-flush sides, balanced vertical rhythm */
+.cards .cards-card-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px 10px 22px;
+  box-sizing: border-box;
+  margin: 16px; /* Merged value from earlier duplicate */
+}
+
+/* Heading: compact and aligned */
+.cards .cards-card-body p:first-child strong {
+  display: block;
+  font-weight: 700;
+  font-size: 1.07em;
+  color: #000;
+  margin-bottom: 6px;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  font-family: var(--heading-font-family);
+}
+
+/* Body: compact spacing */
+.cards .cards-card-body p {
+  color: #333;
+  font-size: 1em;
+  margin: 0 0 6px;
+  line-height: 1.5;
+  font-family: var(--body-font-family);
+}
+
+.cards .cards-card-body p:last-child {
+  margin-bottom: 0;
 }
