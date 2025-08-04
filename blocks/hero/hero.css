@@ -35,3 +35,87 @@
     padding: 40px 32px;
   }
 }
+
+.hero {
+  /* DNA as large right-side background, positioned further left */
+  position: relative;
+  min-height: 180px;
+  background: #0c233d;
+  background-image: url('./media_1061934561e8a4f01907e616a0ce0e4b74d63b92e.jpg?width=2000&format=jpg&optimize=medium');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 72% center; /* move image further left for smoother blend */
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start; /* top-align text to match visual */
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Hide the inline image (but keep for a11y/crawlers) */
+.hero picture,
+.hero picture source,
+.hero img {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Text content left, less top padding so headline sits higher */
+.hero > div:last-of-type {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px 0 0 48px;
+  z-index: 1;
+  min-width: 0;
+}
+
+.hero > div:first-of-type {
+  /* Hide image column panel */
+  flex: 0 0 auto;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  display: none;
+}
+
+/* Headline style */
+.hero h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  max-width: 70%;
+  text-align: left;
+}
+
+/* Responsive: keep DNA big, reduce left padding */
+@media (max-width: 900px) {
+  .hero {
+    min-height: 140px;
+    background-size: cover;
+    background-position: 85% center;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hero > div:last-of-type {
+    padding: 10px 6vw 0 6vw;
+    max-width: 94vw;
+  }
+  .hero h1 {
+    font-size: 1.2rem;
+    max-width: 100%;
+    text-align: left;
+  }
+}
