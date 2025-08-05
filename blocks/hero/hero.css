@@ -1,3 +1,4 @@
+/* Fixed CSS Code */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -7,13 +8,23 @@
   position: relative;
   padding: 40px 24px;
   min-height: 300px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background: linear-gradient(to right, #0a2740 65%, rgb(10 39 64 / 88%) 83%, transparent 100%), #0a2740;
+  overflow: hidden;
+  padding: 32px 0 24px;
 }
 
 .hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.17;
+  margin: 0;
+  text-align: left;
+  max-width: 95%;
+  letter-spacing: 0.01em;
 }
 
 .hero picture {
@@ -33,5 +44,106 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+/* DNA image as background visual, fades further left */
+.hero > div:first-child {
+  position: absolute;
+  inset: 0;
+  right: 0;
+  left: auto;
+  width: 70vw;
+  min-width: 410px;
+  max-width: 920px;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  pointer-events: none;
+}
+
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  user-select: none;
+  pointer-events: none;
+
+  /* Softer, earlier mask for DNA fade */
+  mask-image: linear-gradient(to left, black 75%, transparent 100%);
+}
+
+/* Text block overlays the background image */
+.hero > div:last-child {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-left: 64px;
+  padding-right: 10vw;
+  padding-top: 8px;
+  min-height: 170px;
+}
+
+/* Responsive: stack elements and shrink image area */
+@media (width <= 900px) {
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    min-height: 0;
+    padding: 0;
+    background: #0a2740;
+  }
+
+  .hero > div:first-child {
+    position: relative;
+    width: 100vw;
+    min-width: 0;
+    max-width: none;
+    height: 180px;
+    margin: 0 auto;
+    order: 1;
+    inset: unset;
+    left: 0;
+    right: 0;
+  }
+
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    width: 100vw;
+    min-width: 0;
+    min-height: 0;
+    max-height: 180px;
+    object-fit: cover;
+    object-position: center top;
+    mask-image: none;
+  }
+
+  .hero > div:last-child {
+    order: 2;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    min-height: 0;
+    margin-top: 12px;
+  }
+
+  .hero h1 {
+    font-size: 1.25rem;
+    text-align: center;
+    max-width: 100%;
   }
 }
