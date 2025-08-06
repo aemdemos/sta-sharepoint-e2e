@@ -31,3 +31,103 @@
     order: unset;
   }
 }
+
+
+.columns.block.columns-2-cols {
+  display: flex;
+  flex-direction: column;
+  gap: 32px; /* slightly reduced vertical space between rows */
+  padding-left: 0;
+  margin-left: 0;
+  box-sizing: border-box;
+}
+
+/* Each row: two columns side by side */
+.columns.block.columns-2-cols > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* vertical centering */
+  gap: 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Text column: narrower with very little left-padding */
+.columns.block.columns-2-cols > div > div:not(.columns-img-col) {
+  flex: 0 1 25%;
+  padding-left: 4px;
+  padding-right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+/* Image column: wider for visual dominance */
+.columns.block.columns-2-cols > div > .columns-img-col {
+  flex: 1 1 75%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* Image fills column, slightly larger than before */
+.columns.block.columns-2-cols .columns-img-col img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 540px;
+  object-fit: cover;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Button container: slight gap above button */
+.columns.block.columns-2-cols .button-container {
+  margin-top: 18px;
+}
+
+/* Ensure all text and lists are left-aligned with no extra padding */
+.columns.block.columns-2-cols ul,
+.columns.block.columns-2-cols li,
+.columns.block.columns-2-cols p {
+  color: #131313;
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Responsive: stack columns vertically on mobile */
+@media (width <= 900px) {
+  .columns.block.columns-2-cols {
+    gap: 20px;
+    padding-left: 0;
+    margin-left: 0;
+  }
+
+  .columns.block.columns-2-cols > div {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .columns.block.columns-2-cols > div > div:not(.columns-img-col),
+  .columns.block.columns-2-cols > div > .columns-img-col {
+    flex-basis: auto;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .columns.block.columns-2-cols .columns-img-col img {
+    max-height: 220px;
+  }
+}
