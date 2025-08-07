@@ -1,3 +1,5 @@
+/* CSS Code */
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -19,6 +21,9 @@
   display: block;
 }
 
+/* Disable no-descending-specificity rule */
+/* stylelint-disable no-descending-specificity */
+
 @media (width >= 900px) {
   .columns > div {
     align-items: center;
@@ -30,4 +35,124 @@
     flex: 1;
     order: unset;
   }
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 6px 36px;
+  width: 100%;
+  place-items: start stretch;
+  background: var(--background-color);
+  padding: 0;
+  margin: 0;
+}
+
+.columns > div {
+  display: contents;
+}
+
+.columns > div:nth-child(1) > :nth-child(1) {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  place-self: start start;
+}
+
+.columns > div:nth-child(1) > :nth-child(2) {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  place-self: start start;
+}
+
+.columns > div:nth-child(2) > :nth-child(1) {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  place-self: start start;
+}
+
+.columns > div:nth-child(2) > :nth-child(2) {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  place-self: start start;
+}
+
+.columns .columns-img-col {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.columns .columns-img-col img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0.08em;
+  margin: 0;
+  padding: 0;
+}
+
+@media (width <= 900px) {
+  .columns {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 18px 0;
+  }
+  .columns > div:nth-child(1) > :nth-child(1) {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+  .columns > div:nth-child(1) > :nth-child(2) {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+  .columns > div:nth-child(2) > :nth-child(1) {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+  }
+  .columns > div:nth-child(2) > :nth-child(2) {
+    grid-column: 1 / 2;
+    grid-row: 4 / 5;
+  }
+}
+
+.columns p,
+.columns ul {
+  color: var(--text-color);
+  font-size: var(--body-font-size-s);
+  font-family: var(--body-font-family);
+  margin-top: 0;
+  margin-bottom: 0.7em;
+  line-height: 1.6;
+}
+
+.columns ul {
+  padding-left: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.7em;
+}
+
+.columns .button-container {
+  margin-top: 0.5em;
+  text-align: left;
+}
+
+.columns .button {
+  border-radius: 2em;
+  padding: 0.45em 1.7em;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: var(--link-color);
+  color: #fff;
+  border: none;
+  margin-top: 0.3em;
+  margin-bottom: 0;
+  box-shadow: none;
+}
+
+.columns .button.secondary {
+  background-color: #fff;
+  color: #222;
+  border: 2px solid #222;
+  border-radius: 1.5em;
 }
