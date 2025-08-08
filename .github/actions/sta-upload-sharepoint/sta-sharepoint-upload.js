@@ -25,6 +25,7 @@ const uploadReport = {
   failures: 0,
   failedList: [],
   failedFolderCreations: 0,
+  lockedFiles: 0,
 };
 
 // Source structure for this invocation.  Global to simplify recursion.
@@ -55,8 +56,11 @@ async function graphFetch(token, endpoint, initOptions) {
   );
 
   if (!res.ok) {
+    // Count locked files if the response status is 423.
+    if (res.status === 423) {
+      uploadReport.lockedFiles += 1;
+    }
     const errorText = await res.text();
-    core.warning(`Graph API error ${res.status}: ${errorText}`);
     throw new Error(`Graph API error ${res.status}: ${errorText}`);
   }
 
@@ -70,7 +74,7 @@ async function graphFetch(token, endpoint, initOptions) {
  * @param {string} folderId Destination folder id within the drive id root
  * @param {Object.<string, string, string>} file The file name, full local and relative
  *                                               target path of the file to be uploaded.
- * @returns {Promise<boolean>}
+ * @returns {Promise<boolean>} The result of the upload operation.
  */
 async function uploadFile(accessToken, driveId, folderId, file) {
   const fileStream = fs.createReadStream(file.path);
@@ -79,7 +83,7 @@ async function uploadFile(accessToken, driveId, folderId, file) {
   core.debug(`Uploading ${file.path} with mime type ${mimeType}`);
 
   try {
-    const response = await graphFetch(
+    await graphFetch(
       accessToken,
       `/drives/${driveId}/items/${folderId}:${file.relative}:/content`,
       {
@@ -95,8 +99,7 @@ async function uploadFile(accessToken, driveId, folderId, file) {
     );
 
     core.debug(`File ${file.path} uploaded successfully.`);
-
-    return !!response;
+    return true;
   } catch (error) {
     core.warning(`Failed to upload file ${file.path}: ${error.message}`);
   }
@@ -189,11 +192,17 @@ async function createFoldersIfNecessary(
  * the upload of files, using their full path, knowing the destination
  * folders already exist.
  * @param {string} srcFolder
+ * @param {boolean} isTopLevel If true, this is the top-level folder, and we
+ *                           expect at least one item to be present.
  * @returns {Promise<*>}
  */
-async function populateSourceStructure(srcFolder) {
+async function populateSourceStructure(srcFolder, isTopLevel = false) {
   const entries = fs.readdirSync(srcFolder, { withFileTypes: true });
   core.debug(`Reading source items from ${srcFolder}`);
+
+  if (isTopLevel && entries.length === 0) {
+    throw new Error(`No upload items found in ${srcFolder}. Ensure the zip file contains valid content.`);
+  }
 
   for (const entry of entries) {
     const fullPath = path.join(srcFolder, entry.name);
@@ -255,16 +264,20 @@ export async function run() {
   const accessToken = core.getInput('access_token');
   const driveId = core.getInput('drive_id'); // Shared Documents
   const folderId = core.getInput('folder_id'); // sites/esaas-demos/andrew-top
-  const zipDir = core.getInput('zip_dir');
+  const zipContentsPath = core.getInput('zip_contents_path');
   const delayInput = core.getInput('delay');
   const delay = parseInt(delayInput, 10);
-  const docsDir = `${zipDir}/contents/docx`;
+  const docsDir = `${zipContentsPath}/docx`;
 
   core.info(`Upload files from ${docsDir} with a delay of ${delay} milliseconds between uploads.`);
 
   try {
+    if (!fs.existsSync(docsDir)) {
+      throw new Error(`Directory ${docsDir} was not found and no files were uploaded. Check zip contents and ensure it contains valid content.`);
+    }
+
     // Get the source structure (folders, files, etc.).
-    await populateSourceStructure(docsDir);
+    await populateSourceStructure(docsDir, true);
 
     // Now create the folder structure in SharePoint, if necessary.
     core.info(`Creating ${JSON.stringify(sourceStructure.folders.length)} folders, if necessary.`);
@@ -293,17 +306,19 @@ export async function run() {
       delay,
     );
 
+    if (uploadReport.failures > 0 || uploadReport.failedList.length > 0) {
+      core.setOutput('error_message', '❌ Upload Error: Some uploads failed. Check the workflow for more details.');
+    }
+  } catch (error) {
+    core.warning(`Failed to upload the files: ${error.message}`);
+    core.setOutput('error_message', `❌ Upload Error: ${error.message}`);
+  } finally {
     core.info(`Upload report: ${JSON.stringify(uploadReport)}`);
     core.setOutput('upload_successes', String(uploadReport.uploads));
     core.setOutput('upload_list', String(uploadReport.uploadList.join(', ')));
     core.setOutput('upload_failures', String(uploadReport.failures));
     core.setOutput('upload_failed_list', uploadReport.failedList.join(', '));
-    if (uploadReport.failures > 0 || uploadReport.failedList.length > 0) {
-      core.setOutput('error_message', '❌ Upload Error: Some uploads failed. Check the workflow for more details.');
-    }
-  } catch (error) {
-    core.warning(`Failed upload the files: ${error.message}`);
-    core.setOutput('error_message', `❌ Upload Error: ${error.message}`);
+    core.setOutput('upload_failed_locked', String(uploadReport.lockedFiles));
   }
 }
 
