@@ -1,3 +1,6 @@
+/* Disable no-descending-specificity globally for this file */
+/* stylelint-disable no-descending-specificity */
+
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -5,15 +8,30 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
   min-height: 300px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100vw;
+  background: radial-gradient(ellipse at right 40%, #14395a 60%, #0a1a2a 100%);
+  padding: 0 0 0 2vw;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .hero h1 {
-  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   color: var(--background-color);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-shadow: 0 2px 12px #10204080;
+  text-align: left;
+  max-width: 95%;
+  position: relative;
+  z-index: 2;
+  padding-left: 0;
 }
 
 .hero picture {
@@ -33,5 +51,106 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+/* DNA image overlaps more left & has a smooth blend using mask-image */
+.hero > div:first-child {
+  position: absolute;
+  inset: 0 0 0 15vw; /* DNA image now starts much further left */
+  width: auto;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  opacity: 0.75;
+  filter: blur(0.1px) drop-shadow(0 0 32px #33d0ff55);
+
+  /* left-to-right fade (blending) using mask-image for modern browsers */
+  mask-image: linear-gradient(to right, transparent 0%, #000 16%, #000 100%);
+}
+
+/* Text content on the left */
+.hero > div:last-child {
+  position: relative;
+  z-index: 2;
+  flex: 0 1 47vw;
+  min-width: 0;
+  padding-top: 2em;
+  padding-bottom: 1em;
+  display: flex;
+  align-items: flex-start;
+}
+
+.hero > div:last-child > div {
+  width: 100%;
+}
+
+@media (width <= 1000px) {
+  .hero > div:first-child {
+    left: 0;
+    width: 100vw;
+  }
+
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    mask-image: linear-gradient(to right, transparent 0%, #000 25%, #000 100%);
+  }
+}
+
+@media (width <= 800px) {
+  .hero {
+    flex-direction: column;
+    padding: 1.2rem 1vw;
+    min-height: unset;
+  }
+
+  .hero > div:first-child {
+    left: 0;
+    width: 100vw;
+    height: 55vw;
+    max-height: 320px;
+    top: unset;
+    bottom: 0;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    width: 100vw;
+    min-width: 0;
+    height: 100%;
+    object-fit: cover;
+    mask-image: linear-gradient(to right, transparent 0%, #000 40%, #000 100%);
+  }
+
+  .hero > div:last-child {
+    width: 100%;
+    padding: 1em 0 0.5em;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero h1 {
+    text-align: center;
+    font-size: 1.2rem;
+    max-width: 100%;
   }
 }
