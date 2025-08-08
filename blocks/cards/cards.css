@@ -25,3 +25,119 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards {
+  background: #f5f5f5;
+  padding: 40px 0;
+}
+
+/* Center block and reduce padding for a snug grid */
+.cards > .block {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* 4-column grid for desktop, adjust for responsiveness */
+.cards > .block > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 1200px) {
+  .cards > .block > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .cards > .block > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .cards > .block > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card style */
+.cards > .block > ul > li {
+  background: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+/* Image area always reserves space for the image block */
+.cards .cards-card-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: none;
+}
+
+/* Show fallback background for missing images (only if picture or img is absent) */
+.cards .cards-card-image:empty {
+  background: #e8e8e8;
+}
+
+/* Picture and image styling for consistent block height and full coverage */
+.cards .cards-card-image picture,
+.cards .cards-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background: none;
+}
+
+/* Card body padding & vertical compactness */
+.cards .cards-card-body {
+  padding: 14px 12px 13px 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: flex-start;
+}
+
+/* Card title: font and spacing */
+.cards .cards-card-body p:first-child strong {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 4px;
+  display: block;
+  line-height: 1.35;
+}
+
+/* Card description: font and compactness */
+.cards .cards-card-body p:not(:first-child) {
+  font-size: 0.97rem;
+  font-weight: 400;
+  color: #222;
+  margin: 0;
+  margin-top: 0;
+  line-height: 1.5;
+}
+
+/* Smooth hover elevation for interactivity */
+.cards > .block > ul > li:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+  z-index: 1;
+}
