@@ -1,37 +1,59 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the columns block (the direct .columns.block or fallback to element)
-  let columnsBlock = element.querySelector('.columns.block');
-  if (!columnsBlock) columnsBlock = element;
+  // Find the columns block within the wrapper
+  const block = element.querySelector('.columns.block');
+  if (!block) return;
 
-  // Each direct child <div> under columnsBlock is a row
-  const rows = Array.from(columnsBlock.querySelectorAll(':scope > div'));
+  // Get all rows (each row is a direct child of block)
+  const rows = Array.from(block.children).filter(row => row.nodeType === 1);
   if (rows.length === 0) return;
 
-  // Determine number of columns from the first row
-  const firstRowCols = Array.from(rows[0].querySelectorAll(':scope > div'));
-  const numCols = firstRowCols.length;
-  if (numCols === 0) return;
+  // Get number of columns from the first row
+  const firstRow = rows[0];
+  const columnsInFirstRow = Array.from(firstRow.children).filter(col => col.nodeType === 1);
+  const colCount = columnsInFirstRow.length;
 
-  // Header row: single cell (not matching the column count)
-  const table = [['Columns']];
-
-  // For each row, collect the column cell content (always numCols per row)
-  rows.forEach((row) => {
-    const cols = Array.from(row.querySelectorAll(':scope > div'));
-    if (cols.length === numCols) {
-      const rowCells = cols.map((col) => {
-        // All child nodes (including text, elements)
-        const children = Array.from(col.childNodes).filter(node => !(node.nodeType === Node.TEXT_NODE && node.textContent.trim() === ''));
-        if (children.length === 1) return children[0];
-        return children;
-      });
-      table.push(rowCells);
+  // Compose content rows (arrays of elements for each row)
+  const contentRows = rows.map(row => {
+    const cols = Array.from(row.children).filter(col => col.nodeType === 1);
+    const cells = [];
+    for (let i = 0; i < colCount; i++) {
+      if (cols[i]) {
+        cells.push(cols[i]);
+      } else {
+        cells.push('');
+      }
     }
+    return cells;
   });
 
-  // Create the block table
-  const blockTable = WebImporter.DOMUtils.createTable(table, document);
-  // Replace the original element with the new table
-  element.replaceWith(blockTable);
+  // Create the table manually to support <th colspan>
+  const table = document.createElement('table');
+
+  // Header row with a single th spanning all columns
+  const trHeader = document.createElement('tr');
+  const th = document.createElement('th');
+  th.textContent = 'Columns';
+  if (colCount > 1) th.setAttribute('colspan', String(colCount));
+  trHeader.appendChild(th);
+  table.appendChild(trHeader);
+
+  // Add content rows
+  contentRows.forEach(rowCells => {
+    const tr = document.createElement('tr');
+    rowCells.forEach(cell => {
+      const td = document.createElement('td');
+      if (typeof cell === 'string') {
+        td.innerHTML = cell;
+      } else if (Array.isArray(cell)) {
+        td.append(...cell);
+      } else if (cell) {
+        td.append(cell);
+      }
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+
+  element.replaceWith(table);
 }
