@@ -1,41 +1,47 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the block element with cards
+  // Find the block containing card items (accept .block inside .cards-wrapper or directly)
   let cardsBlock = element;
-  if (!cardsBlock.classList.contains('cards')) {
-    cardsBlock = element.querySelector('.cards.block');
+  if (!cardsBlock.classList.contains('block')) {
+    cardsBlock = element.querySelector('.block');
   }
-  if (!cardsBlock) return;
-
-  // Find the unordered list containing cards
+  // Defensive: ensure we have a UL with LI children
   const ul = cardsBlock.querySelector('ul');
-  if (!ul) return;
-
-  // Table header row per requirements
-  const rows = [['Cards']];
-
-  // For each card (li)
-  ul.querySelectorAll('li').forEach((li) => {
-    // Image cell: picture or img inside .cards-card-image
+  const cardItems = ul ? ul.querySelectorAll('li') : cardsBlock.querySelectorAll('li');
+  const rows = [];
+  // Table header: matches example exactly
+  rows.push(['Cards']);
+  // For each card: two cells [image, text].
+  cardItems.forEach((li) => {
+    // --- Image cell ---
     const imgDiv = li.querySelector('.cards-card-image');
-    let imgEl = null;
+    // Accept <picture> or <img>, prefer <picture>
+    let imageEl = null;
     if (imgDiv) {
-      // Prefer <picture>, fallback to <img>
-      imgEl = imgDiv.querySelector('picture') || imgDiv.querySelector('img');
+      imageEl = imgDiv.querySelector('picture') || imgDiv.querySelector('img');
     }
-    // Text cell: .cards-card-body
-    const textDiv = li.querySelector('.cards-card-body');
-    // Defensive: always reference existing elements directly
-    // If nothing found, use empty string to avoid broken table
+    // --- Text cell ---
+    // Compose as: <strong>, then description paragraph
+    const bodyDiv = li.querySelector('.cards-card-body');
+    const textContent = [];
+    if (bodyDiv) {
+      // Find <p><strong>...</strong></p> for the title, and next <p> for description
+      for (const p of bodyDiv.querySelectorAll('p')) {
+        // If it contains <strong>, keep as-is. Otherwise, add as normal paragraph.
+        if (p.querySelector('strong')) {
+          textContent.push(p);
+        } else {
+          textContent.push(p);
+        }
+      }
+    }
     rows.push([
-      imgEl || '',
-      textDiv || ''
+      imageEl,
+      textContent
     ]);
   });
-
-  // Create the cards block table
-  const table = WebImporter.DOMUtils.createTable(rows, document);
-
-  // Replace the entire incoming element (the wrapper)
-  element.replaceWith(table);
+  // Create block table
+  const block = WebImporter.DOMUtils.createTable(rows, document);
+  // Replace element
+  element.replaceWith(block);
 }
