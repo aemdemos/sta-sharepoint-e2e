@@ -1,6 +1,4 @@
-/* Disable no-descending-specificity globally */
 /* stylelint-disable no-descending-specificity */
-
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -39,16 +37,15 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 14px 20px; /* Tighter gaps for a more compact layout */
+  gap: 14px 20px;
   width: 100%;
-  height: 60vh;   /* More landscape, less vertically stretched */
+  height: 60vh;
   min-height: 400px;
   align-items: start;
   box-sizing: border-box;
   margin-top: 0;
 }
 
-/* Top-left text block */
 .columns.block.columns-2-cols > div:first-child > div:first-child {
   grid-column: 1;
   grid-row: 1;
@@ -63,7 +60,6 @@
   padding-top: 8px;
 }
 
-/* Top-right image block */
 .columns.block.columns-2-cols > div:first-child > .columns-img-col {
   grid-column: 2;
   grid-row: 1;
@@ -74,7 +70,6 @@
   align-items: stretch;
 }
 
-/* Bottom-left image block */
 .columns.block.columns-2-cols > div:last-child > .columns-img-col {
   grid-column: 1;
   grid-row: 2;
@@ -85,7 +80,6 @@
   align-items: stretch;
 }
 
-/* Bottom-right text block (Preview) */
 .columns.block.columns-2-cols > div:last-child > div:last-child {
   grid-column: 2;
   grid-row: 2;
@@ -96,16 +90,14 @@
   justify-content: flex-start;
   height: 100%;
   box-sizing: border-box;
-  padding-left: 12px; /* Ensures left alignment with above image */
+  padding-left: 12px;
   padding-top: 8px;
 }
 
-/* Remove default stacking in direct children */
 .columns.block.columns-2-cols > div {
   display: contents;
 }
 
-/* Images should fully fill their cell, more landscape aspect ratio */
 .columns.block.columns-2-cols .columns-img-col {
   width: 100%;
   height: 100%;
@@ -122,7 +114,6 @@
   aspect-ratio: 16/6;
 }
 
-/* Typography and spacing */
 .columns.block.columns-2-cols p,
 .columns.block.columns-2-cols ul,
 .columns.block.columns-2-cols li {
@@ -147,7 +138,6 @@
   margin-bottom: 0;
 }
 
-/* Button styles */
 .columns.block.columns-2-cols .button {
   font-size: 18px;
   border-radius: 2em;
@@ -165,7 +155,6 @@
   color: var(--text-color);
 }
 
-/* Responsive: stack as single column at mobile */
 @media (width <= 900px) {
   .columns.block.columns-2-cols {
     grid-template-columns: 1fr;
@@ -205,4 +194,131 @@
     align-items: flex-start;
     height: auto;
   }
+}
+
+
+/* Top-level: stack two rows vertically */
+.columns > .columns-wrapper > .block.columns-2-cols {
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* slightly reduced for a tighter look */
+  width: 100%;
+  background: var(--background-color);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Each row: two columns side by side, heights independent */
+.columns > .columns-wrapper > .block.columns-2-cols > div {
+  display: flex;
+  flex-direction: row;
+  gap: 40px; /* slightly reduced for a tighter look */
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Children (columns): fill available row width, vertical stack for content in text blocks */
+.columns > .columns-wrapper > .block.columns-2-cols > div > div,
+.columns > .columns-wrapper > .block.columns-2-cols > div > .columns-img-col {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* Only add left/top padding to text blocks for visual alignment */
+.columns > .columns-wrapper > .block.columns-2-cols > div > div {
+  padding-left: 24px;
+  padding-top: 20px;
+}
+
+/* Remove side padding for image columns, keep images flush with grid */
+.columns > .columns-wrapper > .block.columns-2-cols > div > .columns-img-col {
+  padding: 0;
+}
+
+/* Images: fill width, maintain aspect, do not stretch vertically */
+.columns .columns-img-col img,
+.columns .columns-img-col picture {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  margin: 0;
+  box-shadow: none;
+}
+
+/* Responsive: stack columns in each row vertically on mobile */
+@media (width <= 899px) {
+  .columns > .columns-wrapper > .block.columns-2-cols {
+    gap: 28px;
+  }
+
+  .columns > .columns-wrapper > .block.columns-2-cols > div {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .columns > .columns-wrapper > .block.columns-2-cols > div > div {
+    padding-left: 0;
+    padding-top: 0;
+  }
+}
+
+/* Tighter text and button spacing for a more compact block */
+.columns .block.columns-2-cols p,
+.columns .block.columns-2-cols ul,
+.columns .block.columns-2-cols li {
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 10px;
+}
+
+.columns .block.columns-2-cols ul {
+  margin-left: 18px;
+  margin-bottom: 10px;
+}
+
+.columns .block.columns-2-cols li {
+  margin-bottom: 2px;
+}
+
+.columns .block.columns-2-cols .button-container {
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+/* Button styles */
+.columns .block.columns-2-cols .button {
+  font-size: 15px;
+  border-radius: 2em;
+  padding: 8px 22px;
+  font-weight: 500;
+  min-width: 100px;
+  margin-top: 4px;
+  margin-bottom: 0;
+  background: #3a5bff;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+}
+
+.columns .block.columns-2-cols .button.secondary {
+  background-color: #fff;
+  color: #111;
+  border: 1px solid #111;
+}
+
+.columns .block.columns-2-cols .button.secondary:hover {
+  background: #f8f8f8;
+  border-color: #3b63fb;
+  color: #3b63fb;
 }
