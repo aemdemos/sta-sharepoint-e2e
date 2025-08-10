@@ -1,58 +1,44 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Locate the hero block inside the section
-  const heroBlock = element.querySelector('.hero.block');
-  let imageEl = null;
-  let textEls = [];
-
-  if (heroBlock) {
-    // Get the deepest div that contains content
-    let contentDiv = heroBlock;
-    // If heroBlock has a single child div, drill down
-    while (contentDiv.children.length === 1 && contentDiv.firstElementChild.tagName === 'DIV') {
-      contentDiv = contentDiv.firstElementChild;
-    }
-
-    // Find the <picture> inside a <p> for the image
-    const pictureP = Array.from(contentDiv.querySelectorAll('p')).find(p => p.querySelector('picture'));
-    if (pictureP) {
-      imageEl = pictureP.querySelector('picture');
-    }
-
-    // Collect all heading and non-empty paragraph elements following the image
-    let foundImage = false;
-    for (const child of contentDiv.children) {
-      // If this child contains the image, mark foundImage
-      if (!foundImage && child.querySelector && child.querySelector('picture')) {
-        foundImage = true;
-        continue;
-      }
-      if (foundImage) {
-        if (child.tagName.match(/^H\d$/) || (child.tagName === 'P' && child.textContent.trim())) {
-          textEls.push(child);
-        }
-      }
-    }
-    // If none found after image, get all headings & non-empty paragraphs except the one with picture
-    if (textEls.length === 0) {
-      for (const child of contentDiv.children) {
-        if (
-          (child.tagName.match(/^H\d$/) || (child.tagName === 'P' && child.textContent.trim())) &&
-          !child.querySelector('picture')
-        ) {
-          textEls.push(child);
-        }
-      }
-    }
+  // Find the deepest child that contains the hero content (image + text)
+  let heroContent = element;
+  // Go down single-child wrappers to get to the actual content
+  while (heroContent && heroContent.children.length === 1) {
+    heroContent = heroContent.children[0];
+  }
+  // The structure is now a <div> containing a <div> with the <p><picture>...</picture></p>, a <h1>, etc.
+  // Get the first (and probably only) <div> child
+  let contentDiv = null;
+  const possibleDivs = Array.from(heroContent.children).filter(child => child.tagName.toLowerCase() === 'div');
+  if (possibleDivs.length > 0) {
+    contentDiv = possibleDivs[0];
+  } else {
+    // fallback in case structure changes
+    contentDiv = heroContent;
   }
 
-  // Construct table rows, referencing elements directly
-  const headerRow = ['Hero'];
-  const imageRow = [imageEl ? imageEl : ''];
-  const textRow = [textEls.length ? textEls : ''];
+  // Gather image <p><picture><img/></picture></p>
+  let imagePara = null;
+  let textNodes = [];
+  Array.from(contentDiv.children).forEach(child => {
+    if (
+      child.tagName.toLowerCase() === 'p' &&
+      child.querySelector('picture') &&
+      child.querySelector('picture img')
+    ) {
+      imagePara = child;
+    } else if (child.textContent.trim() !== '') {
+      textNodes.push(child);
+    }
+  });
 
-  const cells = [headerRow, imageRow, textRow];
+  // Build the rows as per block spec: header, image (optional), text content (optional)
+  const rows = [
+    ['Hero'],
+    [imagePara ? imagePara : ''],
+    [textNodes.length ? textNodes : ''],
+  ];
 
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(block);
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(table);
 }

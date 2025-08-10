@@ -1,47 +1,43 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the block containing card items (accept .block inside .cards-wrapper or directly)
+  // Find the cards block (either .cards.block or .cards-wrapper > .cards.block)
   let cardsBlock = element;
-  if (!cardsBlock.classList.contains('block')) {
-    cardsBlock = element.querySelector('.block');
-  }
-  // Defensive: ensure we have a UL with LI children
+  // If element contains .cards.block, use that
+  const possibleInnerBlock = element.querySelector('.cards.block');
+  if (possibleInnerBlock) cardsBlock = possibleInnerBlock;
+
+  // Find the <ul> containing <li> cards
   const ul = cardsBlock.querySelector('ul');
-  const cardItems = ul ? ul.querySelectorAll('li') : cardsBlock.querySelectorAll('li');
+  if (!ul) return;
+
+  const lis = Array.from(ul.children).filter(li => li.tagName === 'LI');
   const rows = [];
-  // Table header: matches example exactly
+
+  // Header row: block name exactly as in the example
   rows.push(['Cards']);
-  // For each card: two cells [image, text].
-  cardItems.forEach((li) => {
-    // --- Image cell ---
-    const imgDiv = li.querySelector('.cards-card-image');
-    // Accept <picture> or <img>, prefer <picture>
-    let imageEl = null;
-    if (imgDiv) {
-      imageEl = imgDiv.querySelector('picture') || imgDiv.querySelector('img');
+
+  lis.forEach(li => {
+    // Image cell: find the image wrapper and use its firstElementChild (should be <picture>)
+    let imageCell = '';
+    const imgWrapper = li.querySelector('.cards-card-image');
+    if (imgWrapper && imgWrapper.firstElementChild) {
+      imageCell = imgWrapper.firstElementChild;
     }
-    // --- Text cell ---
-    // Compose as: <strong>, then description paragraph
-    const bodyDiv = li.querySelector('.cards-card-body');
-    const textContent = [];
-    if (bodyDiv) {
-      // Find <p><strong>...</strong></p> for the title, and next <p> for description
-      for (const p of bodyDiv.querySelectorAll('p')) {
-        // If it contains <strong>, keep as-is. Otherwise, add as normal paragraph.
-        if (p.querySelector('strong')) {
-          textContent.push(p);
-        } else {
-          textContent.push(p);
-        }
-      }
+
+    // Text cell: find the body content and use its children (preserving <strong> etc)
+    let textCell = '';
+    const bodyWrapper = li.querySelector('.cards-card-body');
+    if (bodyWrapper) {
+      // Use all element children (e.g. <p>), or text nodes with content
+      const bodyContent = Array.from(bodyWrapper.childNodes)
+        .filter(node => (node.nodeType === 1) || (node.nodeType === 3 && node.textContent.trim() !== ''));
+      // If nothing found, safe fallback to empty string
+      textCell = bodyContent.length > 1 ? bodyContent : (bodyContent[0] || '');
     }
-    rows.push([
-      imageEl,
-      textContent
-    ]);
+
+    rows.push([imageCell, textCell]);
   });
-  // Create block table
-  const block = WebImporter.DOMUtils.createTable(rows, document);
-  // Replace element
-  element.replaceWith(block);
+
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(table);
 }
