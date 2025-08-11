@@ -196,12 +196,10 @@
   }
 }
 
-
-/* Top-level: stack two rows vertically */
 .columns > .columns-wrapper > .block.columns-2-cols {
   display: flex;
   flex-direction: column;
-  gap: 40px; /* slightly reduced for a tighter look */
+  gap: 40px;
   width: 100%;
   background: var(--background-color);
   box-sizing: border-box;
@@ -209,16 +207,14 @@
   padding: 0;
 }
 
-/* Each row: two columns side by side, heights independent */
 .columns > .columns-wrapper > .block.columns-2-cols > div {
   display: flex;
   flex-direction: row;
-  gap: 40px; /* slightly reduced for a tighter look */
+  gap: 40px;
   align-items: flex-start;
   width: 100%;
 }
 
-/* Children (columns): fill available row width, vertical stack for content in text blocks */
 .columns > .columns-wrapper > .block.columns-2-cols > div > div,
 .columns > .columns-wrapper > .block.columns-2-cols > div > .columns-img-col {
   flex: 1 1 0;
@@ -230,18 +226,15 @@
   min-width: 0;
 }
 
-/* Only add left/top padding to text blocks for visual alignment */
 .columns > .columns-wrapper > .block.columns-2-cols > div > div {
   padding-left: 24px;
   padding-top: 20px;
 }
 
-/* Remove side padding for image columns, keep images flush with grid */
 .columns > .columns-wrapper > .block.columns-2-cols > div > .columns-img-col {
   padding: 0;
 }
 
-/* Images: fill width, maintain aspect, do not stretch vertically */
 .columns .columns-img-col img,
 .columns .columns-img-col picture {
   width: 100%;
@@ -254,7 +247,6 @@
   box-shadow: none;
 }
 
-/* Responsive: stack columns in each row vertically on mobile */
 @media (width <= 899px) {
   .columns > .columns-wrapper > .block.columns-2-cols {
     gap: 28px;
@@ -271,7 +263,6 @@
   }
 }
 
-/* Tighter text and button spacing for a more compact block */
 .columns .block.columns-2-cols p,
 .columns .block.columns-2-cols ul,
 .columns .block.columns-2-cols li {
@@ -296,7 +287,6 @@
   margin-bottom: 0;
 }
 
-/* Button styles */
 .columns .block.columns-2-cols .button {
   font-size: 15px;
   border-radius: 2em;
@@ -321,4 +311,154 @@
   background: #f8f8f8;
   border-color: #3b63fb;
   color: #3b63fb;
+}
+
+
+.columns-wrapper .columns.block.columns-2-cols {
+  /* Use CSS Grid for two rows */
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  gap: 38px 0;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background: var(--background-color);
+}
+
+/* Each row: columns side by side with flex */
+.columns-wrapper .columns.block.columns-2-cols > div {
+  display: flex;
+  flex-direction: row;
+  gap: 36px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Column width and spacing - visually balanced, closer together */
+.columns-wrapper .columns.block.columns-2-cols > div > div,
+.columns-wrapper .columns.block.columns-2-cols > div > .columns-img-col {
+  flex: 1 1 0;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Top row: text narrow left, image wide right */
+.columns-wrapper .columns.block.columns-2-cols > div:first-child > div:first-child {
+  flex-basis: 35%;
+  max-width: 38%;
+  padding-left: 32px;
+  padding-right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.columns-wrapper .columns.block.columns-2-cols > div:first-child > .columns-img-col {
+  flex-basis: 65%;
+  max-width: 68%;
+  padding-left: 0;
+  padding-right: 32px;
+}
+
+/* Bottom row: image wide left, text narrow right */
+.columns-wrapper .columns.block.columns-2-cols > div:last-child > .columns-img-col {
+  flex-basis: 65%;
+  max-width: 68%;
+  padding-left: 0;
+  padding-right: 32px;
+}
+
+.columns-wrapper .columns.block.columns-2-cols > div:last-child > div:last-child {
+  flex-basis: 35%;
+  max-width: 38%;
+  padding-left: 32px;
+  padding-right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Images: Fill columns with natural aspect, not stretched edge-to-edge */
+.columns-wrapper .columns.block.columns-2-cols .columns-img-col picture,
+.columns-wrapper .columns.block.columns-2-cols .columns-img-col img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border: none;
+  display: block;
+  margin: 0;
+}
+
+/* Text styling */
+.columns-wrapper .columns.block.columns-2-cols p,
+.columns-wrapper .columns.block.columns-2-cols ul,
+.columns-wrapper .columns.block.columns-2-cols li {
+  color: #000;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  margin: 0 0 12px;
+  line-height: 1.6;
+}
+
+.columns-wrapper .columns.block.columns-2-cols ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.columns-wrapper .columns.block.columns-2-cols li {
+  margin-bottom: 4px;
+}
+
+/* Button styles */
+.columns-wrapper .columns.block.columns-2-cols .button {
+  font-size: 16px;
+  border-radius: 18px;
+  padding: 8px 32px;
+  min-width: 120px;
+  margin-top: 16px;
+  background: #4363f9;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  font-weight: 500;
+  text-align: center;
+}
+
+.columns-wrapper .columns.block.columns-2-cols .button.secondary {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+}
+
+.columns-wrapper .columns.block.columns-2-cols .button-container {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+/* Responsive stacking: stack rows vertically on small screens */
+@media (width <= 900px) {
+  .columns-wrapper .columns.block.columns-2-cols {
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr;
+    gap: 24px 0;
+    padding: 0;
+  }
+
+  .columns-wrapper .columns.block.columns-2-cols > div {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .columns-wrapper .columns.block.columns-2-cols > div > div,
+  .columns-wrapper .columns.block.columns-2-cols > div > .columns-img-col {
+    max-width: 100%;
+    flex-basis: auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
