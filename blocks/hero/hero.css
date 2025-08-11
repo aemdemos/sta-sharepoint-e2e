@@ -6,17 +6,22 @@
 
 .hero {
   position: relative;
-  min-height: 130px;
+  min-height: 190px;
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100vw;
-  background: linear-gradient(90deg, #0a2946 62%, #14375a 100%);
-  padding: 0 0 0 2vw;
+  background:
+    linear-gradient(90deg, #0a2946 60%, #14375a 100%),
+    url('./media_1061934561e8a4f01907e616a0ce0e4b74d63b92e.jpg?width=2000&format=jpg&optimize=medium');
+  padding: 0;
   box-sizing: border-box;
   overflow: hidden;
   justify-content: flex-start;
   height: 130px;
+  background-size: cover;
+  background-position: 60% center;
+  background-repeat: no-repeat;
 }
 
 .hero h1 {
@@ -28,15 +33,15 @@
   line-height: 1.1;
   text-shadow: none;
   text-align: left;
-  max-width: 600px;
+  max-width: 720px;
   position: relative;
   z-index: 2;
-  padding-left: 0;
-  padding-top: 0;
-  padding-right: 0;
-  padding-bottom: 0;
+  padding: 0;
   display: flex;
   align-items: center;
+  margin: 0;
+  font-family: var(--heading-font-family);
+  letter-spacing: 0.01em;
 }
 
 .hero picture {
@@ -98,13 +103,16 @@
 .hero > div:last-child {
   position: relative;
   z-index: 2;
-  flex: 1 1 48%;
+  flex: 1 1 100%;
   min-width: 0;
   padding: 2em 16px 1em 38px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   height: 100%;
+  padding-left: 2vw;
+  padding-right: 0;
+  box-sizing: border-box;
 }
 
 .hero > div:last-child > div {
@@ -167,10 +175,6 @@
   }
 }
 
-/* Text container: occupy left, ensure it's visible and centered vertically */
-
-/* Image container: move to right, fill height, fade softly into background */
-
 @media (width <= 700px) {
   .hero {
     flex-direction: column;
@@ -203,6 +207,51 @@
     width: 100%;
     height: auto;
     order: 2;
+  }
+
+  .hero h1 {
+    text-align: center;
+    font-size: 1.25rem;
+    max-width: 100%;
+  }
+}
+
+/* Hide the DNA image element so only the background shows */
+.hero > div:first-child,
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  display: none;
+}
+
+/* Text container overlays background, left-aligned, less left padding for proximity to DNA */
+
+/* Remove white space above hero if caused by parent containers */
+.hero-container,
+.hero-wrapper {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Responsive adjustments */
+@media (width <= 800px) {
+  .hero {
+    min-height: 140px;
+    padding: 0;
+    background-position: center bottom;
+  }
+
+  .hero > div:last-child {
+    width: 100vw;
+    padding: 16px 4vw 10px;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+  }
+
+  .hero > div:last-child > div {
+    align-items: center;
+    justify-content: center;
+    height: auto;
   }
 
   .hero h1 {
