@@ -1,44 +1,43 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the deepest child that contains the hero content (image + text)
-  let heroContent = element;
-  // Go down single-child wrappers to get to the actual content
-  while (heroContent && heroContent.children.length === 1) {
-    heroContent = heroContent.children[0];
-  }
-  // The structure is now a <div> containing a <div> with the <p><picture>...</picture></p>, a <h1>, etc.
-  // Get the first (and probably only) <div> child
-  let contentDiv = null;
-  const possibleDivs = Array.from(heroContent.children).filter(child => child.tagName.toLowerCase() === 'div');
-  if (possibleDivs.length > 0) {
-    contentDiv = possibleDivs[0];
-  } else {
-    // fallback in case structure changes
-    contentDiv = heroContent;
-  }
+  // Find the hero block within the section
+  const heroBlock = element.querySelector('.hero.block');
+  let heroImage = null;
+  let heroTextContent = [];
 
-  // Gather image <p><picture><img/></picture></p>
-  let imagePara = null;
-  let textNodes = [];
-  Array.from(contentDiv.children).forEach(child => {
-    if (
-      child.tagName.toLowerCase() === 'p' &&
-      child.querySelector('picture') &&
-      child.querySelector('picture img')
-    ) {
-      imagePara = child;
-    } else if (child.textContent.trim() !== '') {
-      textNodes.push(child);
+  if (heroBlock) {
+    // The typical structure is: hero.block > div > div > ...
+    // Find the innermost content container (usually the first div > div)
+    let contentContainer = heroBlock.querySelector(':scope > div > div');
+    if (!contentContainer) {
+      // Fallback: hero.block > div
+      contentContainer = heroBlock.querySelector(':scope > div') || heroBlock;
     }
-  });
 
-  // Build the rows as per block spec: header, image (optional), text content (optional)
-  const rows = [
+    // Find the first <picture> element for the hero image
+    heroImage = contentContainer.querySelector('picture');
+
+    // Collect all child nodes except the <picture> and empty paragraphs
+    heroTextContent = [];
+    Array.from(contentContainer.childNodes).forEach((node) => {
+      // Skip whitespace-only text nodes
+      if (node.nodeType === 3 && !node.textContent.trim()) return;
+      // Skip <picture> node
+      if (node.nodeType === 1 && node.tagName === 'PICTURE') return;
+      // Skip empty paragraphs
+      if (node.nodeType === 1 && node.tagName === 'P' && !node.textContent.trim()) return;
+      // Include everything else (headings, paragraphs, etc.)
+      heroTextContent.push(node);
+    });
+  }
+
+  // Table structure: [header], [image], [content]
+  const cells = [
     ['Hero'],
-    [imagePara ? imagePara : ''],
-    [textNodes.length ? textNodes : ''],
+    [heroImage || ''],
+    [heroTextContent.length ? heroTextContent : '']
   ];
 
-  const table = WebImporter.DOMUtils.createTable(rows, document);
-  element.replaceWith(table);
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(block);
 }
