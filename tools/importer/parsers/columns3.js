@@ -1,24 +1,26 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the nested columns block
-  const block = element.querySelector('.columns.block');
-  if (!block) return;
+  // Find the .columns.block inside the wrapper
+  const columnsBlock = element.querySelector('.columns.block');
+  if (!columnsBlock) return;
 
-  // Get all content rows (each direct child div of the block)
-  const rows = Array.from(block.children);
+  // Get all rows (direct children of .columns.block)
+  const rows = Array.from(columnsBlock.children);
+  if (rows.length === 0) return;
 
-  // Compose the table body rows
-  const tableRows = rows.map(row => Array.from(row.children));
+  // Build the header row: always a single cell ['Columns'] per requirements
+  const tableRows = [['Columns']];
 
-  // The header row must be a single cell matching the example
-  const headerRow = ['Columns'];
+  // For each row, get its immediate children (the columns)
+  rows.forEach((row) => {
+    const cols = Array.from(row.children);
+    // Add the content columns to the table row
+    tableRows.push(cols);
+  });
 
-  // Compose the cells array with a single header cell
-  const cells = [headerRow, ...tableRows];
+  // Create the block table
+  const block = WebImporter.DOMUtils.createTable(tableRows, document);
 
-  // Create the table
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Replace the original element with the new table
-  element.replaceWith(table);
+  // Replace the original element
+  element.replaceWith(block);
 }
