@@ -1,43 +1,74 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the hero block within the section
-  const heroBlock = element.querySelector('.hero.block');
-  let heroImage = null;
-  let heroTextContent = [];
+  // 1. Find the main content block
+  // The HTML structure is: element > div.hero-wrapper > div.hero.block > div > div
+  // Defensive extraction in case of variations
 
-  if (heroBlock) {
-    // The typical structure is: hero.block > div > div > ...
-    // Find the innermost content container (usually the first div > div)
-    let contentContainer = heroBlock.querySelector(':scope > div > div');
-    if (!contentContainer) {
-      // Fallback: hero.block > div
-      contentContainer = heroBlock.querySelector(':scope > div') || heroBlock;
+  // Step 1: Find the deepest div containing actual content
+  let contentDiv = element;
+  const heroWrapper = element.querySelector(':scope > div.hero-wrapper');
+  if (heroWrapper) {
+    const heroBlock = heroWrapper.querySelector(':scope > div.hero.block');
+    if (heroBlock) {
+      // Usually: heroBlock > div > div
+      let innerDiv = heroBlock;
+      const blockDiv1 = heroBlock.querySelector(':scope > div');
+      if (blockDiv1) {
+        const blockDiv2 = blockDiv1.querySelector(':scope > div');
+        if (blockDiv2) {
+          innerDiv = blockDiv2;
+        } else {
+          innerDiv = blockDiv1;
+        }
+      }
+      contentDiv = innerDiv;
+    } else {
+      contentDiv = heroWrapper;
     }
+  }
 
-    // Find the first <picture> element for the hero image
-    heroImage = contentContainer.querySelector('picture');
+  // Step 2: Extract image element (picture or img)
+  let imageEl = null;
+  imageEl = contentDiv.querySelector('picture, img');
 
-    // Collect all child nodes except the <picture> and empty paragraphs
-    heroTextContent = [];
-    Array.from(contentContainer.childNodes).forEach((node) => {
-      // Skip whitespace-only text nodes
-      if (node.nodeType === 3 && !node.textContent.trim()) return;
-      // Skip <picture> node
-      if (node.nodeType === 1 && node.tagName === 'PICTURE') return;
-      // Skip empty paragraphs
-      if (node.nodeType === 1 && node.tagName === 'P' && !node.textContent.trim()) return;
-      // Include everything else (headings, paragraphs, etc.)
-      heroTextContent.push(node);
+  // Step 3: Extract all heading, subheading, CTA, and paragraphs after image
+  // We'll collect all h1, h2, h3, h4, p, a in order, but only after the image
+  let textEls = [];
+  let foundImage = false;
+  for (const node of contentDiv.childNodes) {
+    if (!foundImage && node.nodeType === 1 && (node.tagName === 'PICTURE' || node.tagName === 'IMG' || node.querySelector && (node.querySelector('picture') || node.querySelector('img'))) ) {
+      foundImage = true;
+      continue;
+    }
+    if (foundImage && node.nodeType === 1) {
+      // Only add heading tags, paragraphs, and links
+      if (/^H[1-6]$/.test(node.tagName) || node.tagName === 'P' || node.tagName === 'A') {
+        // Only include non-empty elements
+        if (node.textContent.trim() || node.tagName === 'A') {
+          textEls.push(node);
+        }
+      }
+    }
+  }
+  // If nothing found after image, fallback: collect all headings, paragraphs, links
+  if (textEls.length === 0) {
+    textEls = Array.from(contentDiv.querySelectorAll('h1, h2, h3, h4, p, a'));
+    // Remove image/empty paragraphs if present
+    textEls = textEls.filter((el) => {
+      if (el.querySelector('picture, img')) return false;
+      if (el.tagName === 'P' && !el.textContent.trim()) return false;
+      return true;
     });
   }
 
-  // Table structure: [header], [image], [content]
+  // Step 4: Compose the block table
   const cells = [
-    ['Hero'],
-    [heroImage || ''],
-    [heroTextContent.length ? heroTextContent : '']
+    ['Hero'], // Header as defined in example
+    [imageEl], // Image row
+    [textEls] // Content row (array of elements)
   ];
 
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(block);
+  // Step 5: Create table and replace
+  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(blockTable);
 }
