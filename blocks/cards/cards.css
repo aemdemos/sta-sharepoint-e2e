@@ -22,22 +22,25 @@
   justify-content: flex-start;
   background: #fff;
   min-height: 120px;
+  align-items: flex-start;
 }
 
 .cards .cards-card-image {
   line-height: 0;
   width: 100%;
   aspect-ratio: 4 / 3;
-  display: block;
-  align-items: stretch;
+  display: flex;
+  align-items: center;
   justify-content: center;
   background: none;
-  height: 140px;
+  height: 120px;
   overflow: hidden;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   border-bottom: 1px solid #e0e0e0;
   margin: 0;
+  flex-direction: row;
+  border: none;
 }
 
 .cards > ul > li img {
@@ -48,8 +51,8 @@
 
 
 .cards {
-  background: #fafafa;
-  padding: 56px 0;
+  background: #f8f8f8;
+  padding: 48px 0;
   padding-top: 48px;
   padding-bottom: 48px;
 }
@@ -108,6 +111,7 @@
 }
 
 .cards .cards-card-image picture,
+.cards .cards-card-image picture,
 .cards .cards-card-image img {
   display: block;
   width: 100%;
@@ -120,16 +124,17 @@
 }
 
 .cards .cards-card-body p:first-child strong {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
-  color: #212121;
+  color: #000;
   margin-bottom: 8px;
   display: block;
-  line-height: 1.35;
+  line-height: 1.3;
+  letter-spacing: 0;
 }
 
 .cards .cards-card-body p:not(:first-child) {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
   color: #333;
   margin: 0;
@@ -209,9 +214,12 @@
 
 .cards .block ul {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+
+.cards .block ul {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 1fr;
-  gap: 36px;
+  gap: 20px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -219,9 +227,9 @@
   box-sizing: border-box;
   width: 100%;
   padding-left: 0;
+  justify-content: flex-start;
 }
 
-@media (width <= 1200px) {
   .cards .block ul {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px 16px;
@@ -237,15 +245,18 @@
 
 .cards .block ul > li {
   background: #fff;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  border-radius: 0;
   box-shadow: none;
   display: flex;
   flex-direction: column;
-  min-height: 295px;
+  min-height: 0;
   height: 100%;
   overflow: hidden;
   align-items: stretch;
+  justify-content: flex-start;
+  margin: 0;
+  min-width: 0;
 }
 
 .cards .cards-wrapper {
@@ -254,13 +265,6 @@
   margin-right: auto;
   padding-left: 80px;
   padding-right: 80px;
-  box-sizing: border-box;
-}
-
-.cards .block {
-  width: 100%;
-  margin: 0 auto;
-  padding: 0;
   box-sizing: border-box;
 }
 
@@ -298,4 +302,43 @@
 .cards .block ul > li:hover {
   box-shadow: none;
   z-index: auto;
+}
+
+/* Use 3 columns at desktop for a balanced layout */
+
+/* Tablet: 2 columns */
+@media (width <= 900px) {
+  .cards .block ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile: 1 column */
+@media (width <= 600px) {
+  .cards .block ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card image */
+
+/* Card body and text */
+
+/* Remove paragraph margin in cards */
+.cards .cards-card-body p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Title text */
+
+/* Description text */
+
+/* Remove hover shadow if any */
+
+/* Remove unwanted spacing/rounding from images and containers */
+.cards .cards-card-image,
+.cards .cards-card-image picture,
+.cards .cards-card-image img {
+  border-radius: 0;
 }
