@@ -1,74 +1,62 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // 1. Find the main content block
-  // The HTML structure is: element > div.hero-wrapper > div.hero.block > div > div
-  // Defensive extraction in case of variations
+  // Header row, matches example precisely
+  const headerRow = ['Hero'];
 
-  // Step 1: Find the deepest div containing actual content
-  let contentDiv = element;
-  const heroWrapper = element.querySelector(':scope > div.hero-wrapper');
-  if (heroWrapper) {
-    const heroBlock = heroWrapper.querySelector(':scope > div.hero.block');
-    if (heroBlock) {
-      // Usually: heroBlock > div > div
-      let innerDiv = heroBlock;
-      const blockDiv1 = heroBlock.querySelector(':scope > div');
-      if (blockDiv1) {
-        const blockDiv2 = blockDiv1.querySelector(':scope > div');
-        if (blockDiv2) {
-          innerDiv = blockDiv2;
-        } else {
-          innerDiv = blockDiv1;
-        }
-      }
-      contentDiv = innerDiv;
-    } else {
-      contentDiv = heroWrapper;
+  // 2nd row: Image (background image)
+  let imgEl = null;
+  // Find first <img> inside any <picture> within 'element'
+  const pic = element.querySelector('picture');
+  if (pic) {
+    const img = pic.querySelector('img');
+    if (img) {
+      imgEl = img;
     }
   }
 
-  // Step 2: Extract image element (picture or img)
-  let imageEl = null;
-  imageEl = contentDiv.querySelector('picture, img');
-
-  // Step 3: Extract all heading, subheading, CTA, and paragraphs after image
-  // We'll collect all h1, h2, h3, h4, p, a in order, but only after the image
-  let textEls = [];
-  let foundImage = false;
-  for (const node of contentDiv.childNodes) {
-    if (!foundImage && node.nodeType === 1 && (node.tagName === 'PICTURE' || node.tagName === 'IMG' || node.querySelector && (node.querySelector('picture') || node.querySelector('img'))) ) {
-      foundImage = true;
-      continue;
-    }
-    if (foundImage && node.nodeType === 1) {
-      // Only add heading tags, paragraphs, and links
-      if (/^H[1-6]$/.test(node.tagName) || node.tagName === 'P' || node.tagName === 'A') {
-        // Only include non-empty elements
-        if (node.textContent.trim() || node.tagName === 'A') {
-          textEls.push(node);
+  // 3rd row: Headline and other text (h1, h2, h3, p, etc.)
+  // The example only has a headline, so focus on h1 and paragraphs
+  let contentEls = [];
+  // Look for text content in the deepest wrapper
+  let wrappers = [element];
+  // Drill down to .hero-wrapper > .hero.block > div > div
+  if (element.querySelector('.hero.block')) {
+    wrappers = element.querySelectorAll('.hero.block > div > div');
+  }
+  let foundContent = false;
+  for (const wrap of wrappers) {
+    // Only consider direct children
+    Array.from(wrap.children).forEach(child => {
+      // Ignore <picture> and its container <p>
+      if (child.tagName.toLowerCase() === 'p' && child.querySelector('picture')) return;
+      if (/^h[1-6]$/.test(child.tagName.toLowerCase()) || child.tagName.toLowerCase() === 'p') {
+        if (child.textContent.trim()) {
+          contentEls.push(child);
+          foundContent = true;
         }
       }
-    }
+    });
+    if (foundContent) break;
   }
-  // If nothing found after image, fallback: collect all headings, paragraphs, links
-  if (textEls.length === 0) {
-    textEls = Array.from(contentDiv.querySelectorAll('h1, h2, h3, h4, p, a'));
-    // Remove image/empty paragraphs if present
-    textEls = textEls.filter((el) => {
-      if (el.querySelector('picture, img')) return false;
-      if (el.tagName === 'P' && !el.textContent.trim()) return false;
-      return true;
+  // Fallback: if not found, look in all <h1>, <p> under element
+  if (contentEls.length === 0) {
+    const fallbackEls = element.querySelectorAll('h1, h2, h3, h4, h5, h6, p');
+    fallbackEls.forEach(el => {
+      // Exclude anything inside <picture>
+      if (!el.querySelector('picture') && el.textContent.trim()) {
+        contentEls.push(el);
+      }
     });
   }
 
-  // Step 4: Compose the block table
-  const cells = [
-    ['Hero'], // Header as defined in example
-    [imageEl], // Image row
-    [textEls] // Content row (array of elements)
-  ];
+  // Edge case: If no content found, leave cell blank
+  const rowImage = [imgEl ? imgEl : ''];
+  const rowContent = [contentEls.length ? contentEls : ''];
 
-  // Step 5: Create table and replace
-  const blockTable = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(blockTable);
+  // Compose the table (exactly 1 column, 3 rows)
+  const rows = [headerRow, rowImage, rowContent];
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+
+  // Replace the original element with the table
+  element.replaceWith(table);
 }
