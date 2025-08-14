@@ -1,49 +1,52 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main columns block
+  // Find the actual block with columns
   const columnsBlock = element.querySelector('.columns.block');
   if (!columnsBlock) return;
 
-  // Get all direct children of columnsBlock
-  // Each child is a 'row' in the columns UI
-  const rowDivs = Array.from(columnsBlock.children).filter((child) => child.tagName === 'DIV');
+  // Get all direct child divs of the block (each represents a row of columns)
+  const rows = Array.from(columnsBlock.children);
 
-  // Determine the maximum number of columns in any row
-  let maxCols = 0;
-  rowDivs.forEach(rowDiv => {
-    const cols = Array.from(rowDiv.children).filter(col => col.tagName === 'DIV');
-    if (cols.length > maxCols) maxCols = cols.length;
-  });
-  if (maxCols === 0) maxCols = 1;
-
-  // Build header row: a single cell with 'Columns' (will use colspan later)
-  const headerRow = new Array(maxCols).fill('');
-  headerRow[0] = 'Columns';
-
-  // Build the content rows
-  const tableRows = [];
-  rowDivs.forEach((rowDiv) => {
-    const colDivs = Array.from(rowDiv.children).filter(col => col.tagName === 'DIV');
-    // Pad columns with empty string for rows that are missing columns
-    while (colDivs.length < maxCols) colDivs.push('');
-    tableRows.push(colDivs);
-  });
-
-  // Compose the table data
-  const cells = [headerRow, ...tableRows];
-
-  // Create the table
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Set colspan on header if needed
-  if (maxCols > 1) {
-    const th = table.querySelector('tr:first-child th');
-    if (th) th.setAttribute('colspan', maxCols);
-    // Remove any extra ths from the header row
-    const extraThs = Array.from(table.querySelectorAll('tr:first-child th')).slice(1);
-    extraThs.forEach(thEl => thEl.remove());
+  // Determine number of columns by inspecting first content row
+  let numCols = 0;
+  if (rows.length > 0) {
+    numCols = rows[0].children.length;
   }
 
-  // Replace the original element with the table
+  // Table header row: must be exactly one cell, spanning all columns
+  // WebImporter.DOMUtils.createTable will render a <th> in a tr with one cell
+  const headerRow = ['Columns'];
+  const tableRows = [headerRow];
+
+  // For each row of columns, build the cells array
+  rows.forEach(row => {
+    const columns = Array.from(row.children);
+    const cells = columns.map(col => {
+      // If it's an image column, use the <picture> element directly
+      if (col.classList.contains('columns-img-col')) {
+        const pic = col.querySelector('picture');
+        if (pic) return pic;
+      }
+      // Otherwise, include all element children
+      const contentEls = Array.from(col.childNodes).filter(
+        node => node.nodeType === Node.ELEMENT_NODE
+      );
+      if (contentEls.length === 1) {
+        return contentEls[0];
+      } else if (contentEls.length > 1) {
+        return contentEls;
+      } else {
+        return '';
+      }
+    });
+    // If less columns than numCols, pad with empty string
+    while (cells.length < numCols) {
+      cells.push('');
+    }
+    tableRows.push(cells);
+  });
+
+  // Create the table
+  const table = WebImporter.DOMUtils.createTable(tableRows, document);
   element.replaceWith(table);
 }
