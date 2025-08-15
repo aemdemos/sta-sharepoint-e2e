@@ -386,14 +386,10 @@
   overflow: hidden;
   position: relative;
 }
-
-/* Remove wrapper constraints for full-bleed hero */
 .hero-container > .hero-wrapper {
   max-width: unset;
   padding: 0;
 }
-
-/* Text container: left side, vertically and horizontally aligned */
 .hero > div:last-child {
   display: flex;
   align-items: center;
@@ -425,8 +421,6 @@
   text-align: left;
   letter-spacing: 0.01em;
 }
-
-/* Image container: right side, fills all available height */
 .hero > div:first-child {
   display: flex;
   align-items: stretch;
@@ -440,8 +434,6 @@
   position: relative;
   z-index: 1;
 }
-
-/* Image fills the vertical and horizontal space, no gap or border */
 .hero > div:first-child picture,
 .hero > div:first-child img {
   display: block;
@@ -458,8 +450,6 @@
   border: none;
   background: none;
 }
-
-/* Responsive stacking for smaller screens */
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -522,5 +512,157 @@
   }
   .hero h1 {
     font-size: 1.1rem;
+  }
+}
+
+
+.hero {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100vw;
+  min-height: 170px;
+  height: 170px;
+  background: radial-gradient(ellipse at 80% 54%, #153456 62%, #112031 100%);
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+/* Image wrapper - right column */
+.hero > div:first-child {
+  flex: 1 1 52%;
+  order: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-width: 380px;
+  max-width: 60vw;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
+
+/* Make DNA image large, fade left, and slightly overflow left for impact */
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  display: block;
+  width: 120%;
+  min-width: 400px;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  margin-left: -9vw;
+  mask-image: linear-gradient(to left, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
+  opacity: 1;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+/* Text wrapper - left column */
+.hero > div:last-child {
+  flex: 1 1 48%;
+  order: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 220px;
+  max-width: 50vw;
+  height: 100%;
+  padding-left: 54px;
+  padding-top: 32px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.hero > div:last-child > div {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.hero h1 {
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-shadow: none;
+}
+
+/* Responsive: stack vertically on small screens */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    min-height: 120px;
+    height: auto;
+  }
+  .hero > div:first-child {
+    order: 1;
+    width: 100vw;
+    min-width: 0;
+    max-width: none;
+    height: 120px;
+    align-items: flex-end;
+    justify-content: center;
+    margin-left: 0;
+  }
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    width: 100vw;
+    min-width: 0;
+    max-width: none;
+    height: 120px;
+    margin-left: 0;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  .hero > div:last-child {
+    order: 2;
+    width: 100vw;
+    min-width: 0;
+    height: auto;
+    padding: 18px 6vw 0 6vw;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0;
+    padding-top: 0;
+  }
+  .hero > div:last-child > div {
+    align-items: center;
+    height: auto;
+  }
+  .hero h1 {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 80px;
+    height: auto;
+  }
+  .hero > div:first-child {
+    height: 70px;
+  }
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    height: 70px;
+  }
+  .hero > div:last-child {
+    padding: 12px 3vw 0 3vw;
+  }
+  .hero h1 {
+    font-size: 1rem;
   }
 }
