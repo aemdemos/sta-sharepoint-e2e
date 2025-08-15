@@ -34,17 +34,6 @@
 
 /* fallback fonts */
 @font-face {
-  font-family:"roboto Fallback";
-  font-style:normal;
-  font-weight:400;
-  src:local("Arial");
-  ascent-override:92.49%;
-  descent-override:24.34%;
-  line-gap-override:0.00%;
-  size-adjust:100.30%;
-}
-
-@font-face {
   font-family:"roboto-condensed Fallback";
   font-style:normal;
   font-weight:700;
@@ -64,6 +53,17 @@
   descent-override:24.11%;
   line-gap-override:0.00%;
   size-adjust:101.26%;
+}
+
+@font-face {
+  font-family:"roboto Fallback";
+  font-style:normal;
+  font-weight:400;
+  src:local("Arial");
+  ascent-override:92.49%;
+  descent-override:24.34%;
+  line-gap-override:0.00%;
+  size-adjust:100.30%;
 }
 
 @font-face {
