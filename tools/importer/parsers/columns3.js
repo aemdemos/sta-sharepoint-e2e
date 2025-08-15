@@ -1,52 +1,35 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the actual block with columns
-  const columnsBlock = element.querySelector('.columns.block');
-  if (!columnsBlock) return;
+  const block = element.querySelector(':scope > .columns.block');
+  if (!block) return;
 
-  // Get all direct child divs of the block (each represents a row of columns)
-  const rows = Array.from(columnsBlock.children);
+  // Each row is a div, each column inside it
+  const rows = Array.from(block.children).filter(div => div.nodeType === 1);
+  if (!rows.length) return;
 
-  // Determine number of columns by inspecting first content row
-  let numCols = 0;
-  if (rows.length > 0) {
-    numCols = rows[0].children.length;
-  }
+  // Determine the max number of columns in any row for proper header colspan
+  const maxCols = Math.max(...rows.map(rowDiv => Array.from(rowDiv.children).filter(col => col.nodeType === 1).length));
 
-  // Table header row: must be exactly one cell, spanning all columns
-  // WebImporter.DOMUtils.createTable will render a <th> in a tr with one cell
-  const headerRow = ['Columns'];
-  const tableRows = [headerRow];
-
-  // For each row of columns, build the cells array
-  rows.forEach(row => {
-    const columns = Array.from(row.children);
-    const cells = columns.map(col => {
-      // If it's an image column, use the <picture> element directly
+  // Compose data rows
+  const tableRows = rows.map(rowDiv => {
+    const columns = Array.from(rowDiv.children).filter(col => col.nodeType === 1);
+    return columns.map(col => {
       if (col.classList.contains('columns-img-col')) {
         const pic = col.querySelector('picture');
-        if (pic) return pic;
+        return pic || col;
       }
-      // Otherwise, include all element children
-      const contentEls = Array.from(col.childNodes).filter(
-        node => node.nodeType === Node.ELEMENT_NODE
-      );
-      if (contentEls.length === 1) {
-        return contentEls[0];
-      } else if (contentEls.length > 1) {
-        return contentEls;
-      } else {
-        return '';
-      }
+      return Array.from(col.childNodes);
     });
-    // If less columns than numCols, pad with empty string
-    while (cells.length < numCols) {
-      cells.push('');
-    }
-    tableRows.push(cells);
   });
 
-  // Create the table
-  const table = WebImporter.DOMUtils.createTable(tableRows, document);
+  // Create the table header row with one cell: 'Columns', but set colspan to maxCols
+  const th = document.createElement('th');
+  th.textContent = 'Columns';
+  if (maxCols > 1) th.setAttribute('colspan', maxCols);
+  const headerRow = [th];
+
+  // Compose the table
+  const cells = [headerRow, ...tableRows];
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
