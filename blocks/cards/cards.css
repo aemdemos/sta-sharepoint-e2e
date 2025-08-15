@@ -15,7 +15,7 @@
 
 .cards .cards-card-body {
   margin: 0;
-  padding: 16px;
+  padding: 22px 18px 18px;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -23,16 +23,17 @@
   background: #fff;
   min-height: 120px;
   align-items: flex-start;
+  flex-grow: 1;
 }
 
 .cards .cards-card-image {
   line-height: 0;
   width: 100%;
   aspect-ratio: 4 / 3;
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: center;
-  background: none;
+  background: #fff;
   height: 120px;
   overflow: hidden;
   border-top-left-radius: 4px;
@@ -134,9 +135,9 @@
 }
 
 .cards .cards-card-body p:not(:first-child) {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 400;
-  color: #333;
+  color: #4b4b4b;
   margin: 0;
   margin-top: 0;
   line-height: 1.5;
@@ -214,12 +215,9 @@
 
 .cards .block ul {
   display: grid;
-
-.cards .block ul {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: 1fr;
-  gap: 20px;
+  gap: 20px 16px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -227,13 +225,7 @@
   box-sizing: border-box;
   width: 100%;
   padding-left: 0;
-  justify-content: flex-start;
-}
-
-  .cards .block ul {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px 16px;
-  }
+  justify-content: flex-start
 }
 
 @media (width <= 800px) {
@@ -246,7 +238,7 @@
 .cards .block ul > li {
   background: #fff;
   border: 1px solid #e0e0e0;
-  border-radius: 0;
+  border-radius: 8px;
   box-shadow: none;
   display: flex;
   flex-direction: column;
@@ -263,8 +255,8 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 80px;
-  padding-right: 80px;
+  padding-left: 10px;
+  padding-right: 10px;
   box-sizing: border-box;
 }
 
@@ -304,41 +296,61 @@
   z-index: auto;
 }
 
-/* Use 3 columns at desktop for a balanced layout */
-
-/* Tablet: 2 columns */
 @media (width <= 900px) {
   .cards .block ul {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Mobile: 1 column */
 @media (width <= 600px) {
   .cards .block ul {
     grid-template-columns: 1fr;
   }
 }
 
-/* Card image */
-
-/* Card body and text */
-
-/* Remove paragraph margin in cards */
 .cards .cards-card-body p {
   margin: 0;
   padding: 0;
 }
 
-/* Title text */
-
-/* Description text */
-
-/* Remove hover shadow if any */
-
-/* Remove unwanted spacing/rounding from images and containers */
 .cards .cards-card-image,
 .cards .cards-card-image picture,
 .cards .cards-card-image img {
   border-radius: 0;
+}
+
+@media (width <= 1100px) {
+  .cards .block ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 12px;
+  }
+}
+
+@media (width <= 700px) {
+  .cards .block ul {
+    grid-template-columns: 1fr;
+    gap: 12px 0;
+  }
+
+  .cards .cards-wrapper {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+
+.cards .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+
+.cards .cards-card-body p:first-child,
+.cards .cards-card-body p:first-child strong {
+  font-size: 18px;
+  font-weight: bold;
+  color: #212121;
+  margin-bottom: 14px;
+  line-height: 1.15;
 }
