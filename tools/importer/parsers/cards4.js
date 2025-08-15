@@ -1,47 +1,33 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the <ul> containing the cards (source structure)
+  // The block name header matches exactly: 'Cards'
+  const rows = [['Cards']];
+
+  // Get the card elements (li elements under ul)
   const ul = element.querySelector('ul');
   if (!ul) return;
-  const lis = Array.from(ul.children);
 
-  // The block name must match the example: 'Cards'
-  const cells = [['Cards']];
-
-  // Each card row: [image, text]
-  lis.forEach(li => {
-    // Image cell:
-    let imageCell = null;
-    const imageDiv = li.querySelector('.cards-card-image');
-    if (imageDiv) {
-      // Reference the existing <picture> element if present, else <img>
-      const picture = imageDiv.querySelector('picture');
-      if (picture) {
-        imageCell = picture;
-      } else {
-        const img = imageDiv.querySelector('img');
-        if (img) imageCell = img;
-      }
+  ul.querySelectorAll(':scope > li').forEach((li) => {
+    // First column: image/icon
+    let imageCell = '';
+    const imgDiv = li.querySelector('.cards-card-image');
+    if (imgDiv) {
+      // Prefer the <picture> element directly
+      const picture = imgDiv.querySelector('picture');
+      imageCell = picture || imgDiv;
     }
-
-    // Text cell: combine the children of .cards-card-body
-    let textCell = null;
+    // Second column: text content
+    let textCell = '';
     const bodyDiv = li.querySelector('.cards-card-body');
     if (bodyDiv) {
-      // Reference all body child nodes (preserves formatting and tags)
-      const bodyChildren = Array.from(bodyDiv.childNodes).filter(node => {
-        // Only include non-empty text or element nodes
-        return (node.nodeType === 1) || (node.nodeType === 3 && node.textContent.trim());
-      });
-      textCell = bodyChildren;
+      // Reference the body div directly (contains all text for the card)
+      textCell = bodyDiv;
     }
-
-    cells.push([imageCell, textCell]);
+    rows.push([imageCell, textCell]);
   });
 
-  // Create block table
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-
-  // Replace element with block
-  element.replaceWith(block);
+  // Create the Cards block table
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  // Replace the original element with the new table
+  element.replaceWith(table);
 }

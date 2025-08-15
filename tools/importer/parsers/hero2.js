@@ -1,64 +1,46 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Locate hero block's main content
+  // Find the hero block
   const heroBlock = element.querySelector('.hero.block');
-  let mainContent = null;
-  if (heroBlock) {
-    // Handles nested divs: .hero.block > div > div
-    const firstDiv = heroBlock.querySelector(':scope > div');
-    if (firstDiv) {
-      mainContent = firstDiv.querySelector(':scope > div');
-    }
-  }
-  if (!mainContent) {
-    // Fallback: Use the whole hero.block
-    mainContent = heroBlock || element;
-  }
+  if (!heroBlock) return;
 
-  // Find the picture element (image)
-  let imageElement = null;
-  let picturePara = null;
-  const paragraphs = mainContent.querySelectorAll(':scope > p');
-  for (const para of paragraphs) {
-    const pic = para.querySelector('picture');
-    if (pic) {
-      imageElement = pic;
-      picturePara = para;
+  // Get the deepest content container (contains the picture and headings)
+  let contentContainer = heroBlock.querySelector(':scope > div > div');
+  if (!contentContainer) {
+    // Fallback: try one level up
+    contentContainer = heroBlock.querySelector(':scope > div');
+  }
+  if (!contentContainer) return;
+
+  // Find the image: look for a picture within a paragraph
+  let imageRow = null;
+  let foundImageParagraph = null;
+  for (const child of contentContainer.children) {
+    if (child.querySelector && child.querySelector('picture')) {
+      foundImageParagraph = child;
       break;
     }
   }
-
-  // Collect ALL remaining heading and paragraph elements (including empty paragraphs) after the image
-  const contentNodes = [];
-  let afterImage = false;
-  mainContent.childNodes.forEach((node) => {
-    if (node === picturePara) {
-      afterImage = true;
-      return; // skip image paragraph
-    }
-    if (!afterImage) return; // skip nodes before image
-    if (node.nodeType === 1 && (node.matches('h1, h2, h3, h4, h5, h6') || node.tagName.toLowerCase() === 'p')) {
-      // Add all headings and paragraphs, even empty ones
-      contentNodes.push(node);
-    }
-  });
-
-  // If there are no elements after the image, fall back to collecting all headings/paragraphs except the image
-  if (contentNodes.length === 0) {
-    mainContent.childNodes.forEach((node) => {
-      if (node === picturePara) return;
-      if (node.nodeType === 1 && (node.matches('h1, h2, h3, h4, h5, h6') || node.tagName.toLowerCase() === 'p')) {
-        contentNodes.push(node);
-      }
-    });
+  if (foundImageParagraph) {
+    imageRow = foundImageParagraph;
   }
 
-  // Build the block table
-  const cells = [];
-  cells.push(['Hero']);
-  cells.push([imageElement || '']);
-  cells.push([contentNodes]);
+  // Collect all remaining elements in contentContainer (after removing the image paragraph)
+  const textFragments = [];
+  Array.from(contentContainer.children).forEach((child) => {
+    if (foundImageParagraph && child === foundImageParagraph) return;
+    if (child.tagName === 'P' && child.textContent.trim() === '') return;
+    textFragments.push(child);
+  });
 
-  const table = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(table);
+  // Even if textFragments is empty, output an empty array to fill the third row
+
+  const rows = [
+    ['Hero'],
+    [imageRow],
+    [textFragments]
+  ];
+
+  const block = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(block);
 }
