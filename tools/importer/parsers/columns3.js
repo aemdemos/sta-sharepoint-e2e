@@ -1,35 +1,38 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  const block = element.querySelector(':scope > .columns.block');
-  if (!block) return;
+  // Find the columns block inside the wrapper
+  const columnsBlock = element.querySelector('.columns.block[data-block-name="columns"]');
+  if (!columnsBlock) return;
 
-  // Each row is a div, each column inside it
-  const rows = Array.from(block.children).filter(div => div.nodeType === 1);
-  if (!rows.length) return;
+  // Get all content rows (immediate child divs)
+  const rowDivs = Array.from(columnsBlock.querySelectorAll(':scope > div'));
+  if (!rowDivs.length) return;
 
-  // Determine the max number of columns in any row for proper header colspan
-  const maxCols = Math.max(...rows.map(rowDiv => Array.from(rowDiv.children).filter(col => col.nodeType === 1).length));
+  // Determine the number of columns by inspecting the first content row
+  const firstCols = Array.from(rowDivs[0].querySelectorAll(':scope > div'));
+  const numCols = firstCols.length;
 
-  // Compose data rows
-  const tableRows = rows.map(rowDiv => {
-    const columns = Array.from(rowDiv.children).filter(col => col.nodeType === 1);
-    return columns.map(col => {
-      if (col.classList.contains('columns-img-col')) {
-        const pic = col.querySelector('picture');
-        return pic || col;
-      }
-      return Array.from(col.childNodes);
+  // The header row must have exactly one cell (per example)
+  const tableRows = [['Columns']];
+
+  // For each row, get the direct column divs and collect their content
+  rowDivs.forEach((rowDiv) => {
+    const colDivs = Array.from(rowDiv.querySelectorAll(':scope > div'));
+    // For each colDiv, collect all its child nodes as a DocumentFragment
+    const cells = colDivs.map((colDiv) => {
+      const frag = document.createDocumentFragment();
+      Array.from(colDiv.childNodes).forEach(node => frag.appendChild(node));
+      return frag;
     });
+    // If there are fewer columns than expected, pad with empty strings
+    while (cells.length < numCols) {
+      cells.push('');
+    }
+    tableRows.push(cells);
   });
 
-  // Create the table header row with one cell: 'Columns', but set colspan to maxCols
-  const th = document.createElement('th');
-  th.textContent = 'Columns';
-  if (maxCols > 1) th.setAttribute('colspan', maxCols);
-  const headerRow = [th];
-
-  // Compose the table
-  const cells = [headerRow, ...tableRows];
-  const table = WebImporter.DOMUtils.createTable(cells, document);
+  // Create the block table
+  const table = WebImporter.DOMUtils.createTable(tableRows, document);
+  // Replace original element with the block table
   element.replaceWith(table);
 }
