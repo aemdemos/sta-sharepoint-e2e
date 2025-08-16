@@ -530,8 +530,6 @@
   padding: 0;
   position: relative;
 }
-
-/* Image wrapper - right column */
 .hero > div:first-child {
   flex: 1 1 52%;
   order: 2;
@@ -545,8 +543,6 @@
   z-index: 1;
   overflow: visible;
 }
-
-/* Make DNA image large, fade left, and slightly overflow left for impact */
 .hero > div:first-child picture,
 .hero > div:first-child img {
   display: block;
@@ -562,8 +558,6 @@
   box-shadow: none;
   pointer-events: none;
 }
-
-/* Text wrapper - left column */
 .hero > div:last-child {
   flex: 1 1 48%;
   order: 1;
@@ -598,8 +592,6 @@
   text-align: left;
   text-shadow: none;
 }
-
-/* Responsive: stack vertically on small screens */
 @media (max-width: 900px) {
   .hero {
     flex-direction: column;
@@ -661,6 +653,165 @@
   }
   .hero > div:last-child {
     padding: 12px 3vw 0 3vw;
+  }
+  .hero h1 {
+    font-size: 1rem;
+  }
+}
+
+
+.hero {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 210px;
+  width: 100vw;
+  background: radial-gradient(ellipse at 80% 54%, #15304b 61%, #07223a 100%);
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* DNA image container: fill right side, stretch vertically, overflow for big effect */
+.hero > div:first-child {
+  order: 2;
+  flex: 1 1 68%;
+  min-width: 0;
+  max-width: none;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* DNA image: very large, fill and overflow right for 'bleed' effect, mask starts earlier for more DNA leftwards */
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  display: block;
+  width: 105vw;
+  min-width: 900px;
+  max-width: none;
+  height: 120%;
+  object-fit: cover;
+  object-position: right center;
+  filter: drop-shadow(0 0 80px #35e3ff) brightness(1.18);
+  mask-image: linear-gradient(to left, black 30%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, black 30%, transparent 100%);
+  opacity: 0.98;
+  background: none;
+  border: none;
+  transition: filter 0.2s;
+  margin-right: -17vw;
+}
+
+/* Text area: keep left, don't overlap DNA, vertically centered, allow more rightward growth */
+.hero > div:last-child {
+  order: 1;
+  flex: 1 1 32%;
+  min-width: 260px;
+  max-width: 44vw;
+  padding-left: 48px;
+  padding-right: 14px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.hero > div:last-child > div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.hero h1 {
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  margin: 0;
+  text-align: left;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.22);
+  padding: 0;
+  max-width: 660px;
+}
+
+/* Responsive: stack vertically on small screens */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    min-height: 130px;
+    height: auto;
+  }
+  .hero > div:first-child {
+    order: 2;
+    width: 100vw;
+    min-width: 0;
+    max-width: none;
+    height: 120px;
+    align-items: flex-end;
+    justify-content: center;
+    margin-right: 0;
+  }
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    width: 100vw;
+    min-width: 0;
+    max-width: none;
+    height: 120px;
+    margin-right: 0;
+    mask-image: none;
+    -webkit-mask-image: none;
+    object-fit: cover;
+    object-position: center;
+    filter: drop-shadow(0 0 18px #29b6f6);
+  }
+  .hero > div:last-child {
+    order: 1;
+    width: 100vw;
+    max-width: none;
+    min-width: 0;
+    padding: 16px 4vw 0 5vw;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+  }
+  .hero > div:last-child > div {
+    align-items: center;
+    height: auto;
+  }
+  .hero h1 {
+    text-align: center;
+    font-size: 1.18rem;
+    max-width: 100%;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.13);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 80px;
+    height: auto;
+  }
+  .hero > div:first-child {
+    height: 70px;
+  }
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    height: 70px;
+  }
+  .hero > div:last-child {
+    padding: 10px 3vw 0 3vw;
   }
   .hero h1 {
     font-size: 1rem;
