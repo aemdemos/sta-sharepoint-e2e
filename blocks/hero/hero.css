@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -10,35 +11,33 @@
   flex-direction: row;
   align-items: center;
   width: 100vw;
-  background:
-    linear-gradient(90deg, #0a2946 60%, #14375a 100%),
-    url('./media_1061934561e8a4f01907e616a0ce0e4b74d63b92e.jpg?width=2000&format=jpg&optimize=medium');
+  background: radial-gradient(ellipse at 80% 50%, #15304b 65%, #07223a 100%);
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
   justify-content: flex-start;
-  height: 130px;
+  height: 170px;
   background-size: cover;
   background-position: 60% center;
   background-repeat: no-repeat;
+  grid-template-columns: 1fr 1fr;
 }
 
 .hero h1 {
   margin-left: auto;
   margin-right: auto;
   color: #fff;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
   line-height: 1.1;
-  text-shadow: none;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 22%);
   text-align: left;
-  max-width: 720px;
+  max-width: 660px;
   position: relative;
   z-index: 2;
   padding: 0;
   display: flex;
   align-items: center;
-  margin: 0;
   font-family: var(--heading-font-family);
   letter-spacing: 0.01em;
 }
@@ -69,49 +68,67 @@
 }
 
 .hero > div:first-child {
-  position: absolute;
+  position: relative;
   inset: 0 0 0 15vw;
   width: auto;
   height: 100%;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-end;
   pointer-events: none;
   z-index: 1;
   overflow: visible;
   order: 2;
   flex: 1 1 52%;
-  min-width: 0;
+  min-width: 400px;
+  max-width: 60vw;
+  box-sizing: border-box;
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .hero > div:first-child picture,
 .hero > div:first-child img {
-  width: 100%;
-  height: 100%;
+  width: 150%;
+  height: 180%;
   object-fit: cover;
-  object-position: right center;
-  opacity: 0.75;
-  filter: blur(0.1px) drop-shadow(0 0 32px #33d0ff55);
-  mask-image: linear-gradient(to left, transparent 0%, black 25%, black 90%, transparent 100%);
+  object-position: right bottom;
+  opacity: 0.98;
+  filter: drop-shadow(0 0 80px #35e3ff) brightness(1.18);
+  mask-image: linear-gradient(to left, black 48%, transparent 100%);
   display: block;
-  max-width: unset;
-  min-width: 350px;
+  max-width: none;
+  min-width: 600px;
   margin: 0;
+  max-height: 160px;
+  margin-left: -9vw;
+  box-shadow: none;
+  border: none;
+  background: none;
+  pointer-events: none;
+  transition: mask-image 0.2s, -webkit-mask-image 0.2s;
+  margin-right: -13vw;
+  margin-bottom: -33%;
 }
 
 .hero > div:last-child {
   position: relative;
   z-index: 2;
-  flex: 1 1 100%;
-  min-width: 0;
+  flex: 1 1 48%;
+  min-width: 290px;
   padding: 2em 16px 1em 38px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   height: 100%;
-  padding-left: 2vw;
-  padding-right: 0;
+  padding-left: 48px;
+  padding-right: 16px;
   box-sizing: border-box;
+  order: 1;
+  padding-top: 32px;
+  grid-column: 1;
+  grid-row: 1;
+  max-width: 50vw;
 }
 
 .hero > div:last-child > div {
@@ -214,16 +231,19 @@
     max-width: 100%;
   }
 }
+
 .hero > div:first-child,
 .hero > div:first-child picture,
 .hero > div:first-child img {
-  display: none;
+  display: flex;
 }
+
 .hero-container,
 .hero-wrapper {
   margin-top: 0;
   padding-top: 0;
 }
+
 @media (width <= 800px) {
   .hero {
     min-height: 140px;
@@ -252,78 +272,7 @@
   }
 }
 
-
-.hero {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100vw;
-  min-height: 160px;
-  height: 160px;
-  background: linear-gradient(90deg, #0a2946 55%, #14375a 100%);
-  box-sizing: border-box;
-  overflow: hidden;
-  position: relative;
-  padding: 0;
-}
-.hero > div:first-child {
-  display: flex;
-  flex: 1 1 68%;
-  order: 2;
-  justify-content: flex-end;
-  align-items: stretch;
-  height: 100%;
-  max-width: 68vw;
-  min-width: 420px;
-  overflow: visible;
-  position: relative;
-  z-index: 1;
-}
-.hero > div:first-child picture,
-.hero > div:first-child img {
-  display: block;
-  width: 110%;
-  height: 100%;
-  max-height: 160px;
-  object-fit: cover;
-  margin-left: -8vw;
-  opacity: 1;
-  box-shadow: none;
-}
-.hero > div:last-child {
-  display: flex;
-  flex: 1 1 32%;
-  order: 1;
-  justify-content: flex-start;
-  align-items: flex-start;
-  min-width: 290px;
-  height: 100%;
-  box-sizing: border-box;
-  padding-left: 38px;
-  padding-top: 32px;
-  z-index: 2;
-}
-
-.hero > div:last-child > div {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  height: 100%;
-}
-
-.hero h1 {
-  color: #fff;
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-  line-height: 1.1;
-  font-family: var(--heading-font-family);
-  letter-spacing: 0.01em;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.20);
-}
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .hero {
     flex-direction: column;
     height: auto;
@@ -340,6 +289,7 @@
     align-items: flex-end;
     order: 1;
   }
+
   .hero > div:first-child picture,
   .hero > div:first-child img {
     width: 110vw;
@@ -351,112 +301,30 @@
 
   .hero > div:last-child {
     width: 100vw;
-    padding: 18px 6vw 0 6vw;
+    padding: 18px 6vw 0;
     min-width: 0;
     justify-content: center;
     align-items: center;
     order: 2;
   }
+
   .hero h1 {
     text-align: center;
     font-size: 1.25rem;
     padding-left: 0;
     padding-top: 0;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    text-shadow: 0 2px 8px rgb(0 0 0 / 15%);
   }
 }
-.hero > div:first-child,
-.hero > div:first-child picture,
-.hero > div:first-child img {
-  display: flex;
-}
-.hero > div:first-child picture,
-.hero > div:first-child img {
-  display: block;
-}
 
-
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 200px;
-  width: 100vw;
-  background: linear-gradient(90deg, #0a2946 55%, #14375a 100%);
-  box-sizing: border-box;
-  overflow: hidden;
-  position: relative;
-}
-.hero-container > .hero-wrapper {
-  max-width: unset;
-  padding: 0;
-}
-.hero > div:last-child {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: 48px;
-  padding-right: 32px;
-  min-width: 320px;
-  z-index: 2;
-  box-sizing: border-box;
-  grid-column: 1;
-  grid-row: 1;
-  height: 100%;
-}
-
-.hero > div:last-child > div {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-}
-
-.hero h1 {
-  color: #fff;
-  font-size: 2.2rem;
-  font-weight: 700;
-  font-family: var(--heading-font-family);
-  margin: 0;
-  line-height: 1.1;
-  text-align: left;
-  letter-spacing: 0.01em;
-}
-.hero > div:first-child {
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
-  min-width: 260px;
-  max-width: none;
-  box-sizing: border-box;
-  grid-column: 2;
-  grid-row: 1;
-  height: 100%;
-  position: relative;
-  z-index: 1;
-}
-.hero > div:first-child picture,
-.hero > div:first-child img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  min-width: 260px;
-  object-fit: cover;
-  object-position: right center;
-  margin: 0;
-  filter: none;
-  box-shadow: none;
-  mask-image: linear-gradient(to left, black 80%, transparent 100%);
-  border: none;
-  background: none;
-}
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .hero {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
     min-height: 120px;
     height: auto;
   }
+
   .hero > div:first-child {
     grid-column: 1;
     grid-row: 1;
@@ -467,6 +335,7 @@
     align-items: flex-end;
     justify-content: center;
   }
+
   .hero > div:first-child picture,
   .hero > div:first-child img {
     width: 100vw;
@@ -476,128 +345,59 @@
     object-position: center;
     mask-image: none;
   }
+
   .hero > div:last-child {
     grid-column: 1;
     grid-row: 2;
     width: 100vw;
     min-width: 0;
     height: auto;
-    padding: 18px 6vw 0 6vw;
+    padding: 18px 6vw 0;
     align-items: center;
     justify-content: center;
   }
+
   .hero > div:last-child > div {
     align-items: center;
     height: auto;
   }
+
   .hero h1 {
     text-align: center;
     font-size: 1.4rem;
   }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .hero {
     min-height: 90px;
   }
+
   .hero > div:first-child {
     height: 80px;
   }
+
   .hero > div:first-child picture,
   .hero > div:first-child img {
     height: 80px;
   }
+
   .hero > div:last-child {
-    padding: 12px 3vw 0 3vw;
+    padding: 12px 3vw 0;
   }
+
   .hero h1 {
     font-size: 1.1rem;
   }
 }
 
-
-.hero {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100vw;
-  min-height: 170px;
-  height: 170px;
-  background: radial-gradient(ellipse at 80% 54%, #153456 62%, #112031 100%);
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 0;
-  position: relative;
-}
-.hero > div:first-child {
-  flex: 1 1 52%;
-  order: 2;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  min-width: 380px;
-  max-width: 60vw;
-  height: 100%;
-  position: relative;
-  z-index: 1;
-  overflow: visible;
-}
-.hero > div:first-child picture,
-.hero > div:first-child img {
-  display: block;
-  width: 120%;
-  min-width: 400px;
-  height: 100%;
-  object-fit: cover;
-  object-position: right center;
-  margin-left: -9vw;
-  mask-image: linear-gradient(to left, black 60%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
-  opacity: 1;
-  box-shadow: none;
-  pointer-events: none;
-}
-.hero > div:last-child {
-  flex: 1 1 48%;
-  order: 1;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  min-width: 220px;
-  max-width: 50vw;
-  height: 100%;
-  padding-left: 54px;
-  padding-top: 32px;
-  box-sizing: border-box;
-  z-index: 2;
-}
-
-.hero > div:last-child > div {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  height: 100%;
-}
-
-.hero h1 {
-  color: #fff;
-  font-family: var(--heading-font-family);
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-  padding: 0;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
-  text-align: left;
-  text-shadow: none;
-}
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .hero {
     flex-direction: column;
     min-height: 120px;
     height: auto;
   }
+
   .hero > div:first-child {
     order: 1;
     width: 100vw;
@@ -608,6 +408,7 @@
     justify-content: center;
     margin-left: 0;
   }
+
   .hero > div:first-child picture,
   .hero > div:first-child img {
     width: 100vw;
@@ -616,143 +417,63 @@
     height: 120px;
     margin-left: 0;
     mask-image: none;
-    -webkit-mask-image: none;
+    mask-image: none;
   }
+
   .hero > div:last-child {
     order: 2;
     width: 100vw;
     min-width: 0;
     height: auto;
-    padding: 18px 6vw 0 6vw;
+    padding: 18px 6vw 0;
     align-items: center;
     justify-content: center;
     padding-left: 0;
     padding-top: 0;
   }
+
   .hero > div:last-child > div {
     align-items: center;
     height: auto;
   }
+
   .hero h1 {
     text-align: center;
     font-size: 1.2rem;
   }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .hero {
     min-height: 80px;
     height: auto;
   }
+
   .hero > div:first-child {
     height: 70px;
   }
+
   .hero > div:first-child picture,
   .hero > div:first-child img {
     height: 70px;
   }
+
   .hero > div:last-child {
-    padding: 12px 3vw 0 3vw;
+    padding: 12px 3vw 0;
   }
+
   .hero h1 {
     font-size: 1rem;
   }
 }
 
-
-.hero {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  min-height: 210px;
-  width: 100vw;
-  background: radial-gradient(ellipse at 80% 54%, #15304b 61%, #07223a 100%);
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 0;
-}
-
-/* DNA image container: fill right side, stretch vertically, overflow for big effect */
-.hero > div:first-child {
-  order: 2;
-  flex: 1 1 68%;
-  min-width: 0;
-  max-width: none;
-  height: 100%;
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
-  position: relative;
-  z-index: 1;
-  pointer-events: none;
-  overflow: visible;
-}
-
-/* DNA image: very large, fill and overflow right for 'bleed' effect, mask starts earlier for more DNA leftwards */
-.hero > div:first-child picture,
-.hero > div:first-child img {
-  display: block;
-  width: 105vw;
-  min-width: 900px;
-  max-width: none;
-  height: 120%;
-  object-fit: cover;
-  object-position: right center;
-  filter: drop-shadow(0 0 80px #35e3ff) brightness(1.18);
-  mask-image: linear-gradient(to left, black 30%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to left, black 30%, transparent 100%);
-  opacity: 0.98;
-  background: none;
-  border: none;
-  transition: filter 0.2s;
-  margin-right: -17vw;
-}
-
-/* Text area: keep left, don't overlap DNA, vertically centered, allow more rightward growth */
-.hero > div:last-child {
-  order: 1;
-  flex: 1 1 32%;
-  min-width: 260px;
-  max-width: 44vw;
-  padding-left: 48px;
-  padding-right: 14px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  z-index: 2;
-  box-sizing: border-box;
-}
-
-.hero > div:last-child > div {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.hero h1 {
-  color: #fff;
-  font-family: var(--heading-font-family);
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.01em;
-  margin: 0;
-  text-align: left;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.22);
-  padding: 0;
-  max-width: 660px;
-}
-
-/* Responsive: stack vertically on small screens */
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .hero {
     flex-direction: column;
     min-height: 130px;
     height: auto;
   }
+
   .hero > div:first-child {
     order: 2;
     width: 100vw;
@@ -763,6 +484,7 @@
     justify-content: center;
     margin-right: 0;
   }
+
   .hero > div:first-child picture,
   .hero > div:first-child img {
     width: 100vw;
@@ -771,11 +493,12 @@
     height: 120px;
     margin-right: 0;
     mask-image: none;
-    -webkit-mask-image: none;
+    mask-image: none;
     object-fit: cover;
     object-position: center;
     filter: drop-shadow(0 0 18px #29b6f6);
   }
+
   .hero > div:last-child {
     order: 1;
     width: 100vw;
@@ -786,33 +509,130 @@
     justify-content: center;
     height: auto;
   }
+
   .hero > div:last-child > div {
     align-items: center;
     height: auto;
   }
+
   .hero h1 {
     text-align: center;
     font-size: 1.18rem;
     max-width: 100%;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.13);
+    text-shadow: 0 2px 6px rgb(0 0 0 / 13%);
   }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .hero {
     min-height: 80px;
     height: auto;
   }
+
   .hero > div:first-child {
     height: 70px;
   }
+
   .hero > div:first-child picture,
   .hero > div:first-child img {
     height: 70px;
   }
+
   .hero > div:last-child {
-    padding: 10px 3vw 0 3vw;
+    padding: 10px 3vw 0;
   }
+
+  .hero h1 {
+    font-size: 1rem;
+  }
+}
+
+/* Text block (left) */
+
+/* Image block (right) */
+
+/* Ensure image fills right side, is large, and fades smoothly */
+
+/* Responsive adjustments: stack content on small screens */
+@media (width <= 900px) {
+  .hero {
+    flex-direction: column;
+    min-height: 110px;
+    height: auto;
+    align-items: stretch;
+  }
+
+  .hero > div:first-child {
+    order: 2;
+    width: 100vw;
+    min-width: 0;
+    max-width: none;
+    height: 110px;
+    align-items: flex-end;
+    justify-content: center;
+    margin-right: 0;
+  }
+
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    width: 110vw;
+    min-width: 0;
+    max-width: none;
+    height: 120px;
+    margin-right: 0;
+    margin-bottom: 0;
+    mask-image: none;
+    mask-image: none;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero > div:last-child {
+    order: 1;
+    width: 100vw;
+    max-width: none;
+    min-width: 0;
+    padding: 18px 6vw 0;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hero > div:last-child > div {
+    align-items: center;
+    height: auto;
+  }
+
+  .hero h1 {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+}
+
+@media (width <= 600px) {
+  .hero {
+    min-height: 70px;
+    height: auto;
+  }
+
+  .hero > div:first-child {
+    height: 60px;
+    min-width: 0;
+  }
+
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    height: 60px;
+    width: 100vw;
+    min-width: unset;
+  }
+
+  .hero > div:last-child {
+    padding: 10px 2vw 0;
+  }
+
   .hero h1 {
     font-size: 1rem;
   }
