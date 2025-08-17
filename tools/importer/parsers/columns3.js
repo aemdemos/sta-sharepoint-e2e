@@ -1,38 +1,42 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the columns block inside the wrapper
-  const columnsBlock = element.querySelector('.columns.block[data-block-name="columns"]');
+  // Find the actual columns block inside the wrapper
+  const columnsBlock = element.querySelector('.columns.block');
   if (!columnsBlock) return;
 
-  // Get all content rows (immediate child divs)
-  const rowDivs = Array.from(columnsBlock.querySelectorAll(':scope > div'));
-  if (!rowDivs.length) return;
+  // Get all direct column groups (each group is a row of columns)
+  const columnGroups = Array.from(columnsBlock.children);
 
-  // Determine the number of columns by inspecting the first content row
-  const firstCols = Array.from(rowDivs[0].querySelectorAll(':scope > div'));
-  const numCols = firstCols.length;
+  // Determine the number of columns by counting the children of the first group
+  let numColumns = 0;
+  if (columnGroups.length > 0) {
+    numColumns = Array.from(columnGroups[0].children).length;
+  }
 
-  // The header row must have exactly one cell (per example)
-  const tableRows = [['Columns']];
+  // Build the rows array for the table
+  const rows = [];
 
-  // For each row, get the direct column divs and collect their content
-  rowDivs.forEach((rowDiv) => {
-    const colDivs = Array.from(rowDiv.querySelectorAll(':scope > div'));
-    // For each colDiv, collect all its child nodes as a DocumentFragment
-    const cells = colDivs.map((colDiv) => {
-      const frag = document.createDocumentFragment();
-      Array.from(colDiv.childNodes).forEach(node => frag.appendChild(node));
-      return frag;
-    });
-    // If there are fewer columns than expected, pad with empty strings
-    while (cells.length < numCols) {
-      cells.push('');
+  // Header row: create a <th> element that spans all columns
+  const th = document.createElement('th');
+  th.textContent = 'Columns';
+  if (numColumns > 1) {
+    th.setAttribute('colspan', numColumns);
+  }
+  rows.push([th]);
+
+  // For each row of columns (each <div> inside .columns.block)
+  columnGroups.forEach((group) => {
+    // Each child of this group is a column (usually 2 per row)
+    const columns = Array.from(group.children).map((col) => col);
+    // Pad with empty strings if needed
+    while (columns.length < numColumns) {
+      columns.push('');
     }
-    tableRows.push(cells);
+    rows.push(columns);
   });
 
   // Create the block table
-  const table = WebImporter.DOMUtils.createTable(tableRows, document);
-  // Replace original element with the block table
-  element.replaceWith(table);
+  const blockTable = WebImporter.DOMUtils.createTable(rows, document);
+  // Replace the original element with the block table
+  element.replaceWith(blockTable);
 }
