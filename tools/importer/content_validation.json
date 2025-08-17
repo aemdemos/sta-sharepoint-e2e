@@ -153,11 +153,11 @@
               "element_id": "html__body__main__div_2__div_2",
               "differences": [
                 {
-                  "change_type": "equal",
+                  "change_type": "deletion",
                   "text": "Columns block One Two Three Live Or you can just view the preview Preview"
                 }
               ],
-              "dissimilarity_score": 0.0
+              "dissimilarity_score": 1.0
             }
           ],
           "similarity_score": 0.0
