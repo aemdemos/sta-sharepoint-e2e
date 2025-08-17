@@ -1,45 +1,33 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the innermost .cards.block, which contains the list of cards
-  const cardsBlock = element.querySelector('.cards.block');
-  if (!cardsBlock) return;
+  // Find the cards block, support both .cards.block and ul > li pattern
+  const cardsBlock = element.querySelector('.cards.block') || element;
   const ul = cardsBlock.querySelector('ul');
-  if (!ul) return;
-  const lis = Array.from(ul.children).filter(el => el.tagName === 'LI');
-
-  // Prepare the header row exactly as in the example
-  const rows = [['Cards']];
-
-  lis.forEach(li => {
-    // Each li has .cards-card-image and .cards-card-body
-    const imageDiv = li.querySelector('.cards-card-image');
-    let imageEl = null;
-    if (imageDiv) {
-      // Reference the <picture> element directly (contains img and sources)
-      const pic = imageDiv.querySelector('picture');
-      if (pic) imageEl = pic;
-      else {
-        // Fallback to img if picture is missing
-        const img = imageDiv.querySelector('img');
-        if (img) imageEl = img;
+  const cardLis = ul ? ul.querySelectorAll(':scope > li') : [];
+  const cells = [['Cards']]; // Header row, matches example
+  cardLis.forEach((li) => {
+    // Image cell: .cards-card-image > picture (reference directly)
+    const imgDiv = li.querySelector('.cards-card-image');
+    let imageCell = null;
+    if (imgDiv) {
+      const pic = imgDiv.querySelector('picture');
+      if (pic) {
+        imageCell = pic;
       }
     }
-    // Get the card body (title and description)
+    // Text cell: .cards-card-body (reference all children, preserve structure)
     const bodyDiv = li.querySelector('.cards-card-body');
-    let bodyContent = [];
+    let textCell = null;
     if (bodyDiv) {
-      // Reference all child nodes of bodyDiv, preserving structure (e.g., <p>, <strong>)
-      bodyContent = Array.from(bodyDiv.childNodes);
+      // Gather all child nodes (not just elements), to retain any formatting
+      const nodes = Array.from(bodyDiv.childNodes).filter(n => n.nodeType === 1 || (n.nodeType === 3 && n.textContent.trim()));
+      textCell = nodes.length === 1 ? nodes[0] : nodes;
     }
-    // Both cells must be present; if missing, use empty string (edge case handling)
-    rows.push([
-      imageEl || '',
-      bodyContent.length ? bodyContent : ['']
-    ]);
+    // Push row (image, text)
+    cells.push([imageCell, textCell]);
   });
-
-  // Create the block table using the helper
-  const table = WebImporter.DOMUtils.createTable(rows, document);
-  // Replace the original element with the new table
-  element.replaceWith(table);
+  // Create block table
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+  // Replace original element
+  element.replaceWith(block);
 }
