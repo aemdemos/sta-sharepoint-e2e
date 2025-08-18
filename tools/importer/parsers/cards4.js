@@ -1,33 +1,46 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the cards block, support both .cards.block and ul > li pattern
-  const cardsBlock = element.querySelector('.cards.block') || element;
-  const ul = cardsBlock.querySelector('ul');
-  const cardLis = ul ? ul.querySelectorAll(':scope > li') : [];
-  const cells = [['Cards']]; // Header row, matches example
-  cardLis.forEach((li) => {
-    // Image cell: .cards-card-image > picture (reference directly)
+  // Find the cards block (could be element itself or child)
+  let cardsBlock = element.querySelector('.cards.block');
+  if (!cardsBlock && element.classList.contains('cards') && element.classList.contains('block')) {
+    cardsBlock = element;
+  }
+  if (!cardsBlock) return;
+
+  const cardItems = Array.from(cardsBlock.querySelectorAll('ul > li'));
+  // Header row: matches example
+  const rows = [['Cards']];
+
+  cardItems.forEach((li) => {
+    // Image cell: first .cards-card-image > img (use <picture> if present)
+    let imgCell = null;
     const imgDiv = li.querySelector('.cards-card-image');
-    let imageCell = null;
     if (imgDiv) {
-      const pic = imgDiv.querySelector('picture');
-      if (pic) {
-        imageCell = pic;
+      const picture = imgDiv.querySelector('picture');
+      if (picture) {
+        imgCell = picture;
+      } else {
+        // fallback: use img
+        const img = imgDiv.querySelector('img');
+        if (img) imgCell = img;
       }
     }
-    // Text cell: .cards-card-body (reference all children, preserve structure)
+    // Text cell: all children of .cards-card-body
+    let txtCell = null;
     const bodyDiv = li.querySelector('.cards-card-body');
-    let textCell = null;
     if (bodyDiv) {
-      // Gather all child nodes (not just elements), to retain any formatting
-      const nodes = Array.from(bodyDiv.childNodes).filter(n => n.nodeType === 1 || (n.nodeType === 3 && n.textContent.trim()));
-      textCell = nodes.length === 1 ? nodes[0] : nodes;
+      // Compose content as array of children (preserve formatting)
+      txtCell = Array.from(bodyDiv.childNodes).filter(node => {
+        // Only elements and meaningful text
+        if (node.nodeType === 1) return true;
+        if (node.nodeType === 3) return node.textContent.trim();
+        return false;
+      });
     }
-    // Push row (image, text)
-    cells.push([imageCell, textCell]);
+    // Always provide both cells as per block structure
+    rows.push([imgCell, txtCell]);
   });
-  // Create block table
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-  // Replace original element
-  element.replaceWith(block);
+
+  const blockTable = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(blockTable);
 }
