@@ -1,42 +1,47 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the actual columns block inside the wrapper
-  const columnsBlock = element.querySelector('.columns.block');
-  if (!columnsBlock) return;
+  // Find the columns block
+  let columnsBlock = element.querySelector('.columns.block');
+  if (!columnsBlock) columnsBlock = element;
 
-  // Get all direct column groups (each group is a row of columns)
-  const columnGroups = Array.from(columnsBlock.children);
+  // Get all row divs (each is a "row" in the columns block)
+  const rowDivs = Array.from(columnsBlock.querySelectorAll(':scope > div'));
 
-  // Determine the number of columns by counting the children of the first group
-  let numColumns = 0;
-  if (columnGroups.length > 0) {
-    numColumns = Array.from(columnGroups[0].children).length;
-  }
+  // Build array of arrays representing table rows
+  const tableRows = [];
+  // Determine the number of columns by inspecting the first row
+  let numCols = 0;
+  rowDivs.forEach(rowDiv => {
+    const colDivs = Array.from(rowDiv.querySelectorAll(':scope > div'));
+    if (colDivs.length > numCols) numCols = colDivs.length;
+  });
+  if (numCols === 0) numCols = 1; // fallback if no rows
 
-  // Build the rows array for the table
-  const rows = [];
+  // Header row: create an array with a single cell 'Columns' (rest implicit)
+  // WebImporter.DOMUtils.createTable will not add colspan, so we must add it manually after table creation
+  tableRows.push(['Columns']);
 
-  // Header row: create a <th> element that spans all columns
-  const th = document.createElement('th');
-  th.textContent = 'Columns';
-  if (numColumns > 1) {
-    th.setAttribute('colspan', numColumns);
-  }
-  rows.push([th]);
-
-  // For each row of columns (each <div> inside .columns.block)
-  columnGroups.forEach((group) => {
-    // Each child of this group is a column (usually 2 per row)
-    const columns = Array.from(group.children).map((col) => col);
-    // Pad with empty strings if needed
-    while (columns.length < numColumns) {
-      columns.push('');
+  // For each row, build an array of the direct child divs (columns)
+  rowDivs.forEach(rowDiv => {
+    const colDivs = Array.from(rowDiv.querySelectorAll(':scope > div'));
+    if (colDivs.length) {
+      tableRows.push(colDivs);
     }
-    rows.push(columns);
   });
 
-  // Create the block table
-  const blockTable = WebImporter.DOMUtils.createTable(rows, document);
+  // Create the table
+  const blockTable = WebImporter.DOMUtils.createTable(tableRows, document);
+
+  // Fix the header row to span all columns
+  if (blockTable.rows.length > 0 && numCols > 1) {
+    const th = blockTable.rows[0].cells[0];
+    th.setAttribute('colspan', numCols);
+    // Remove any extra header cells if present
+    while (blockTable.rows[0].cells.length > 1) {
+      blockTable.rows[0].deleteCell(1);
+    }
+  }
+
   // Replace the original element with the block table
   element.replaceWith(blockTable);
 }

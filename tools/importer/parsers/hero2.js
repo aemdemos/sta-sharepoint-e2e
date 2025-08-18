@@ -1,74 +1,51 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Table header
-  const headerRow = ['Hero'];
-
-  // Find the hero block content wrapper (the deepest div)
+  // Step 1: Navigate to the content wrapper
+  // The structure: section.hero-container > .hero-wrapper > .hero.block > div > div > [content]
   let contentDiv = element;
-  // Some implementations nest multiple divs, so walk down to where the actual image/content is
-  // We'll look for the div that contains a <picture> or <img> (for robustness)
-  let deepestDiv = null;
-  const divs = element.querySelectorAll('div');
-  for (let div of divs) {
-    if (div.querySelector('picture, img')) {
-      deepestDiv = div;
+  // Traverse down to the innermost content div
+  // The HTML is deeply nested: <div> <div> <div> <div> <div> [content] </div> </div> </div> </div> </div>
+  for (let i = 0; i < 4; i++) {
+    if (contentDiv && contentDiv.firstElementChild && contentDiv.firstElementChild.tagName === 'DIV') {
+      contentDiv = contentDiv.firstElementChild;
     }
   }
-  if (deepestDiv) contentDiv = deepestDiv;
-
-  // Get image element (usually inside a <picture> inside a <p>)
-  let imageCell = null;
-  // Find <picture>, and if wrapped in a <p>, use the <p>
-  const picture = contentDiv.querySelector('picture');
-  if (picture) {
-    const parentP = picture.closest('p');
-    imageCell = parentP || picture;
-  } else {
-    // Fallback: look for <img> directly
-    const img = contentDiv.querySelector('img');
-    imageCell = img;
+  // Defensive: check if we need to go one more level
+  if (contentDiv && contentDiv.firstElementChild && contentDiv.firstElementChild.tagName === 'DIV') {
+    contentDiv = contentDiv.firstElementChild;
   }
 
-  // Collect text content elements (headings, subheadings, paragraphs) after the image
-  // We'll take everything after the image's parent (if it's a <p>), as in the example
-  let textElements = [];
-  if (imageCell) {
-    let afterImage = false;
-    for (let child of contentDiv.children) {
-      if (child === imageCell) {
-        afterImage = true;
-        continue;
-      }
-      if (afterImage) {
-        // Only include elements with actual text content
-        if (child.textContent && child.textContent.trim()) {
-          textElements.push(child);
-        }
-      }
+  // Step 2: Extract image (from <picture> inside <p>) and text content
+  let imageEl = null;
+  let textRows = [];
+  Array.from(contentDiv.children).forEach(child => {
+    // Find the image row
+    if (
+      child.tagName === 'P' && child.querySelector('picture') && child.querySelector('img')
+    ) {
+      imageEl = child.querySelector('picture');
     }
-    // If no elements found after image, try to get heading(s)
-    if (textElements.length === 0) {
-      const heading = contentDiv.querySelector('h1, h2, h3, h4, h5, h6');
-      if (heading) textElements.push(heading);
+    // Gather text rows (headings/subheadings/CTA/paragraphs)
+    // Only skip elements that are entirely empty (after removing whitespace)
+    if (
+      child.tagName.match(/^H[1-6]$/) ||
+      (child.tagName === 'P' && child.textContent.trim() !== '')
+    ) {
+      textRows.push(child);
     }
-  } else {
-    // If no image, just collect all child headings/paragraphs
-    for (let child of contentDiv.children) {
-      if ((/^H[1-6]$/).test(child.tagName) || child.tagName === 'P') {
-        if (child.textContent && child.textContent.trim()) {
-          textElements.push(child);
-        }
-      }
-    }
-  }
+  });
 
-  // Only include the image cell if it exists
-  const tableRows = [
-    headerRow,
-    imageCell ? [imageCell] : [''],
-    textElements.length ? [textElements.length === 1 ? textElements[0] : textElements] : ['']
+  // Step 3: Construct table cells according to block guidelines
+  // - First row: header ['Hero']
+  // - Second row: background image (can be empty)
+  // - Third row: title, subheading, CTA, etc. (can be empty)
+  const cells = [
+    ['Hero'],
+    [imageEl ? imageEl : ''],
+    [textRows.length > 0 ? textRows : '']
   ];
 
-  const table = WebImporter.DOMUtils.createTable(tableRows, document);
+  // Step 4: Create the table and replace the original element
+  const table = WebImporter.DOMUtils.createTable(cells, document);
   element.replaceWith(table);
 }
