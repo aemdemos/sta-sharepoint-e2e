@@ -6,16 +6,16 @@
 
 .hero {
   position: relative;
-  min-height: 190px;
+  min-height: 180px;
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100vw;
-  background: radial-gradient(ellipse at 80% 50%, #15304b 65%, #07223a 100%);
-  padding: 0;
+  background: #0b2942;
+  padding: 0 32px;
   box-sizing: border-box;
   overflow: hidden;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 170px;
   background-size: cover;
   background-position: 60% center;
@@ -27,10 +27,10 @@
   margin-left: auto;
   margin-right: auto;
   color: #fff;
-  font-size: 2.2rem;
-  font-weight: 700;
-  line-height: 1.1;
-  text-shadow: 0 2px 12px rgb(0 0 0 / 22%);
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.2;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 15%);
   text-align: left;
   max-width: 660px;
   position: relative;
@@ -74,13 +74,13 @@
   height: 100%;
   display: flex;
   justify-content: flex-end;
-  align-items: flex-end;
+  align-items: center;
   pointer-events: none;
   z-index: 1;
   overflow: visible;
   order: 2;
-  flex: 1 1 52%;
-  min-width: 400px;
+  flex: 1 1 55%;
+  min-width: 0;
   max-width: 60vw;
   box-sizing: border-box;
   grid-column: 2;
@@ -89,15 +89,15 @@
 
 .hero > div:first-child picture,
 .hero > div:first-child img {
-  width: 150%;
-  height: 180%;
+  width: 100%;
+  height: auto;
   object-fit: cover;
   object-position: right bottom;
   opacity: 0.98;
   filter: drop-shadow(0 0 80px #35e3ff) brightness(1.18);
-  mask-image: linear-gradient(to left, black 48%, transparent 100%);
+  mask-image: linear-gradient(to left, transparent 0%, black 30%);
   display: block;
-  max-width: none;
+  max-width: 390px;
   min-width: 600px;
   margin: 0;
   max-height: 160px;
@@ -114,8 +114,8 @@
 .hero > div:last-child {
   position: relative;
   z-index: 2;
-  flex: 1 1 48%;
-  min-width: 290px;
+  flex: 1 1 45%;
+  min-width: 0;
   padding: 2em 16px 1em 38px;
   display: flex;
   align-items: center;
@@ -417,7 +417,6 @@
     height: 120px;
     margin-left: 0;
     mask-image: none;
-    mask-image: none;
   }
 
   .hero > div:last-child {
@@ -493,7 +492,6 @@
     height: 120px;
     margin-right: 0;
     mask-image: none;
-    mask-image: none;
     object-fit: cover;
     object-position: center;
     filter: drop-shadow(0 0 18px #29b6f6);
@@ -547,13 +545,6 @@
   }
 }
 
-/* Text block (left) */
-
-/* Image block (right) */
-
-/* Ensure image fills right side, is large, and fades smoothly */
-
-/* Responsive adjustments: stack content on small screens */
 @media (width <= 900px) {
   .hero {
     flex-direction: column;
@@ -581,7 +572,6 @@
     height: 120px;
     margin-right: 0;
     margin-bottom: 0;
-    mask-image: none;
     mask-image: none;
     object-fit: cover;
     object-position: center;
@@ -635,5 +625,32 @@
 
   .hero h1 {
     font-size: 1rem;
+  }
+}
+
+@media (width <= 800px) {
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 12px;
+  }
+
+  .hero > div,
+  .hero > div > div {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: 1.3rem;
+    text-align: center;
+    margin: 20px 0 0;
+  }
+
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    max-width: 80vw;
+    margin: 0 auto;
   }
 }
