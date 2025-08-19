@@ -35,3 +35,109 @@
     padding: 40px 32px;
   }
 }
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100vw;
+  min-height: 240px;
+  background: #0a2341;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* --- Left (text) side --- */
+.hero > div:last-child {
+  flex: 0 1 50%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 40px 0 0 40px;
+  min-width: 0;
+  z-index: 2;
+}
+
+/* Headline */
+.hero h1 {
+  margin: 0;
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-l);
+  font-weight: 700;
+  text-align: left;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  max-width: 100%;
+}
+
+/* --- Right (image) side --- */
+.hero > div:first-child {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  min-width: 0;
+  z-index: 1;
+  height: 100%;
+  /* Remove any margin/padding that could center or box the image */
+  margin: 0;
+  padding: 0;
+}
+
+.hero > div:first-child > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  background: transparent;
+}
+
+/* Make the image fill and anchor ONLY to the right side */
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: right center;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+  max-height: none;
+}
+
+/* --- Responsive: stack vertically on small screens --- */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    min-height: 140px;
+  }
+  .hero > div:last-child {
+    max-width: 100vw;
+    padding: 32px 16px 0 16px;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .hero > div:first-child {
+    min-height: 120px;
+    max-height: 160px;
+    flex: unset;
+    height: 120px;
+  }
+  .hero > div:first-child > div,
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    height: 100%;
+    max-height: 120px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero h1 {
+    font-size: var(--heading-font-size-m);
+    max-width: 100vw;
+  }
+}
