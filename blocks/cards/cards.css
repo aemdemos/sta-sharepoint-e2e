@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .cards > ul {
   list-style: none;
   margin: 0;
@@ -14,14 +15,118 @@
 
 .cards .cards-card-body {
   margin: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  overflow: hidden;
 }
 
 .cards .cards-card-image {
   line-height: 0;
+  width: 100%;
+  height: 140px;
+  background: #e4e4e4;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .cards > ul > li img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+
+.cards {
+  background-color: #f7f7f7;
+  padding: 32px 0;
+}
+
+/* More balanced container width for alignment with main content */
+.cards > .block {
+  max-width: 1360px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Grid with more comfortable gap for a less dense look */
+.cards > .block > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  align-items: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (width <= 1024px) {
+  .cards > .block > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (width <= 600px) {
+  .cards > .block > ul {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+/* Card styling */
+.cards > .block > ul > li {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Card image: consistent height and placement */
+
+.cards .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card body: more comfortable padding */
+
+/* Title: slightly more space below */
+.cards .cards-card-body p:first-child {
+  margin: 0 0 7px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.2;
+}
+
+/* Body text styling */
+.cards .cards-card-body p:not(:first-child) {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+/* Ensure text is left aligned */
+.cards .cards-card-body p {
+  text-align: left;
 }
