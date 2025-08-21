@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,129 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns {
+  /* Remove padding to allow grid to align flush with container */
+  padding-left: 0;
+  padding-right: 0;
+  box-sizing: border-box;
+}
+
+/* Use grid for global alignment, tighter columns and gaps */
+.columns > .block.columns-2-cols {
+  display: grid;
+  grid-template-columns: 30fr 70fr;
+  grid-template-rows: auto auto;
+  gap: 40px 12px;
+  width: 100%;
+  align-items: start;
+}
+
+/* Allow grandchild divs into grid cells */
+.columns > .block.columns-2-cols > div {
+  display: contents;
+}
+
+/* Top row */
+.columns > .block.columns-2-cols > div:first-child > div:first-child {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+}
+
+.columns > .block.columns-2-cols > div:first-child > div:last-child {
+  grid-row: 1;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Bottom row */
+.columns > .block.columns-2-cols > div:last-child > div:first-child {
+  grid-row: 2;
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+}
+
+.columns > .block.columns-2-cols > div:last-child > div:last-child {
+  grid-row: 2;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Ensure images fill grid cells */
+.columns .columns-img-col picture,
+.columns .columns-img-col img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0;
+  padding: 0;
+  object-fit: cover;
+}
+
+/* Tweaks for text and button spacing */
+.columns .button-container {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+.columns > .block.columns-2-cols ul {
+  margin-top: 0.1em;
+  margin-bottom: 1em;
+  padding-left: 1.2em;
+}
+
+.columns > .block.columns-2-cols li {
+  margin-bottom: 0.2em;
+}
+
+.columns > .block.columns-2-cols p {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+}
+
+/* Responsive: stack vertically for mobile */
+@media (width <= 900px) {
+  .columns {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .columns > .block.columns-2-cols {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .columns > .block.columns-2-cols > div {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .columns > .block.columns-2-cols > div > div {
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
   }
 }
