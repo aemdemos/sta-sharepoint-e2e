@@ -31,3 +31,83 @@
     order: unset;
   }
 }
+
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Each column stacks its children vertically, with tight alignment and spacing */
+.columns > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+/* Remove extra margin on first child */
+.columns > div > :first-child {
+  margin-top: 0;
+}
+
+/* Button container: minimal top margin for compact grouping */
+.columns .button-container {
+  margin-top: 8px;
+  margin-bottom: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Image container: images fill width with balanced height and spacing */
+.columns .columns-img-col {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+}
+
+.columns .columns-img-col picture,
+.columns .columns-img-col img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  display: block;
+  object-fit: cover;
+  border-radius: 0;
+  margin: 0;
+}
+
+/* Button: ensure white background for secondary style */
+.columns .button.secondary {
+  background: #fff;
+  color: #131313;
+  border: 2px solid #131313;
+}
+
+/* Keep all text left-aligned for consistency */
+.columns p,
+.columns ul,
+.columns li {
+  text-align: left;
+}
+
+/* Remove bottom margin from last child in each column for tight fit */
+.columns > div > :last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive: stack columns on mobile */
+@media (max-width: 900px) {
+  .columns {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .columns > div {
+    gap: 6px;
+  }
+}
