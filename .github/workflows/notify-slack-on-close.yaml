@@ -35,4 +35,18 @@ jobs:
               "thread_ts": "${{ steps.get_thread_ts.outputs.thread_ts }}"
             }
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }} 
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Add passed emoji reaction to parent message
+        if: steps.get_thread_ts.outputs.thread_ts != ''
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          method: POST
+          url: https://slack.com/api/reactions.add
+          payload: |
+            {
+              "channel": "${{ secrets.SLACK_CHANNEL_ID }}",
+              "name": "passed",
+              "timestamp": "${{ steps.get_thread_ts.outputs.thread_ts }}"
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
