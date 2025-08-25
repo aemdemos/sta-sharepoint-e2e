@@ -14,14 +14,109 @@
 
 .cards .cards-card-body {
   margin: 16px;
+  flex: 1 1 auto;
+  padding: 20px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 0;
 }
 
 .cards .cards-card-image {
   line-height: 0;
+  flex: 0 0 auto;
+  width: 100%;
+  height: 192px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  background: transparent;
 }
 
 .cards > ul > li img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+
+.cards {
+  background: #f5f5f5;
+  padding: 18px 0;
+}
+
+.cards > .block {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.cards > .block > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  grid-auto-rows: 1fr;
+  place-items: stretch stretch;
+}
+
+@media (width <= 1200px) {
+  .cards > .block > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 800px) {
+  .cards > .block > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cards > .block > ul > li {
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(30 40 90 / 11%);
+  border: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Card image area: consistently sized, filling width */
+
+.cards .cards-card-image img {
+  width: 100%;
+  height: 192px;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Card body: vertical centering for cards without images */
+
+.cards > .block > ul > li:not(:has(.cards-card-image img)) .cards-card-body {
+  justify-content: center;
+}
+
+/* Title and description styling */
+.cards .cards-card-body p:first-child {
+  font-weight: 700;
+  font-size: 20px;
+  color: #111;
+  margin: 0 0 10px;
+  line-height: 1.22;
+}
+
+.cards .cards-card-body p:not(:first-child) {
+  font-size: 15px;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
 }
