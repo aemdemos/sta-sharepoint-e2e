@@ -36,7 +36,7 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      - name: Check for existing X reaction on parent message
+      - name: Get information on the parent message
         if: steps.get_thread_ts.outputs.thread_ts != ''
         id: check_x_reaction
         uses: slackapi/slack-github-action@v1.25.0
