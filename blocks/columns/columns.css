@@ -31,3 +31,112 @@
     order: unset;
   }
 }
+
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 16vw; /* Increase horizontal gap using viewport width for visual centering */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.columns > div {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px; /* Tighter vertical stacking for more compact grouping */
+  box-sizing: border-box;
+}
+
+/* Make sure the main content block has left padding for visual balance */
+@media (min-width: 900px) {
+  .columns {
+    padding-left: 2vw;
+    padding-right: 2vw;
+  }
+  .columns > div {
+    max-width: 40vw; /* Prevent image columns from overstretching on very wide screens */
+  }
+}
+
+/* Image container adjustments */
+.columns .columns-img-col {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.columns .columns-img-col img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 260px; /* More compact image height for a balanced look */
+  object-fit: cover;
+  border-radius: 0;
+  margin: 0;
+}
+
+/* List and text */
+.columns ul {
+  margin-left: 1.2em;
+  font-size: 16px;
+  margin-bottom: 0.2em;
+}
+
+.columns li {
+  font-size: 16px;
+  margin-bottom: 0.08em;
+}
+
+.columns p {
+  margin-bottom: 4px;
+  font-size: 16px;
+  line-height: 1.33;
+  color: #222;
+}
+
+.columns .button-container {
+  margin-top: 4px;
+}
+
+.columns > div > * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive: stack vertically, reduce gaps further and limit image height */
+@media (max-width: 900px) {
+  .columns {
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .columns > div {
+    max-width: 100%;
+    gap: 8px;
+  }
+  .columns .columns-img-col img {
+    max-height: 120px;
+  }
+}
+
+/* Button tweaks for proportions and spacing */
+.columns .button {
+  font-size: 15px;
+  border-radius: 20px;
+  padding: 8px 24px;
+}
+
+.columns .button.secondary {
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #222;
+  font-weight: 400;
+}
