@@ -35,3 +35,112 @@
     padding: 40px 32px;
   }
 }
+
+.hero {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  min-height: 140px;
+  height: 140px;
+  width: 100%;
+  padding: 0;
+  background: linear-gradient(90deg, #0b274c 0%, #193d5f 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left: DNA image */
+.hero > div:first-child {
+  flex: 0 0 420px;
+  max-width: 420px;
+  min-width: 260px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.hero > div:first-child picture {
+  display: block;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.hero > div:first-child img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  opacity: 0.82;
+  filter: drop-shadow(0 0 16px #193d5f88);
+  box-sizing: border-box;
+}
+
+/* Right: headline/text */
+.hero > div:last-child {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 40px;
+  padding-top: 18px;
+  min-width: 0;
+  height: 100%;
+}
+
+.hero h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  text-align: left;
+}
+
+/* Responsive: stack and reduce image height on mobile */
+@media (max-width: 700px) {
+  .hero {
+    flex-direction: column;
+    min-height: 180px;
+    height: auto;
+  }
+  .hero > div {
+    width: 100%;
+    padding-left: 0;
+    padding-top: 0;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    height: auto;
+  }
+  .hero > div:first-child {
+    order: 2;
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 12px;
+    max-width: none;
+    height: auto;
+  }
+  .hero > div:last-child {
+    order: 1;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+  }
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    height: 90px;
+    width: auto;
+    max-width: 80vw;
+  }
+  .hero h1 {
+    text-align: center;
+    font-size: 1.35rem;
+  }
+}
