@@ -35,4 +35,64 @@ jobs:
               "thread_ts": "${{ steps.get_thread_ts.outputs.thread_ts }}"
             }
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }} 
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Get information on the parent message
+        if: steps.get_thread_ts.outputs.thread_ts != ''
+        id: check_x_reaction
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          method: GET
+          url: https://slack.com/api/reactions.get
+          payload: |
+            {
+              "channel": "${{ secrets.SLACK_CHANNEL_ID }}",
+              "timestamp": "${{ steps.get_thread_ts.outputs.thread_ts }}"
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Determine reaction to add
+        if: steps.get_thread_ts.outputs.thread_ts != ''
+        id: determine_reaction
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Only add 'passed' reaction if there is no 'x' reaction
+            let reaction = '';
+            let response = {};
+
+            try {
+              response = JSON.parse(`${{ steps.check_x_reaction.outputs.response }}`);
+            } catch (err) {
+              core.warning(`Failed to parse Slack API response: ${err.message}`);
+              reaction = 'question'; // fallback when parsing fails
+            }
+            if (reaction === '') {
+              if (!response.ok) {
+                core.warning(`Slack API call failed: ${response.error || 'unknown error'}`);
+                reaction = 'question'; 
+              } else if (response.message && Array.isArray(response.message.reactions)) {
+                const hasXReaction = response.message.reactions.some(r => r.name === 'x');
+                if (!hasXReaction) {
+                  reaction = 'passed';
+                }
+              } else if (response.message) {
+                // API succeeded but no reactions on message
+                reaction = 'passed';
+              }
+            }
+            
+            core.setOutput('reaction', reaction);
+      - name: Add emoji reaction to parent message
+        if: steps.determine_reaction.outputs.reaction != ''
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          method: POST
+          url: https://slack.com/api/reactions.add
+          payload: |
+            {
+              "channel": "${{ secrets.SLACK_CHANNEL_ID }}",
+              "name": "${{ steps.determine_reaction.outputs.reaction }}",
+              "timestamp": "${{ steps.get_thread_ts.outputs.thread_ts }}"
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
