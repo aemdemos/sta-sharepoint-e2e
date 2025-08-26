@@ -1,14 +1,26 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
-  display: flex;
+  display: grid;
   flex-direction: column;
+  grid-template-columns: 35% 1fr;
+  gap: 44px;
+  align-items: start;
+  width: 100%;
+  margin: 0;
+  min-height: 0;
 }
 
 .columns img {
   width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .columns > div > div {
   order: 1;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .columns > div > .columns-img-col {
@@ -29,5 +41,89 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+
+  /* Prevent parent column height from being affected by children */
+  align-items: stretch;
+}
+
+.columns .columns-img-col,
+.columns .columns-img-col picture,
+.columns .columns-img-col img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.columns .button-container {
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.columns .button,
+.columns .button.secondary {
+  margin-top: 0;
+  margin-bottom: 0;
+  min-width: 96px;
+  font-size: 16px;
+  padding: 10px 28px;
+  box-shadow: none;
+}
+
+.columns .button.secondary {
+  background: #fff;
+  color: #222;
+  border: 2px solid #222;
+  border-radius: 8px;
+}
+
+.columns p,
+.columns ul {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #131313;
+  font-family: var(--body-font-family, sans-serif);
+}
+
+.columns ul {
+  padding-left: 22px;
+}
+
+.columns li {
+  margin-bottom: 5px;
+}
+
+/* Responsive stacking for narrower screens */
+@media (width <= 900px) {
+  .columns {
+    gap: 24px;
+  }
+
+  .columns > div {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .columns > div > div {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .columns .button,
+  .columns .button.secondary {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
 }
