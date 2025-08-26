@@ -22,7 +22,7 @@ To contribute to this project, please follow these steps:
 4. **Update the E2E workflow commit hash**
    - Once your PR is merged into main, copy the commit hash of the merge commit
    - Navigate to the repository Settings → Secrets and variables → Actions
-   - Update the repository secret `E2E_WORKFLOW_COMMIT` with the new commit hash
+   - Update the Github repository secret `E2E_WORKFLOW_COMMIT` with the new commit hash
 
 This process ensures that the E2E workflow always resets to a known good state for testing purposes.
 
