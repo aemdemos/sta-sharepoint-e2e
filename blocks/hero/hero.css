@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -5,23 +6,41 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  padding: 0;
+  min-height: unset;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: 190px;
+  width: 100%;
+  background: linear-gradient(90deg, #11213a 60%, #183e5d 100%);
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+  max-width: 100%;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0 auto;
+  line-height: 1.15;
+  font-family: var(--heading-font-family);
+  text-align: left;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
 }
 
 .hero picture {
-  position: absolute;
-  z-index: -1;
+  position: relative;
+  z-index: 2;
   inset: 0;
   object-fit: cover;
   box-sizing: border-box;
+  visibility: visible;
+  opacity: 1;
 }
 
 .hero img {
@@ -33,5 +52,87 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+/* Left column: text, vertically centered and left padded */
+.hero > div:last-child {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding-left: 2.5rem;
+  min-width: 0;
+}
+
+/* Heading: left-aligned, no truncation, allow wrapping */
+
+/* Right column: DNA image, ensure it appears and fills vertical space on right */
+.hero > div:first-child {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  min-width: 0;
+  order: 2;
+}
+
+/* DNA image: full height, correct aspect, never hidden */
+.hero picture,
+.hero img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  background: none;
+  border: none;
+  margin: 0;
+  box-shadow: none;
+}
+
+/* Remove margin/padding from nested inner containers */
+.hero > div > div {
+  margin: 0;
+  padding: 0;
+}
+
+/* If the image is not appearing, ensure it's not hidden by inherited styles */
+
+/* Responsive: stack text/image vertically for small screens */
+@media (width <= 700px) {
+  .hero {
+    flex-direction: column;
+    height: auto;
+    min-height: 190px;
+    padding: 12px 0;
+  }
+
+  .hero > div:first-child,
+  .hero > div:last-child {
+    flex: 1 1 100%;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    padding-left: 0;
+    min-width: 0;
+    order: unset;
+  }
+
+  .hero h1 {
+    padding-left: 0;
+    text-align: center;
+    font-size: 1.4rem;
+    max-width: 98vw;
+  }
+
+  .hero picture,
+  .hero img {
+    width: 100vw;
+    max-height: 140px;
+    object-fit: contain;
   }
 }
