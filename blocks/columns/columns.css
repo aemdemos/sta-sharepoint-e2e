@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 40px;
+  gap: 12px;
   flex: 1 1 0;
   min-width: 0;
   width: 100%;
@@ -54,15 +54,16 @@
   place-items: start stretch;
   width: 100%;
   grid-auto-rows: auto;
-  align-items: flex-start;
+  align-items: stretch;
   background: var(--background-color);
   flex-direction: column;
-  margin: 0 auto;
-  padding: 32px 0;
+  margin: 40px auto 0;
+  padding: 0;
   padding-top: 32px;
   padding-bottom: 32px;
   max-width: 1100px;
   box-sizing: border-box;
+  justify-content: flex-start;
 }
 
 .columns > div:first-child > div:first-child {
@@ -82,6 +83,11 @@
   display: flex;
   align-items: flex-start;
   margin: 0;
+  flex: 1 1 460px;
+  max-width: 460px;
+  min-width: 260px;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .columns > div:last-child > .columns-img-col {
@@ -91,6 +97,11 @@
   display: flex;
   align-items: flex-start;
   margin: 0;
+  flex: 1 1 460px;
+  max-width: 460px;
+  min-width: 260px;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .columns > div:last-child > div:nth-child(2) {
@@ -135,7 +146,7 @@
 }
 
 .columns .button-container {
-  margin-top: 14px;
+  margin-top: 0;
   margin-bottom: 0;
 }
 
@@ -146,8 +157,12 @@
   border-radius: 999px;
   box-shadow: none;
   min-width: 96px;
-  background: #3f51b5;
+  background: #36F;
   color: #fff;
+  border: none;
+  text-align: center;
+  transition: background 0.2s;
+  margin: 18px 0 0;
 }
 
 .columns .button.secondary {
@@ -160,6 +175,7 @@
   font-weight: 500;
   text-align: center;
   box-shadow: none;
+  margin: 18px 0 0;
 }
 
 .columns p, .columns ul, .columns li {
@@ -172,8 +188,8 @@
 }
 
 .columns ul {
-  margin-top: 10px;
-  padding-left: 0;
+  margin-top: 8px;
+  padding-left: 20px;
   margin-bottom: 2px;
   margin-left: 22px;
 }
@@ -251,8 +267,8 @@
 .columns p,
 .columns ul,
 .columns li {
-  color: var(--text-color);
-  font-size: 18px;
+  color: #000;
+  font-size: 16px;
   font-family: var(--body-font-family);
   margin: 0 0 0.25em;
   text-align: left;
@@ -309,6 +325,10 @@
   flex-direction: column;
   gap: 18px;
   align-items: flex-start;
+  flex: 1 1 320px;
+  max-width: 320px;
+  min-width: 220px;
+  justify-content: flex-start;
 }
 
 .columns > div:last-child > div:not(.columns-img-col) {
@@ -316,6 +336,10 @@
   flex-direction: column;
   gap: 18px;
   align-items: flex-start;
+  flex: 1 1 320px;
+  max-width: 320px;
+  min-width: 220px;
+  justify-content: flex-start;
 }
 
 @media (width <= 900px) {
@@ -393,9 +417,6 @@
   }
 }
 
-/* Each row: flex row, side-by-side columns, centered in block */
-
-/* Make columns share available space evenly for balance */
 .columns > div > div,
 .columns > div > .columns-img-col {
   flex: 1 1 0;
@@ -406,25 +427,16 @@
   justify-content: flex-start;
 }
 
-/* Limit max width of text columns so they don't stretch too much */
 .columns > div:first-child > div:first-child,
 .columns > div:last-child > div:nth-child(2) {
   max-width: 320px;
 }
 
-/* Limit max width of image columns for visual balance */
 .columns > div:first-child > .columns-img-col,
 .columns > div:last-child > .columns-img-col {
   max-width: 480px;
 }
 
-/* Images: fill width, keep aspect, don't get too tall */
-
-/* Buttons */
-
-/* Button style */
-
-/* Responsive: stack on small screens */
 @media (width <= 900px) {
   .columns {
     max-width: 100%;
@@ -448,5 +460,44 @@
     max-height: none;
     height: auto;
     aspect-ratio: auto;
+  }
+}
+
+/* Each row is side-by-side: .columns > div is a row */
+
+/* First row: text left, image right */
+
+/* Second row: image left, text right */
+
+/* Images styling */
+
+/* Button styling overrides */
+
+/* Text and list styling */
+
+.columns li {
+  line-height: 1.6;
+}
+
+/* Responsive stacking for mobile */
+@media (width <= 900px) {
+  .columns {
+    padding: 0;
+    gap: 32px;
+    max-width: 100%;
+    margin-top: 16px;
+  }
+
+  .columns > div {
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+  }
+
+  .columns > div > div,
+  .columns > div > .columns-img-col {
+    max-width: 100%;
+    width: 100%;
+    min-width: 0;
   }
 }
