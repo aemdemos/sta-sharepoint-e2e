@@ -134,8 +134,6 @@
   position: relative;
   overflow: hidden;
 }
-
-/* Text container: left, minimal top padding, width adjusted for balance */
 .hero > div:last-child {
   flex: 1 1 46%;
   order: 1;
@@ -148,8 +146,6 @@
   box-sizing: border-box;
   z-index: 2;
 }
-
-/* Headline styling */
 .hero h1 {
   color: #fff;
   font-size: var(--heading-font-size-xl);
@@ -162,8 +158,6 @@
   font-family: var(--heading-font-family), sans-serif;
   text-shadow: 0 1px 8px rgba(0,0,0,0.18);
 }
-
-/* Image container: maximize right fill, blend image */
 .hero > div:first-child {
   flex: 1 1 54%;
   order: 2;
@@ -177,8 +171,6 @@
   z-index: 1;
   overflow: visible;
 }
-
-/* Make DNA image fill container and overflow slightly for blending */
 .hero > div:first-child picture {
   display: flex;
   align-items: stretch;
@@ -201,8 +193,6 @@
   position: relative;
   z-index: 1;
 }
-
-/* Fade the image into the background using a strong gradient overlay */
 .hero > div:first-child::after {
   position: absolute;
   top: 0; left: -25px; bottom: 0; right: 0;
@@ -213,8 +203,6 @@
   background: linear-gradient(90deg, #06223a 0%, #06223a 7%, rgba(6,34,58,0.77) 18%, rgba(6,34,58,0.33) 42%, rgba(6,34,58,0) 80%);
   content: "";
 }
-
-/* Responsive: stack on mobile, shrink image, center text */
 @media (max-width: 700px) {
   .hero {
     flex-direction: column;
@@ -256,5 +244,128 @@
     left: 0;
     width: 100%;
     background: linear-gradient(90deg, #06223a 0%, rgba(6,34,58,0.72) 22%, rgba(6,34,58,0) 80%);
+  }
+}
+
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 180px;
+  height: 180px;
+  width: 100%;
+  background: linear-gradient(90deg, #12243c 58%, #193c60 100%);
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Text container: perfectly centered vertically, more generous left padding */
+.hero > div:last-child {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center; /* vertical centering */
+  justify-content: flex-start;
+  min-width: 0;
+  height: 100%;
+  padding-left: 68px;
+}
+
+/* Headline: bold, left-aligned, large */
+.hero h1 {
+  color: #fff;
+  font-size: var(--heading-font-size-xl);
+  font-weight: 700;
+  margin: 0;
+  text-align: left;
+  font-family: var(--heading-font-family), sans-serif;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
+  line-height: 1.08;
+  letter-spacing: 0.5px;
+}
+
+/* DNA image: visually integrated, larger, absolutely positioned on right, vertically centered */
+.hero > div:first-child {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 58%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Make DNA image fill right side, not boxed in */
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  position: relative;
+  z-index: 2;
+  background: transparent;
+}
+
+/* Fade DNA image edge for even more seamless left blend */
+.hero > div:first-child::before {
+  position: absolute;
+  top: 0;
+  left: -100px;
+  width: 160px;
+  height: 100%;
+  background: linear-gradient(to right, #12243c 0%, rgba(18,36,60,0.7) 30%, rgba(18,36,60,0.0) 100%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Responsive: stack vertically, image on top, text below */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    min-height: 140px;
+    height: auto;
+    background: linear-gradient(180deg, #12243c 90%, #193c60 100%);
+  }
+  .hero > div:first-child {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+  }
+  .hero > div:last-child {
+    padding-left: 0;
+    padding-top: 14px;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: var(--heading-font-size-l);
+    text-align: center;
+    padding: 0 12px;
+  }
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+  }
+  .hero > div:first-child::before {
+    left: 0;
+    width: 60px;
+    background: linear-gradient(to right, #12243c 0%, rgba(18,36,60,0.3) 80%, rgba(18,36,60,0.0) 100%);
   }
 }
