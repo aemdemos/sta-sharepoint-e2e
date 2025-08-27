@@ -1,58 +1,56 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Get the hero block's content
-  const heroBlock = element.querySelector('.hero.block');
-  let imageCell = null;
-  const textCell = [];
-
-  if (heroBlock) {
-    // The innermost div containing content
-    const innerDiv = heroBlock.querySelector(':scope > div > div');
-    if (innerDiv) {
-      // Find the <picture> (background image) inside a <p>
-      const pictureP = innerDiv.querySelector('p picture');
-      if (pictureP) {
-        // Use the parent <p> wrapping the <picture>
-        imageCell = pictureP.parentElement;
-      } else {
-        // Fallback: find direct <img>
-        const img = innerDiv.querySelector('img');
-        if (img) {
-          imageCell = img;
-        }
-      }
-
-      // Find heading(s), paragraphs, and any other content except the image
-      // Exclude the paragraph that contains the picture
-      Array.from(innerDiv.children).forEach(child => {
-        // If it's the <p> containing <picture>, skip
-        if (
-          child.tagName === 'P' &&
-          child.querySelector('picture')
-        ) {
-          return;
-        }
-        // Add any heading or paragraph
-        if (
-          child.tagName.match(/^H[1-6]$/) ||
-          (child.tagName === 'P')
-        ) {
-          // Only add non-empty paragraphs
-          if (child.textContent.trim() || child.tagName.match(/^H[1-6]$/)) {
-            textCell.push(child);
-          }
-        }
-      });
+  // Find the hero-wrapper inside the section
+  const heroWrapper = element.querySelector('.hero-wrapper');
+  let heroContent;
+  if (heroWrapper) {
+    const heroBlock = heroWrapper.querySelector('.hero.block');
+    if (heroBlock) {
+      // The content is in heroBlock > div > div
+      const deepDiv = heroBlock.querySelector('div > div');
+      heroContent = deepDiv || heroBlock;
+    } else {
+      heroContent = heroWrapper;
+    }
+  } else {
+    heroContent = element;
+  }
+  // Find the image (picture or img) among children
+  let imageEl = null;
+  const firstPictureOrImage = Array.from(heroContent.querySelectorAll('picture,img')).find(el => el.closest('picture') === el || el.tagName === 'IMG');
+  if (firstPictureOrImage) {
+    // Get the containing <picture> if it's an <img> within <picture>
+    if (firstPictureOrImage.tagName === 'IMG' && firstPictureOrImage.parentElement && firstPictureOrImage.parentElement.tagName === 'PICTURE') {
+      imageEl = firstPictureOrImage.parentElement;
+    } else {
+      imageEl = firstPictureOrImage;
     }
   }
-
-  // Build the table
-  const rows = [
-    ['Hero'],         // Header row
-    [imageCell],      // Image row
-    [textCell]        // Text row (array of elements)
+  // Collect text content, only direct children (ignore image)
+  const textEls = [];
+  heroContent.childNodes.forEach((node) => {
+    if (node.nodeType === 1) {
+      // Only accept h1, h2, h3, p (skip if <picture> or <img>)
+      if (["H1","H2","H3","P"].includes(node.tagName)) {
+        // Skip empty <p>
+        if (node.tagName === 'P' && !node.textContent.trim() && !node.querySelector('img,picture')) return;
+        // Skip <p> only containing the image
+        if (node.tagName === 'P' && (node.querySelector('img') || node.querySelector('picture'))) return;
+        textEls.push(node);
+      }
+    }
+  });
+  // Defensive: If textEls is empty, try to find any heading in the block
+  if (textEls.length === 0) {
+    const fallbackHeadline = heroContent.querySelector('h1,h2,h3');
+    if (fallbackHeadline) textEls.push(fallbackHeadline);
+  }
+  // Assemble the table
+  const cells = [
+    ['Hero'],
+    [imageEl || ''],
+    [textEls.length ? textEls : '']
   ];
-
-  const table = WebImporter.DOMUtils.createTable(rows, document);
-  element.replaceWith(table);
+  const block = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(block);
 }
