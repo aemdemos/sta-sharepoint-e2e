@@ -1,38 +1,46 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Get the <ul> containing all cards (direct child of .cards block)
-  const ul = element.querySelector('ul');
+  // Find the cards block
+  const cardsBlock = element.querySelector('.cards.block');
+  if (!cardsBlock) return;
+  const ul = cardsBlock.querySelector('ul');
   if (!ul) return;
-  const cards = Array.from(ul.children); // <li> elements
+  const cards = Array.from(ul.children); // <li>s
 
-  // Table header row, must exactly match the example
+  // Header row as per example
   const headerRow = ['Cards'];
-  const rows = [headerRow];
+  const tableRows = [headerRow];
 
-  // Each card: image in col 1, text in col 2
   cards.forEach(card => {
-    // Card image: prefer <picture>, fallback to <img> if necessary
-    let imgContainer = card.querySelector('.cards-card-image');
-    let imageElement = null;
+    // Image cell
+    let imageEl = null;
+    const imgContainer = card.querySelector('.cards-card-image');
     if (imgContainer) {
-      imageElement = imgContainer.querySelector('picture') || imgContainer.querySelector('img');
+      // Use <picture> if present for robustness, else <img>
+      const picture = imgContainer.querySelector('picture');
+      if (picture) imageEl = picture;
+      else {
+        const img = imgContainer.querySelector('img');
+        if (img) imageEl = img;
+      }
     }
-    // Card body: should always be present
-    let textContainer = card.querySelector('.cards-card-body');
-    if (!textContainer) {
-      // Fallback: find first <div> which is not the image container
-      textContainer = Array.from(card.querySelectorAll('div')).find(div => div !== imgContainer);
+
+    // Text cell
+    let textEls = [];
+    const bodyContainer = card.querySelector('.cards-card-body');
+    if (bodyContainer) {
+      // Grab all block children (to preserve structure: <p>, <strong>, etc)
+      textEls = Array.from(bodyContainer.children);
     }
-    // If image or text exists, add to row
-    if (imageElement || textContainer) {
-      rows.push([
-        imageElement || '',
-        textContainer || ''
-      ]);
-    }
+    // edge case: if it's empty, don't break the structure
+    if (textEls.length === 0) textEls = [''];
+
+    tableRows.push([
+      imageEl || '',
+      textEls.length === 1 ? textEls[0] : textEls
+    ]);
   });
 
-  // Create and replace the block table
-  const table = WebImporter.DOMUtils.createTable(rows, document);
+  const table = WebImporter.DOMUtils.createTable(tableRows, document);
   element.replaceWith(table);
 }
