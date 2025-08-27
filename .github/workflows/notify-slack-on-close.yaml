@@ -42,10 +42,12 @@ jobs:
         run: |
           response=$(curl -X GET "https://slack.com/api/reactions.get" \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Accept: application/json" \
             -H "Content-Type: application/json" \
             -G \
             --data-urlencode "channel=${{ secrets.SLACK_CHANNEL_ID }}" \
             --data-urlencode "timestamp=${{ steps.get_thread_ts.outputs.thread_ts }}")
+          response=$(echo "$response" | jq -c .)   # make sure it's a single line
           echo "response=$response" >> $GITHUB_OUTPUT
       - name: Determine reaction to add
         if: steps.get_thread_ts.outputs.thread_ts != ''
@@ -57,15 +59,19 @@ jobs:
             let reaction = '';
             let response = {};
 
+            const rawResponse = `${{ steps.get_parent_message_reactions.outputs.response }}`;
             try {
-              response = JSON.parse(`${{ steps.get_parent_message_reactions.outputs.response }}`);
+              response = JSON.parse(rawResponse);
             } catch (err) {
               core.warning(`Failed to parse Slack API response: ${err.message}`);
+              core.warning(`Raw response: ${rawResponse}`);
               reaction = 'question'; // fallback when parsing fails
             }
             if (reaction === '') {
               if (!response.ok) {
-                core.warning(`Slack API call failed: ${response.error || 'unknown error'}`);
+                const errorMsg = response.error || 'unknown error';
+                core.warning(`Slack API call failed: ${errorMsg}`);
+                core.warning(`Full error response: ${JSON.stringify(response)}`);
                 reaction = 'question'; 
               } else if (response.message && Array.isArray(response.message.reactions)) {
                 const hasXReaction = response.message.reactions.some(r => r.name === 'x');
