@@ -1,54 +1,46 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the .cards block inside the wrapper
-  const cardsBlock = element.querySelector('.cards.block');
-  if (!cardsBlock) return;
+  // Find the main cards block (should contain <ul> with <li> per card)
+  let cardsBlock = element.querySelector('.cards.block[data-block-name="cards"]');
+  if (!cardsBlock) {
+    // fallback: maybe element IS the block
+    cardsBlock = element;
+  }
+  
+  // Find the <ul> within the block
+  const ul = cardsBlock.querySelector('ul');
+  if (!ul) return;
+  
+  const rows = [];
+  // Add header row
+  rows.push(['Cards']);
 
-  // Header row exactly matches example
-  const rows = [['Cards']];
-
-  // Find all card items (li)
-  const cardItems = cardsBlock.querySelectorAll('ul > li');
-  cardItems.forEach(card => {
-    // Extract image: use the existing <picture> element if present
-    let imageElem = null;
-    const imgContainer = card.querySelector('.cards-card-image');
-    if (imgContainer) {
-      const picture = imgContainer.querySelector('picture');
-      if (picture) {
-        imageElem = picture;
+  ul.querySelectorAll(':scope > li').forEach((li) => {
+    // Image/icon cell: find .cards-card-image
+    const imgDiv = li.querySelector('.cards-card-image');
+    let imgCell = '';
+    if (imgDiv) {
+      // Use the <picture> if present, else <img>
+      const pic = imgDiv.querySelector('picture');
+      if (pic) {
+        imgCell = pic;
       } else {
-        const img = imgContainer.querySelector('img');
-        if (img) imageElem = img;
+        const img = imgDiv.querySelector('img');
+        if (img) imgCell = img;
       }
     }
-
-    // Extract body content: all children of .cards-card-body
-    let bodyContent = [];
-    const bodyContainer = card.querySelector('.cards-card-body');
-    if (bodyContainer) {
-      // Retain semantic structure and formatting by referencing existing elements
-      // Only include element nodes and non-empty text nodes
-      bodyContent = Array.from(bodyContainer.childNodes).filter(
-        node => (node.nodeType === Node.ELEMENT_NODE) ||
-                (node.nodeType === Node.TEXT_NODE && node.textContent.trim())
-      );
-      // If only one node, use just that, else pass array
-      if (bodyContent.length === 1) bodyContent = bodyContent[0];
-    } else {
-      bodyContent = '';
+    // Text content cell: use .cards-card-body
+    const bodyDiv = li.querySelector('.cards-card-body');
+    let textCell = '';
+    if (bodyDiv) {
+      // If bodyDiv only has text, use its childNodes
+      // If it has <p> or other elements, include all
+      // This ensures strong tags (for titles) and paragraphs are included and semantic meaning kept
+      textCell = Array.from(bodyDiv.childNodes);
     }
-
-    // Create a row: image in first cell, text in second
-    rows.push([
-      imageElem,
-      bodyContent
-    ]);
+    rows.push([imgCell, textCell]);
   });
-
-  // Create the Cards block table
-  const block = WebImporter.DOMUtils.createTable(rows, document);
-
-  // Replace the original wrapper element with the new block
-  element.replaceWith(block);
+  // Create table and replace
+  const table = WebImporter.DOMUtils.createTable(rows, document);
+  element.replaceWith(table);
 }

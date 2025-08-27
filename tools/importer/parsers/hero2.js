@@ -1,57 +1,68 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // 1. Find the hero block content: may be nested inside wrappers
-  let mainContent = element;
+  // Find the hero block's core content
+  let heroBlock = element.querySelector('.hero.block');
+  if (!heroBlock) heroBlock = element;
 
-  // Traverse down if we are given the section/container
-  const wrapper = element.querySelector('.hero-wrapper');
-  if (wrapper) mainContent = wrapper;
-  const heroBlock = mainContent.querySelector('.hero.block');
-  if (heroBlock) mainContent = heroBlock;
-  // Deepest div inside hero block (skip nested divs)
+  // Drill down to the innermost content div
+  let innermost = heroBlock;
   while (
-    mainContent &&
-    mainContent.children.length === 1 &&
-    mainContent.firstElementChild.tagName === 'DIV'
+    innermost &&
+    innermost.children.length === 1 &&
+    innermost.firstElementChild.tagName === 'DIV'
   ) {
-    mainContent = mainContent.firstElementChild;
+    innermost = innermost.firstElementChild;
   }
 
-  // 2. Extract image row: <picture> or <img> inside a <p>
-  let imgCell = '';
-  const picture = mainContent.querySelector('picture');
-  if (picture) {
-    // Reference the <p> containing the <picture> (if exists)
-    let imgParent = picture.parentElement;
-    if (imgParent.tagName === 'P') {
-      imgCell = imgParent;
-    } else {
-      // Should rarely happen; wrap in <p> for layout
-      const p = document.createElement('p');
-      p.appendChild(picture);
-      imgCell = p;
+  // Find all direct children of innermost
+  const children = Array.from(innermost.children);
+
+  // Find the picture or img (background image)
+  let imageCell = null;
+  let imageEl = null;
+  for (const child of children) {
+    if (child.tagName === 'PICTURE') {
+      imageEl = child;
+      break;
+    } else if (child.tagName === 'P' && child.querySelector('picture')) {
+      imageEl = child.querySelector('picture');
+      imageCell = child;
+      break;
     }
   }
-
-  // 3. Extract the text row: headings, paragraphs, cta, etc., except the image
-  const textElements = [];
-  for (const child of mainContent.children) {
-    // Ignore the image row (the <p> containing <picture> or the <picture> itself)
-    if (picture && (child === picture || child.contains(picture))) continue;
-    // Ignore empty paragraphs
-    if (child.tagName === 'P' && child.textContent.trim() === '') continue;
-    textElements.push(child);
+  // If found, and not already in a <p>, wrap in <p>
+  if (imageEl && !imageCell) {
+    const p = document.createElement('p');
+    p.appendChild(imageEl);
+    imageCell = p;
   }
 
-  // If no text, textElements stays empty, which is allowed.
+  // All non-image content except empty <p> tags
+  const contentEls = [];
+  for (const child of children) {
+    // Exclude the image cell or its parent <p>
+    if (
+      (imageCell && child === imageCell) ||
+      (imageEl && child === imageEl) ||
+      (imageEl && child.contains && child.contains(imageEl))
+    ) {
+      continue;
+    }
+    // Filter out empty <p> tags
+    if (child.tagName === 'P' && !child.textContent.trim()) continue;
+    contentEls.push(child);
+  }
 
-  // 4. Construct table as per block definition
-  const cells = [
-    ['Hero'], // header row exactly as example
-    [imgCell], // image row
-    [textElements.length ? textElements : ''] // text row, empty string if nothing
-  ];
+  // Structure table as per block spec: 1 column, 3 rows
+  const cells = [];
+  // Header row
+  cells.push(['Hero']);
+  // Background image row
+  cells.push([imageCell || '']);
+  // Content row (always combine all content in a single cell, even if only one element)
+  cells.push([contentEls.length > 0 ? contentEls : '']);
 
-  const block = WebImporter.DOMUtils.createTable(cells, document);
-  element.replaceWith(block);
+  // Create and replace
+  const table = WebImporter.DOMUtils.createTable(cells, document);
+  element.replaceWith(table);
 }
