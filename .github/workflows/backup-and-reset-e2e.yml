@@ -38,7 +38,6 @@ jobs:
       - name: Create backup branch
         id: backup
         run: |
-          exit 1
           # Get current date and time in YYYY-MM-DD-HH-MM format
           TIMESTAMP=$(date +%Y-%m-%d-%H-%M)
           # Use provided branch name or default to backup-{timestamp}
