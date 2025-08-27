@@ -38,11 +38,11 @@ jobs:
             for (const branch of issueBranches) {
               try {
                 console.log(`Deleting branch: ${branch.name}`);
-                // await github.rest.git.deleteRef({
-                //   owner: context.repo.owner,
-                //   repo: context.repo.repo,
-                //   ref: `heads/${branch.name}`
-                // });
+                await github.rest.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: `heads/${branch.name}`
+                });
                 console.log(`✅ Successfully deleted branch: ${branch.name}`);
               } catch (error) {
                 console.error(`❌ Failed to delete branch ${branch.name}: ${error.message}`);
@@ -50,5 +50,6 @@ jobs:
             }
 
             console.log('Branch deletion process completed');
+
 
 
