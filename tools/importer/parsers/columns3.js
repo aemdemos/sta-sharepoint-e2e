@@ -1,32 +1,41 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the main '.columns.block' within the wrapper
-  const columnsBlock = element.querySelector('.columns.block');
-  if (!columnsBlock) return;
+  // Get the columns block (assume you get passed the columns-wrapper)
+  const block = element.querySelector('.columns.block');
+  if (!block) return;
 
-  // Get all direct row divs (children of .columns.block)
-  const rows = Array.from(columnsBlock.children);
-  if (rows.length === 0) return;
+  // Get all immediate child divs of .columns.block - each is a visual row
+  const rowDivs = block.querySelectorAll(':scope > div');
 
-  // The column structure is determined by the first row - how many direct child divs
-  const firstRowCols = Array.from(rows[0].children);
-  const columnsCount = firstRowCols.length;
-
-  // Header row: must be a single cell with 'Columns'
-  const table = [['Columns']];
-
-  // For each row, push an array of its direct column <div>s
-  rows.forEach(row => {
-    const cols = Array.from(row.children);
-    // If this row has fewer cells than the column count (shouldn't happen in this block, but to be robust),
-    // fill with empty strings
-    while (cols.length < columnsCount) {
-      cols.push(document.createTextNode(''));
+  // Determine the number of columns from the first row (usually the max columns in any row)
+  let maxColumns = 0;
+  rowDivs.forEach((rowDiv) => {
+    const colDivs = rowDiv.querySelectorAll(':scope > div');
+    if (colDivs.length > maxColumns) {
+      maxColumns = colDivs.length;
     }
-    table.push(cols);
+  });
+  if (!maxColumns) return; // Defensive: do nothing if no columns detected
+
+  // Header row: single cell, should NOT match the number of columns, just one
+  const headerRow = ['Columns'];
+  const tableRows = [headerRow];
+
+  // Now add data rows with correct number of columns
+  rowDivs.forEach((rowDiv) => {
+    const colDivs = rowDiv.querySelectorAll(':scope > div');
+    const rowCells = [];
+    colDivs.forEach((colDiv) => {
+      rowCells.push(colDiv);
+    });
+    // Fill out any missing columns with empty strings so all data rows match maxColumns
+    while (rowCells.length < maxColumns) {
+      rowCells.push('');
+    }
+    tableRows.push(rowCells);
   });
 
-  // Create the table block and replace
-  const block = WebImporter.DOMUtils.createTable(table, document);
-  element.replaceWith(block);
+  // Create table with WebImporter helper
+  const table = WebImporter.DOMUtils.createTable(tableRows, document);
+  element.replaceWith(table);
 }
