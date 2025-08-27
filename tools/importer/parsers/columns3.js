@@ -1,41 +1,37 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Get the columns block (assume you get passed the columns-wrapper)
-  const block = element.querySelector('.columns.block');
-  if (!block) return;
+  // Find the actual columns block (the inner .columns.block)
+  let block = element.querySelector('.columns.block');
+  if (!block) block = element;
+  // Get all top-level rows (each child div is a row)
+  const rows = Array.from(block.querySelectorAll(':scope > div'));
+  if (rows.length === 0) return;
 
-  // Get all immediate child divs of .columns.block - each is a visual row
-  const rowDivs = block.querySelectorAll(':scope > div');
-
-  // Determine the number of columns from the first row (usually the max columns in any row)
-  let maxColumns = 0;
-  rowDivs.forEach((rowDiv) => {
-    const colDivs = rowDiv.querySelectorAll(':scope > div');
-    if (colDivs.length > maxColumns) {
-      maxColumns = colDivs.length;
-    }
+  // For each row, collect its immediate children (these are the columns for that row)
+  const dataRows = rows.map(row => {
+    // Get top-level columns in this row
+    const cols = Array.from(row.querySelectorAll(':scope > div'));
+    // Defensive: if row doesn't have div children, treat the row as a single column
+    if (cols.length === 0) return [row];
+    return cols;
   });
-  if (!maxColumns) return; // Defensive: do nothing if no columns detected
+  
+  // Find the maximum column count in any row
+  const maxCols = dataRows.reduce((max, row) => Math.max(max, row.length), 1);
 
-  // Header row: single cell, should NOT match the number of columns, just one
+  // Header row: one cell, but we will set colspan after table creation
   const headerRow = ['Columns'];
-  const tableRows = [headerRow];
+  const cells = [headerRow, ...dataRows];
 
-  // Now add data rows with correct number of columns
-  rowDivs.forEach((rowDiv) => {
-    const colDivs = rowDiv.querySelectorAll(':scope > div');
-    const rowCells = [];
-    colDivs.forEach((colDiv) => {
-      rowCells.push(colDiv);
-    });
-    // Fill out any missing columns with empty strings so all data rows match maxColumns
-    while (rowCells.length < maxColumns) {
-      rowCells.push('');
-    }
-    tableRows.push(rowCells);
-  });
+  // Create the block table
+  const table = WebImporter.DOMUtils.createTable(cells, document);
 
-  // Create table with WebImporter helper
-  const table = WebImporter.DOMUtils.createTable(tableRows, document);
+  // Set the header cell to span all columns for valid table structure
+  const headerCell = table.querySelector('th');
+  if (headerCell && maxCols > 1) {
+    headerCell.setAttribute('colspan', maxCols);
+  }
+
+  // Replace the original element with the table
   element.replaceWith(table);
 }
