@@ -1,4 +1,4 @@
-name: e2e-issue-branch-deletion
+name: E2E Issue branch deletion
 
 on:
   schedule:
@@ -50,3 +50,4 @@ jobs:
             }
 
             console.log('Branch deletion process completed');
+
