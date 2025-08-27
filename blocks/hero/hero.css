@@ -5,15 +5,30 @@
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  padding: 0;
+  min-height: 440px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  background: linear-gradient(90deg, #11253a 60%, transparent 100%);
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .hero h1 {
-  max-width: 1200px;
+  max-width: 650px;
   margin-left: auto;
   margin-right: auto;
-  color: var(--background-color);
+  color: #fff;
+  font-size: var(--heading-font-size-xxl);
+  font-weight: 700;
+  text-align: left;
+  line-height: 1.08;
+  text-shadow: 0 2px 18px rgb(0 0 0 / 14%);
+  display: block;
 }
 
 .hero picture {
@@ -33,5 +48,83 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+/* Text Column (left) */
+.hero > div:last-child {
+  flex: 0 1 48%;
+  order: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding-left: 80px;
+  padding-right: 16px;
+  min-width: 0;
+}
+
+/* Headline */
+
+/* Image Column (right) */
+.hero > div:first-child {
+  flex: 1 1 52%;
+  order: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  min-width: 0;
+  padding: 0;
+}
+
+/* Ensure image fills vertical space, is right-aligned */
+.hero > div:first-child picture,
+.hero > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: none;
+}
+
+/* Responsive: stack vertically, reduce height and padding for mobile */
+@media (width <= 900px) {
+  .hero {
+    flex-direction: column;
+    min-height: 180px;
+    padding: 0;
+  }
+
+  .hero > div {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0 12px;
+  }
+
+  .hero > div:last-child {
+    order: 2;
+    padding-left: 16px;
+    padding-right: 16px;
+    min-width: 0;
+  }
+
+  .hero > div:first-child {
+    order: 1;
+    margin-bottom: 18px;
+  }
+
+  .hero h1 {
+    font-size: var(--heading-font-size-l);
+    max-width: 100%;
+  }
+
+  .hero > div:first-child picture,
+  .hero > div:first-child img {
+    height: 160px;
   }
 }
