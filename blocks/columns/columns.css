@@ -1,5 +1,6 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
-  display: flex;
+  display: contents;
   flex-direction: column;
 }
 
@@ -29,5 +30,142 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 48px 40px;
+  place-items: start stretch;
+  width: 100%;
+  grid-auto-rows: min-content;
+}
+
+/* Place each content block in correct grid cell using nth-child selectors */
+
+/* Top-left (text/list/button) */
+.columns > div:first-child > div:first-child {
+  grid-column: 1;
+  grid-row: 1;
+  place-self: start start;
+}
+
+/* Top-right (blue DNA image, which is the FIRST image in the HTML structure) */
+.columns > div:first-child > .columns-img-col {
+  grid-column: 2;
+  grid-row: 1;
+  place-self: start start;
+}
+
+/* Bottom-left (yellow DNA image, which is the SECOND image in the HTML structure) */
+.columns > div:last-child > .columns-img-col {
+  grid-column: 1;
+  grid-row: 2;
+  place-self: start start;
+}
+
+/* Bottom-right (preview text/button) */
+.columns > div:last-child > div:nth-child(2) {
+  grid-column: 2;
+  grid-row: 2;
+  place-self: start start;
+  margin-top: 0;
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Remove excessive vertical spacing from preview block */
+.columns > div:last-child > div:nth-child(2) > * {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Move child blocks from flex stacking to direct grid placement */
+
+/* Make images fill their grid cell nicely */
+.columns .columns-img-col {
+  width: 100%;
+  aspect-ratio: 1.6 / 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.columns .columns-img-col img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+
+/* Button and text refinement */
+.columns .button-container {
+  margin-top: 24px;
+}
+
+.columns .button {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 32px;
+  border-radius: 2em;
+  box-shadow: none;
+  min-width: 96px;
+}
+
+.columns .button.secondary {
+  background: transparent;
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
+}
+
+/* Ensure all text and list are left-aligned */
+.columns p, .columns ul, .columns li {
+  color: #212121;
+  font-size: 16px;
+  font-family: var(--body-font-family);
+  margin-left: 0;
+  margin-right: 0;
+  text-align: left;
+}
+
+.columns ul {
+  margin-top: 16px;
+  margin-bottom: 0;
+  padding-left: 24px;
+}
+
+.columns li {
+  margin-bottom: 4px;
+}
+
+/* Responsive: stack cells vertically on small screens */
+@media (width <= 900px) {
+  .columns {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .columns > div {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 0;
+  }
+
+  .columns > div:first-child > div,
+  .columns > div:last-child > div {
+    width: 100%;
+    margin-bottom: 0;
   }
 }
