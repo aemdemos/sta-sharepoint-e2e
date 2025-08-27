@@ -1,32 +1,29 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Find the UL containing the cards
-  const cardsUl = element.querySelector('ul');
-  if (!cardsUl) return;
+  // Find the cards block reliably
+  const cardsBlock = element.querySelector('.cards.block[data-block-name="cards"]') || element;
+  // Get the list of cards
+  const ul = cardsBlock.querySelector('ul');
+  if (!ul) return;
 
-  const rows = [];
-  // Header row matches the example: 'Cards'
-  rows.push(['Cards']);
+  // Table header (block name exactly as in the example)
+  const rows = [['Cards']];
 
-  // For each card (li)
-  Array.from(cardsUl.children).forEach((li) => {
-    // Get the image cell
-    let imageCell = '';
+  // Iterate through each card
+  ul.querySelectorAll(':scope > li').forEach((li) => {
+    // Image cell: always use the <img> tag inside .cards-card-image
     const imgWrapper = li.querySelector('.cards-card-image');
+    let imgEl = null;
     if (imgWrapper) {
-      // Use the existing image wrapper element (usually <picture>)
-      imageCell = imgWrapper;
+      imgEl = imgWrapper.querySelector('img');
     }
-    // Get the body text cell
-    let textCell = '';
-    const bodyWrapper = li.querySelector('.cards-card-body');
-    if (bodyWrapper) {
-      // Use the entire body wrapper element (contains paragraphs, strong, etc.)
-      textCell = bodyWrapper;
-    }
-    rows.push([imageCell, textCell]);
+    // Text cell: reference the .cards-card-body (contains <p> with <strong> and description)
+    const bodyEl = li.querySelector('.cards-card-body');
+    rows.push([imgEl, bodyEl]);
   });
 
+  // Create the block table
   const table = WebImporter.DOMUtils.createTable(rows, document);
+  // Replace original element with new table
   element.replaceWith(table);
 }
