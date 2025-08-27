@@ -83,7 +83,7 @@ jobs:
         run: |
           curl -X POST "https://slack.com/api/reactions.add" \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
+            -H "Content-Type: application/json; charset=utf-8" \
             -d '{
               "channel": "${{ secrets.SLACK_CHANNEL_ID }}",
               "name": "${{ steps.determine_reaction.outputs.reaction }}",
