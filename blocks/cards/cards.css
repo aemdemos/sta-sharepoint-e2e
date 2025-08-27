@@ -37,6 +37,7 @@
   flex-direction: column;
   justify-content: flex-start;
   flex-grow: 1;
+  align-items: flex-start;
 }
 
 .cards .cards-card-image {
@@ -65,13 +66,12 @@
 
 
 .cards {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 36px 24px;
+  max-width: 100vw;
+  margin: 0 auto;
+  padding: 0;
   box-sizing: border-box;
   display: block;
-  background: #f5f5f5;
+  background: #fff;
 }
 
 @media (width <= 1024px) {
@@ -104,8 +104,8 @@
 
 .cards .cards-card-body p:not(:first-child) {
   font-weight: 400;
-  font-size: 16px;
-  color: #222;
+  font-size: 14px;
+  color: #555;
   margin: 0;
   line-height: 1.5;
   font-family: var(--body-font-family);
@@ -211,34 +211,36 @@
 
 .cards .cards-card-body p:first-child,
 .cards .cards-card-body p:first-child strong {
-  font-size: 18px;
-  font-weight: bold;
-  color: #111;
-  line-height: 1.23;
-  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+  line-height: 1.3;
+  margin: 0 0 6px;
   font-family: var(--heading-font-family);
+  display: block;
 }
 
-/* The grid is centered, fixed width on desktop so cards never stretch too wide.
-   This keeps card width and alignment visually consistent, with empty slots at the end of incomplete rows,
-   matching the original layout more closely. */
+.cards .block.cards > ul {
+  display: grid;
+
 .cards .block.cards > ul {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  gap: 20px;
   list-style: none;
-  padding: 0;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1120px; /* 4 * 256px card + 3 * 24px gap */
+  padding: 0 32px;
+  margin: 48px auto;
+  max-width: 1200px;
   place-content: start center;
+  width: 100%;
+  place-items: stretch stretch;
+  grid-auto-rows: 1fr;
+  box-sizing: border-box;
 }
 
-/* Responsive: 2 columns tablet, 1 column mobile */
-@media (width <= 900px) {
   .cards .block.cards > ul {
     grid-template-columns: repeat(2, 1fr);
-    max-width: 544px; /* 2 * 256px card + 1 * 24px gap */
+    max-width: 544px;
   }
 }
 
@@ -249,11 +251,10 @@
   }
 }
 
-/* Card visuals: fill grid cell, no stretching, vertical stack inside */
 .cards .block.cards > ul > li {
   background: #fff;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 9%);
-  border: none;
+  box-shadow: none;
+  border: 1px solid #eee;
   border-radius: 0;
   display: flex;
   flex-direction: column;
@@ -261,12 +262,76 @@
   box-sizing: border-box;
   overflow: hidden;
   place-self: start stretch;
+  height: 100%;
+  align-items: stretch;
+  justify-content: flex-start;
 }
-
-/* Image wrapper and image */
-
-/* Card body and text styles */
 
 .cards .cards-card-body p {
   margin: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
+
+/* Remove flex centering on wrapper, make block.cards the centering context */
+.cards > .cards-wrapper {
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 100%;
+}
+
+.cards .block.cards {
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Grid container for cards: center, add horizontal padding, improve vertical spacing */
+
+@media (width <= 900px) {
+  .cards .block.cards > ul {
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+@media (width <= 600px) {
+  .cards .block.cards > ul {
+    grid-template-columns: 1fr;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* Card item */
+
+/* Card image */
+.cards .cards-card-image,
+.cards .cards-card-image picture,
+.cards .cards-card-image img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  height: auto;
+}
+
+/* Card body */
+
+/* Title styling */
+
+/* Description styling */
+
+/* Remove extra paragraph margins in cards */
