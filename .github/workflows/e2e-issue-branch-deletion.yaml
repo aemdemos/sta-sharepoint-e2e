@@ -8,6 +8,8 @@ on:
 jobs:
   delete-issue-branches:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required to delete branches
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -50,6 +52,7 @@ jobs:
             }
 
             console.log('Branch deletion process completed');
+
 
 
 
