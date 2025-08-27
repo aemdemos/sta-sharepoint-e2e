@@ -1,56 +1,32 @@
 /* global WebImporter */
 export default function parse(element, { document }) {
-  // Get the block root: look for the .cards.block inside the wrapper
-  let block = element.querySelector('.cards.block');
-  if (!block) {
-    // Maybe the element itself is the block
-    if (element.classList.contains('cards') && element.classList.contains('block')) {
-      block = element;
-    } else {
-      // Maybe it's a <ul> directly
-      block = element.querySelector('ul');
+  // Find the UL containing the cards
+  const cardsUl = element.querySelector('ul');
+  if (!cardsUl) return;
+
+  const rows = [];
+  // Header row matches the example: 'Cards'
+  rows.push(['Cards']);
+
+  // For each card (li)
+  Array.from(cardsUl.children).forEach((li) => {
+    // Get the image cell
+    let imageCell = '';
+    const imgWrapper = li.querySelector('.cards-card-image');
+    if (imgWrapper) {
+      // Use the existing image wrapper element (usually <picture>)
+      imageCell = imgWrapper;
     }
-  }
-  if (!block) return;
-
-  // The cards are li inside the <ul>
-  const list = block.querySelector('ul');
-  if (!list) return;
-  const cards = Array.from(list.children);
-
-  // Header row as in the example
-  const headerRow = ['Cards'];
-
-  // Build rows for each card
-  const rows = cards.map((li) => {
-    // Image/icon in first cell: preserve <picture> or <img>
-    let imageCell = null;
-    const imgDiv = li.querySelector('.cards-card-image');
-    if (imgDiv) {
-      const picture = imgDiv.querySelector('picture');
-      if (picture) {
-        imageCell = picture;
-      } else {
-        const img = imgDiv.querySelector('img');
-        if (img) imageCell = img;
-      }
+    // Get the body text cell
+    let textCell = '';
+    const bodyWrapper = li.querySelector('.cards-card-body');
+    if (bodyWrapper) {
+      // Use the entire body wrapper element (contains paragraphs, strong, etc.)
+      textCell = bodyWrapper;
     }
-
-    // Text content in second cell: preserve all formatting
-    let textCell = null;
-    const bodyDiv = li.querySelector('.cards-card-body');
-    if (bodyDiv) {
-      // Use the entire bodyDiv, preserving all its elements
-      textCell = bodyDiv;
-    }
-    // If missing image or body, set as empty string to preserve cell
-    return [imageCell || '', textCell || ''];
+    rows.push([imageCell, textCell]);
   });
 
-  // Compose the table: header + card rows
-  const tableData = [headerRow, ...rows];
-  const table = WebImporter.DOMUtils.createTable(tableData, document);
-
-  // Replace the original element with the new table block
+  const table = WebImporter.DOMUtils.createTable(rows, document);
   element.replaceWith(table);
 }
