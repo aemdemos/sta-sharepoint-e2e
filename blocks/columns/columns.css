@@ -3,10 +3,11 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 32px;
+  gap: 40px;
   flex: 1 1 0;
   min-width: 0;
   width: 100%;
+  justify-content: flex-start;
 }
 
 .columns img {
@@ -49,17 +50,19 @@
   display: flex;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
-  gap: 64px;
+  gap: 32px;
   place-items: start stretch;
   width: 100%;
   grid-auto-rows: auto;
   align-items: flex-start;
   background: var(--background-color);
   flex-direction: column;
-  margin: 0;
-  padding: 0;
+  margin: 0 auto;
+  padding: 32px 0;
   padding-top: 32px;
   padding-bottom: 32px;
+  max-width: 1100px;
+  box-sizing: border-box;
 }
 
 .columns > div:first-child > div:first-child {
@@ -99,7 +102,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  margin: 0; /* Resolved shorthand conflict by removing margin-top */
+  margin: 0;
 }
 
 .columns > div:last-child > div:nth-child(2) > * {
@@ -125,30 +128,33 @@
   object-fit: cover;
   display: block;
   border-radius: 0;
-  max-height: 340px;
+  max-height: 260px;
   aspect-ratio: 16/9;
   max-width: 100%;
   margin: 0;
 }
 
 .columns .button-container {
-  margin-top: 16px;
+  margin-top: 14px;
+  margin-bottom: 0;
 }
 
 .columns .button {
   font-size: 16px;
   font-weight: 500;
   padding: 10px 32px;
-  border-radius: 2em;
+  border-radius: 999px;
   box-shadow: none;
   min-width: 96px;
+  background: #3f51b5;
+  color: #fff;
 }
 
 .columns .button.secondary {
   background: #fff;
   color: #000;
   border: 1.5px solid #000;
-  border-radius: 20px;
+  border-radius: 999px;
   font-size: 16px;
   padding: 10px 32px;
   font-weight: 500;
@@ -160,20 +166,16 @@
   color: #000;
   font-size: 18px;
   font-family: var(--body-font-family);
-  margin: 0 0 0.25em; /* Removed margin-left and margin-right to avoid shorthand override */
+  margin: 0 0 0.25em;
   text-align: left;
   line-height: 1.6;
 }
 
 .columns ul {
   margin-top: 10px;
-
-.columns ul {
-  margin: 0 0 0 22px; /* Removed margin-top and margin-bottom to avoid shorthand override */
-  padding-left: 0; /* Replaced padding shorthand with only padding-left */
-}
-
+  padding-left: 0;
   margin-bottom: 2px;
+  margin-left: 22px;
 }
 
 @media (width <= 900px) {
@@ -249,12 +251,12 @@
 .columns p,
 .columns ul,
 .columns li {
-  color: #222;
-  font-size: 16px;
+  color: var(--text-color);
+  font-size: 18px;
   font-family: var(--body-font-family);
-  margin-left: 0;
-  margin-right: 0;
+  margin: 0 0 0.25em;
   text-align: left;
+  line-height: 1.6;
 }
 
 @media (width <= 900px) {
@@ -349,9 +351,6 @@
   box-shadow: none;
 }
 
-/* Each row is a flex row, so its two children are side by side */
-
-/* Left text column: allow it to grow, but not too narrow */
 .columns > div > div:not(.columns-img-col) {
   flex: 1 1 40%;
   max-width: 44%;
@@ -363,19 +362,11 @@
   gap: 18px;
 }
 
-/* Right image column: allow image to be slightly larger */
-
-/* Images fill their column horizontally and keep aspect ratio */
-
-/* Text, list, and button styling */
-
-/* Remove top margin/padding from first child in each text block for perfect top alignment */
 .columns > div > div:not(.columns-img-col) > *:first-child {
   margin-top: 0;
   padding-top: 0;
 }
 
-/* Responsive stacking for small screens */
 @media (width <= 900px) {
   .columns {
     flex-direction: column;
@@ -393,6 +384,64 @@
     max-width: 100%;
     width: 100%;
     min-width: 0;
+  }
+
+  .columns .columns-img-col img {
+    max-height: none;
+    height: auto;
+    aspect-ratio: auto;
+  }
+}
+
+/* Each row: flex row, side-by-side columns, centered in block */
+
+/* Make columns share available space evenly for balance */
+.columns > div > div,
+.columns > div > .columns-img-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Limit max width of text columns so they don't stretch too much */
+.columns > div:first-child > div:first-child,
+.columns > div:last-child > div:nth-child(2) {
+  max-width: 320px;
+}
+
+/* Limit max width of image columns for visual balance */
+.columns > div:first-child > .columns-img-col,
+.columns > div:last-child > .columns-img-col {
+  max-width: 480px;
+}
+
+/* Images: fill width, keep aspect, don't get too tall */
+
+/* Buttons */
+
+/* Button style */
+
+/* Responsive: stack on small screens */
+@media (width <= 900px) {
+  .columns {
+    max-width: 100%;
+    padding: 16px 0;
+    gap: 24px;
+  }
+
+  .columns > div {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .columns > div > div,
+  .columns > div > .columns-img-col {
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
   }
 
   .columns .columns-img-col img {
