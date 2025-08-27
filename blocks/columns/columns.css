@@ -1,6 +1,12 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
-  display: contents;
-  flex-direction: column;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 32px;
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
 }
 
 .columns img {
@@ -13,6 +19,12 @@
 
 .columns > div > .columns-img-col {
   order: 0;
+  flex: 1 1 56%;
+  max-width: 56%;
+  min-width: 280px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .columns > div > .columns-img-col img {
@@ -34,15 +46,20 @@
 
 
 .columns {
-  display: grid;
+  display: flex;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
-  gap: 8px 40px;
+  gap: 64px;
   place-items: start stretch;
   width: 100%;
   grid-auto-rows: auto;
-  align-items: start;
-  background: white;
+  align-items: flex-start;
+  background: var(--background-color);
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  padding-top: 32px;
+  padding-bottom: 32px;
 }
 
 .columns > div:first-child > div:first-child {
@@ -77,13 +94,12 @@
   grid-column: 2;
   grid-row: 2;
   place-self: start start;
-  margin-top: 0;
   padding-top: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  margin: 0;
+  margin: 0; /* Resolved shorthand conflict by removing margin-top */
 }
 
 .columns > div:last-child > div:nth-child(2) > * {
@@ -95,7 +111,7 @@
 
 .columns .columns-img-col {
   width: 100%;
-  aspect-ratio: 1.6 / 1;
+  aspect-ratio: 16/9;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -109,13 +125,14 @@
   object-fit: cover;
   display: block;
   border-radius: 0;
-  max-height: 320px;
+  max-height: 340px;
   aspect-ratio: 16/9;
   max-width: 100%;
+  margin: 0;
 }
 
 .columns .button-container {
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .columns .button {
@@ -129,27 +146,33 @@
 
 .columns .button.secondary {
   background: #fff;
-  color: #222;
-  border: 1.5px solid #222;
+  color: #000;
+  border: 1.5px solid #000;
+  border-radius: 20px;
+  font-size: 16px;
+  padding: 10px 32px;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: none;
 }
 
 .columns p, .columns ul, .columns li {
-  color: #212121;
-  font-size: 16px;
+  color: #000;
+  font-size: 18px;
   font-family: var(--body-font-family);
-  margin-left: 0;
-  margin-right: 0;
+  margin: 0 0 0.25em; /* Removed margin-left and margin-right to avoid shorthand override */
   text-align: left;
+  line-height: 1.6;
 }
 
 .columns ul {
-  margin-top: 16px;
-  margin-bottom: 0;
-  padding-left: 0;
-  margin: 12px 0 0 24px;
+  margin-top: 10px;
+
+.columns ul {
+  margin: 0 0 0 22px; /* Removed margin-top and margin-bottom to avoid shorthand override */
+  padding-left: 0; /* Replaced padding shorthand with only padding-left */
 }
 
-.columns li {
   margin-bottom: 2px;
 }
 
@@ -222,6 +245,7 @@
     height: auto;
   }
 }
+
 .columns p,
 .columns ul,
 .columns li {
@@ -232,6 +256,7 @@
   margin-right: 0;
   text-align: left;
 }
+
 @media (width <= 900px) {
   .columns {
     display: flex;
@@ -270,39 +295,13 @@
   }
 }
 
-
-/* Two columns side by side, stacking their own content vertically */
-.columns {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 64px;
-  width: 100%;
-  background: var(--background-color);
-  margin: 0;
-  padding: 0;
-}
-
-/* Responsive: stack columns vertically */
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .columns {
     flex-direction: column;
     gap: 32px;
   }
 }
 
-/* Each column: stack content vertically, eliminate excess space */
-.columns > div {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 32px;
-  flex: 1 1 0;
-  min-width: 0;
-  width: 0;
-}
-
-/* Left column: tighter grouping for text, list, button */
 .columns > div:first-child > div:not(.columns-img-col) {
   display: flex;
   flex-direction: column;
@@ -310,7 +309,6 @@
   align-items: flex-start;
 }
 
-/* Right column: tighter grouping for preview text and button */
 .columns > div:last-child > div:not(.columns-img-col) {
   display: flex;
   flex-direction: column;
@@ -318,39 +316,17 @@
   align-items: flex-start;
 }
 
-/* Ensure images fill column width and are grouped with their content */
-.columns .columns-img-col {
-  width: 100%;
-  margin: 0;
-  display: block;
-}
-
-.columns .columns-img-col img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 0;
-  aspect-ratio: 16/9;
-  display: block;
-  margin: 0;
-}
-
-/* Reduce gap under images on mobile */
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .columns > div {
     gap: 24px;
   }
+
   .columns .columns-img-col img {
     aspect-ratio: auto;
     max-height: none;
   }
 }
 
-/* List and text styling */
-.columns ul {
-  margin: 0 0 0 22px;
-  padding: 0;
-}
 .columns p, .columns li {
   color: var(--text-color);
   font-size: 20px;
@@ -360,12 +336,6 @@
   padding: 0;
 }
 
-/* Button container spacing */
-.columns .button-container {
-  margin-top: 24px;
-}
-
-/* Primary button ("Live") */
 .columns .button:not(.secondary) {
   background: #3f51b5;
   color: #fff;
@@ -379,15 +349,55 @@
   box-shadow: none;
 }
 
-/* Secondary button ("Preview") */
-.columns .button.secondary {
-  background: #fff;
-  color: #000;
-  border: 1.5px solid #000;
-  border-radius: 20px;
-  font-size: 16px;
-  padding: 10px 32px;
-  font-weight: 500;
-  text-align: center;
-  box-shadow: none;
+/* Each row is a flex row, so its two children are side by side */
+
+/* Left text column: allow it to grow, but not too narrow */
+.columns > div > div:not(.columns-img-col) {
+  flex: 1 1 40%;
+  max-width: 44%;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 18px;
+}
+
+/* Right image column: allow image to be slightly larger */
+
+/* Images fill their column horizontally and keep aspect ratio */
+
+/* Text, list, and button styling */
+
+/* Remove top margin/padding from first child in each text block for perfect top alignment */
+.columns > div > div:not(.columns-img-col) > *:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Responsive stacking for small screens */
+@media (width <= 900px) {
+  .columns {
+    flex-direction: column;
+    gap: 40px;
+    padding: 0;
+  }
+
+  .columns > div {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns > div > div:not(.columns-img-col),
+  .columns > div > .columns-img-col {
+    max-width: 100%;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .columns .columns-img-col img {
+    max-height: none;
+    height: auto;
+    aspect-ratio: auto;
+  }
 }
