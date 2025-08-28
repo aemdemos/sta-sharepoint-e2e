@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,107 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 48px;
+  width: 100%;
+}
+
+/* Each direct child div forms a column */
+.columns.columns3 > div > div {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* Reduce vertical spacing between button and blue DNA image in left col */
+.columns.columns3 > div > div:first-child > .button-container {
+  margin-bottom: 4px;
+}
+
+/* Blue DNA image (left col): remove excess margin */
+.columns.columns3 > div > div:first-child > p:last-of-type {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* --- CRITICAL ALIGNMENT FIX --- */
+
+/* Right column: use calc() and em units to better match the height of the left column's text area */
+@media (width >= 900px) {
+  .columns.columns3 > div > div:last-child > p:first-child {
+    margin-top: calc(1.4em + 2.2em + 2.8em); /* Approximates: heading + list + button vertical height */
+    margin-bottom: 0;
+  }
+}
+
+/* Reduce gap between yellow DNA image and preview section */
+.columns.columns3 > div > div:last-child > p:nth-child(2) {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.columns.columns3 > div > div:last-child > .button-container {
+  margin-top: 10px;
+}
+
+/* Images: Fill column width, maintain aspect, remove excess margin */
+.columns.columns3 img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+}
+
+/* Buttons: Tighten up the look, override defaults if needed */
+.columns.columns3 .button {
+  font-size: 15px;
+  border-radius: 30px;
+  padding: 8px 20px;
+  background: #4F46E5;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.columns.columns3 .button.secondary {
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #222;
+}
+
+/* Tidy up list spacing */
+.columns.columns3 ul {
+  margin: 8px 0 8px 22px;
+  padding: 0;
+}
+
+/* Responsive: Stack columns vertically and remove offset on mobile */
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .columns.columns3 > div > div {
+    width: 100%;
+    gap: 16px;
+  }
+
+  .columns.columns3 > div > div:last-child > p:first-child {
+    margin-top: 0;
   }
 }
