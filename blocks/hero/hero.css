@@ -35,3 +35,119 @@
     padding: 40px 32px;
   }
 }
+
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+  margin: 0;
+}
+
+/* Hero block layout and background */
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 190px;
+  width: 100vw;
+  background: linear-gradient(90deg, #0b2341 60%, #183d6d 100%);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 32px;
+}
+
+/* Side-by-side for child divs */
+.hero.hero2 > div {
+  flex: 1 1 50%;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* Text area left */
+.hero.hero2 > div:last-child {
+  order: 1;
+  justify-content: flex-start;
+  padding-right: 24px;
+}
+
+/* Image container right - allow image to fill and overlap edge */
+.hero.hero2 > div:first-child {
+  order: 2;
+  justify-content: flex-end;
+  align-items: flex-end;
+  min-width: 0;
+  padding-left: 0;
+}
+
+/* Ensure image is large, visually dominant, and blends into right side */
+.hero.hero2 picture {
+  display: block;
+  width: 480px;      /* Make image much larger */
+  height: 190px;
+  margin-right: -64px; /* Overlap right edge for drama */
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.hero.hero2 picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: drop-shadow(0 0 16px #183d6d);
+  position: relative;
+  z-index: 1;
+}
+
+/* Headline styling and vertical alignment */
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  text-align: left;
+  text-shadow: 0 1px 6px rgb(11 35 65 / 40%);
+  align-self: flex-start;
+}
+
+/* Responsive adjustment for smaller screens */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 120px;
+    padding: 16px;
+    width: 100vw;
+  }
+
+  .hero.hero2 > div {
+    justify-content: center;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    order: unset;
+  }
+
+  .hero.hero2 picture {
+    width: 220px;
+    height: 110px;
+    margin-right: 0;
+  }
+
+  .hero.hero2 picture img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.3rem;
+    text-align: center;
+    align-self: center;
+  }
+}
