@@ -31,3 +31,110 @@
     order: unset;
   }
 }
+
+
+.columns.columns3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 48px 40px;
+  align-items: start;
+}
+
+/* Flatten for child selection */
+.columns.columns3 > div {
+  display: contents;
+}
+
+/* Top-left cell: stack text/list/button vertically, compact grouping */
+.columns.columns3 > div > div:first-child > :not(:last-child) {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* tighter than before for compact look */
+  align-items: flex-start;
+}
+
+/* "Live" button: restrict width, keep left alignment, adjust spacing */
+.columns.columns3 .button-container {
+  width: auto;
+  margin-top: 6px;
+  margin-bottom: 8px; /* reduced for less gap before image */
+}
+
+.columns.columns3 .button-container .button {
+  display: inline-block;
+  min-width: 0;
+  width: auto;
+}
+
+/* List spacing */
+.columns.columns3 ul {
+  margin-left: 24px;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+/* Bottom-left cell: yellow DNA image */
+.columns.columns3 > div > div:first-child > :last-child {
+  grid-column: 1;
+  grid-row: 2;
+  margin-top: 0;
+}
+
+/* Top-right cell: blue DNA image */
+.columns.columns3 > div > div:last-child > :first-child {
+  grid-column: 2;
+  grid-row: 1;
+  margin-bottom: 0;
+}
+
+/* Bottom-right cell: preview text and button, stack tightly and left-align */
+.columns.columns3 > div > div:last-child > :not(:first-child) {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+/* Preview button: restrict width, keep left alignment */
+.columns.columns3 .button-container .button.secondary {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+  display: inline-block;
+  min-width: 0;
+  width: auto;
+}
+
+/* Images fill their cell width */
+.columns.columns3 picture img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0;
+}
+
+/* Responsive: stack vertically on small screens */
+@media (width <= 900px) {
+  .columns.columns3 {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .columns.columns3 > div > div {
+    gap: 14px;
+  }
+
+  .columns.columns3 ul {
+    margin-left: 16px;
+  }
+
+  .columns.columns3 .button-container {
+    margin-bottom: 10px;
+  }
+}
