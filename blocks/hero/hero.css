@@ -35,3 +35,119 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 180px;
+  background: radial-gradient(circle at 60% 40%, #152c40 60%, #0a1a2f 100%);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* DNA image block on right, allow it to overlap further left */
+.hero.hero2 > div:first-child {
+  flex: 1 1 62%;
+  order: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  height: 100%;
+  z-index: 1;
+  overflow: visible;
+  margin-left: -18vw;
+}
+
+/* Text block on left */
+.hero.hero2 > div:last-child {
+  flex: 1 1 38%;
+  order: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 2.5vw;
+  min-width: 0;
+  z-index: 2;
+}
+
+/* Headline styles */
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-shadow: 0 2px 8px rgb(10 26 47 / 14%);
+  max-width: 95%;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+}
+
+/* DNA image styling */
+.hero.hero2 picture {
+  display: block;
+  max-width: 680px;
+  width: 100%;
+  overflow: visible;
+}
+
+.hero.hero2 img {
+  width: 100%;
+  max-width: 680px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 24px #49c1fa);
+  opacity: 0.97;
+  display: block;
+}
+
+/* Responsive: stack vertically on small screens, and adjust image/text sizes */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 220px;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    flex: none;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0 4vw;
+    min-width: 0;
+    margin-left: 0;
+  }
+
+  .hero.hero2 > div:first-child {
+    order: 2;
+    margin-top: 1rem;
+    padding-bottom: 2vw;
+  }
+
+  .hero.hero2 > div:last-child {
+    order: 1;
+    margin-bottom: 1vw;
+    padding-top: 3vw;
+    padding-left: 0;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.3rem;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .hero.hero2 picture,
+  .hero.hero2 img {
+    max-width: 340px;
+    margin: 0 auto;
+  }
+}
