@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -33,5 +34,119 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+.hero.hero2 {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 180px;
+  background: radial-gradient(ellipse at right, #15395c 0%, #142843 100%);
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* TEXT COLUMN (left) */
+.hero.hero2 > div:last-child {
+  flex: 1 1 52%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  order: 1;
+  min-width: 0;
+  height: 100%;
+  padding-left: 40px;
+  padding-right: 16px;
+  z-index: 2;
+  position: relative;
+}
+
+.hero.hero2 > div:last-child > div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.15;
+  max-width: 90%;
+  text-shadow: 0 2px 16px rgb(0 0 0 / 15%);
+  overflow-wrap: break-word;
+}
+
+/* IMAGE COLUMN (DNA image, visually overlays right half) */
+.hero.hero2 > div:first-child {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 58%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 1;
+}
+
+.hero.hero2 > div:first-child > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.hero.hero2 > div:first-child > div > picture,
+.hero.hero2 > div:first-child > div > picture > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  filter: drop-shadow(0 4px 32px rgb(8 40 94 / 23%));
+  background: none;
+}
+
+/* Responsive: stack vertical, make DNA image cover background */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 160px;
+  }
+
+  .hero.hero2 > div:first-child {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  .hero.hero2 > div:last-child {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.4rem;
+    max-width: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .hero.hero2 > div:first-child > div > picture > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-height: 180px;
   }
 }
