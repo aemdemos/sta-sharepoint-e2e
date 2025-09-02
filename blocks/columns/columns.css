@@ -31,3 +31,72 @@
     order: unset;
   }
 }
+
+
+.columns.columns3 {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  width: 100%;
+}
+
+.columns.columns3 > div > div,
+.columns.columns3 > div > .columns-img-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%; /* ensures both columns fill row height so content starts at top */
+}
+
+.columns.columns3 .columns-img-col picture,
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.columns.columns3 p,
+.columns.columns3 ul,
+.columns.columns3 li {
+  color: #222;
+  font-size: 16px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.columns.columns3 ul {
+  margin-left: 20px;
+}
+
+.columns.columns3 .button-container {
+  margin-top: 16px;
+}
+
+/* Responsive: stack columns vertically below 900px */
+@media (width <= 900px) {
+  .columns.columns3 {
+    gap: 32px;
+  }
+
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .columns.columns3 > div > div,
+  .columns.columns3 > div > .columns-img-col {
+    height: auto;
+  }
+}
