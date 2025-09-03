@@ -25,3 +25,111 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards.cards4 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Reduce vertical space between rows for tighter alignment */
+.cards.cards4 > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 100%;
+  grid-auto-rows: 1fr;
+  place-items: stretch stretch;
+  box-sizing: border-box;
+  min-height: 0;
+  height: auto;
+}
+
+@media (width <= 900px) {
+  .cards.cards4 > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 600px) {
+  .cards.cards4 > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cards.cards4 > ul > li {
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: none;
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  transition: box-shadow 0.15s;
+}
+
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  line-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  vertical-align: middle;
+}
+
+.cards.cards4 .cards-card-body {
+  padding: 14px 14px 12px;
+  margin: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.cards.cards4 .cards-card-body p {
+  margin: 0;
+  padding: 0;
+}
+
+.cards.cards4 .cards-card-body p:first-child strong {
+  font-size: 1.06rem;
+  font-weight: 700;
+  color: #111;
+  display: block;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.cards.cards4 .cards-card-body p:not(:first-child) {
+  font-size: 0.97rem;
+  color: #444;
+  margin: 0;
+  margin-top: 4px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Remove default spacing from possible parent containers if block is still pushed down */
+.cards-wrapper, .cards.cards4 {
+  margin-top: 0;
+  padding-top: 0;
+}
