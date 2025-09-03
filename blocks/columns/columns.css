@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,90 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns.columns3 > div {
+  /* Treat each direct child div as a row */
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+  width: 100%;
+}
+
+/* Each child div is a row: its children are the left and right columns of that row */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: row;
+  gap: 52px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* Each inner column stacks its content vertically, compactly */
+.columns.columns3 > div > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Images: fill column width but stay compact */
+.columns.columns3 img {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  display: block;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Button styles */
+.columns.columns3 .button {
+  border-radius: 2.4em;
+  padding: 0.5em 1.5em;
+  font-size: 1rem;
+  font-weight: 500;
+  min-width: 92px;
+  align-self: flex-start;
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+.columns.columns3 .button.secondary {
+  background: white;
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
+}
+
+/* Remove excessive default paragraph/list spacing */
+.columns.columns3 p,
+.columns.columns3 ul {
+  margin: 0;
+}
+
+.columns.columns3 ul {
+  padding-left: 22px;
+}
+
+.columns.columns3 .button-container {
+  margin: 0;
+}
+
+/* Responsive: stack rows and columns vertically */
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    gap: 40px;
+  }
+
+  .columns.columns3 > div > div {
+    flex-direction: column;
+    gap: 40px;
   }
 }
