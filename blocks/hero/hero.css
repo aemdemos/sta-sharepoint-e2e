@@ -35,3 +35,122 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 260px;
+  background: #133154;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Text column (left side) */
+.hero.hero2 > div:last-child {
+  flex: 0 1 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  padding-top: 2.7rem;
+  padding-left: 2.7rem;
+  z-index: 2;
+}
+
+.hero.hero2 h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.1;
+  text-align: left;
+  max-width: 600px;
+}
+
+/* Image column (right side) */
+.hero.hero2 > div:first-child {
+  flex: 1 1 60%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  order: 2;
+  z-index: 1;
+  overflow: visible;
+}
+
+/* DNA image fills and overflows into the left side for a blended effect */
+.hero.hero2 picture {
+  width: 120%;
+  height: 100%;
+  margin-left: -10%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  overflow: visible;
+}
+
+.hero.hero2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  box-sizing: border-box;
+  min-height: 260px;
+
+  /* Allow part of the image to bleed into the left side */
+}
+
+/* Subtle left-to-right overlay for text readability and blend */
+.hero.hero2::before {
+  content: "";
+  position: absolute;
+  inset: 0 40% 0 0;
+  background: linear-gradient(90deg, #133154 80%, rgb(19 49 84 / 0%) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Responsive: stack vertically on small screens, image shrinks */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 180px;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    flex: unset;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .hero.hero2 > div:last-child {
+    padding: 1.2rem 1.2rem 0.5rem;
+    align-items: flex-start;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.3rem;
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .hero.hero2 picture,
+  .hero.hero2 img {
+    min-height: 180px;
+    height: 180px;
+    width: 100%;
+    margin-left: 0;
+  }
+}
