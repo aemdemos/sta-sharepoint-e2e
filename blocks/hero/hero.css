@@ -35,3 +35,109 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 180px;
+  width: 100%;
+  background: radial-gradient(circle at 70% 50%, #183d58 80%, #081c2f 100%);
+  overflow: hidden;
+  padding: 0;
+}
+
+/* DNA image: anchor right, make wide enough to flow under text */
+.hero.hero2 > div:first-child {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 95%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero.hero2 picture,
+.hero.hero2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  min-width: 0;
+
+  /* Optionally add slight transparency for blending */
+  opacity: 0.93;
+}
+
+/* Text section: left-aligned, above image */
+.hero.hero2 > div:last-child {
+  position: relative;
+  flex: 1 1 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 2;
+  padding-left: 56px;
+  padding-right: 24px;
+  height: 100%;
+}
+
+/* Headline styles */
+.hero.hero2 h1 {
+    font-size: var(--heading-font-size-l);
+    text-align: center;
+    max-width: 100%;
+    text-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  }
+
+/* Responsive: stack image above text and reduce image width/height */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 120px;
+  }
+
+  .hero.hero2 > div:first-child {
+    position: static;
+    width: 100%;
+    height: 200px;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 1;
+  }
+
+  .hero.hero2 picture,
+  .hero.hero2 img {
+    width: 100%;
+    height: 100%;
+    opacity: 0.93;
+  }
+
+  .hero.hero2 > div:last-child {
+    position: relative;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .hero.hero2 h1 {
+    font-size: var(--heading-font-size-l);
+    text-align: center;
+    max-width: 100%;
+    text-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+  }
+}
+
+/* Ensures block spans full width of the page with no extra padding */
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
