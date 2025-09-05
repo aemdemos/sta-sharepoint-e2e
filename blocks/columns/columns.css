@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,121 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns.columns3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 8px 56px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  align-items: start;
+  box-sizing: border-box;
+}
+
+.columns.columns3 > div {
+  display: contents;
+}
+
+/* Explicit grid placement for each cell */
+.columns.columns3 > div:first-child > div:first-child {
+  grid-column: 1;
+  grid-row: 1;
+  place-self: start start;
+}
+
+.columns.columns3 > div:first-child > .columns-img-col {
+  grid-column: 1;
+  grid-row: 2;
+  place-self: start start;
+}
+
+.columns.columns3 > div:last-child > .columns-img-col {
+  grid-column: 2;
+  grid-row: 1;
+  place-self: start start;
+}
+
+.columns.columns3 > div:last-child > div:last-child {
+  grid-column: 2;
+  grid-row: 2;
+  place-self: start start;
+}
+
+/* Images sizing and gutter */
+.columns.columns3 .columns-img-col {
+  max-width: 97%;
+  margin: 0;
+}
+
+.columns.columns3 .columns-img-col img {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* Text and list styles */
+.columns.columns3 p,
+.columns.columns3 ul {
+  color: #222;
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 12px;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.columns.columns3 ul {
+  padding-left: 24px;
+}
+
+/* Button container */
+.columns.columns3 .button-container {
+  margin-top: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.columns.columns3 a.button {
+  min-width: 80px;
+  padding: 10px 28px;
+  font-size: 16px;
+  border-radius: 999px;
+  font-weight: 500;
+  border-width: 0;
+  margin: 0;
+  box-shadow: none;
+}
+
+.columns.columns3 a.button.secondary {
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #222;
+  font-weight: 400;
+}
+
+/* Responsive: stack as flex vertically */
+@media (width <= 900px) {
+  .columns.columns3 {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 0 16px;
+  }
+
+  .columns.columns3 > div {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .columns.columns3 .columns-img-col {
+    width: 100%;
+    max-width: 100%;
   }
 }
