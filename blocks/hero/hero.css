@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -33,5 +34,114 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background: linear-gradient(90deg, #0d294b 0%, #163b5f 100%);
+  min-height: 140px;
+  height: 140px;
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Left: text column */
+.hero.hero2 > div:last-child {
+  flex: 0 0 55%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+  padding-left: 48px;
+  padding-top: 18px;
+  z-index: 2;
+  max-width: 600px;
+  min-width: 340px;
+}
+
+.hero.hero2 > div:last-child > div {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Heading styles */
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+  align-self: flex-start;
+  max-width: 95%;
+  white-space: normal;
+}
+
+/* Right: image column */
+.hero.hero2 > div:first-child {
+  flex: 1 1 45%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
+
+.hero.hero2 picture,
+.hero.hero2 img {
+  position: static;
+  height: 130%;
+  width: auto;
+  object-fit: cover;
+  display: block;
+  max-width: unset;
+  max-height: unset;
+  margin-right: -42px;
+}
+
+/* Responsive: stack vertically, scale image/text */
+@media (width <= 800px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 220px;
+    height: auto;
+    padding: 0;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    flex: 1 1 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+  }
+
+  .hero.hero2 picture,
+  .hero.hero2 img {
+    margin-right: 0;
+    height: 100px;
+    width: auto;
+    max-width: 90vw;
+    object-fit: contain;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 24px;
+    text-align: center;
+    padding-top: 24px;
+    max-width: 100vw;
   }
 }
