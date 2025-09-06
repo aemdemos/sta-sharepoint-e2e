@@ -31,3 +31,88 @@
     order: unset;
   }
 }
+
+
+@media (width >= 900px) {
+  .columns.columns3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: min-content;
+    column-gap: 3rem;
+    align-items: start;
+  }
+
+  .columns.columns3 > div {
+    display: grid;
+    grid-template-rows: min-content min-content;
+    row-gap: 2rem;
+    place-items: start start;
+    height: auto;
+  }
+
+  /* Force both images to align visually at the top across columns */
+  .columns.columns3 > div:first-child > .columns-img-col {
+    grid-row: 1;
+    margin-top: 6.5rem; /* adjust value as needed for best visual alignment */
+  }
+
+  .columns.columns3 > div:last-child > .columns-img-col {
+    grid-row: 1;
+    margin-top: 0;
+  }
+
+  /* Text blocks always appear below images in both columns */
+  .columns.columns3 > div:first-child > :not(.columns-img-col) {
+    grid-row: 2;
+  }
+
+  .columns.columns3 > div:last-child > :not(.columns-img-col) {
+    grid-row: 2;
+  }
+}
+
+/* Images fill column width */
+.columns.columns3 .columns-img-col {
+  width: 100%;
+  display: block;
+}
+
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Button alignment */
+.columns.columns3 .button-container {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* List and paragraph spacing adjustment */
+.columns.columns3 ul,
+.columns.columns3 p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* Responsive adjustment for vertical stack */
+@media (width <= 899px) {
+  .columns.columns3 {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .columns.columns3 > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+}
