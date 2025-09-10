@@ -81,8 +81,20 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }} 
+      - name: Notify about parent issue failure itself
+        if: steps.find_parent.outputs.target_thread_ts != '' && steps.find_parent.outputs.is_parent_issue == 'true'
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "🚨 Parent issue failed: ${{ github.event.issue.html_url }}",
+              "thread_ts": "${{ steps.find_parent.outputs.target_thread_ts }}"
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       - name: Notify about parent issue failure
-        if: steps.find_parent.outputs.parent_has_aemy_failed == 'true'
+        if: steps.find_parent.outputs.target_thread_ts != '' && steps.find_parent.outputs.parent_has_aemy_failed == 'true'
         uses: slackapi/slack-github-action@v1.25.0
         with:
           channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
@@ -94,7 +106,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       - name: Add failed emoji reaction to message
-        if: steps.find_parent.outputs.target_thread_ts != '' || steps.find_parent.outputs.parent_has_aemy_failed == 'true'
+        if: steps.find_parent.outputs.target_thread_ts != ''
         run: |
           # Always add standard failed emoji (x)
           curl -X POST "https://slack.com/api/reactions.add" \
@@ -105,3 +117,15 @@ jobs:
               "name": "x",
               "timestamp": "${{ steps.find_parent.outputs.target_thread_ts }}"
             }'
+          
+          # Add additional rotating light emoji if parent also has aemy-failed label OR if this is a parent issue failing
+          if [ "${{ steps.find_parent.outputs.parent_has_aemy_failed }}" = "true" ] || [ "${{ steps.find_parent.outputs.is_parent_issue }}" = "true" ]; then
+            curl -X POST "https://slack.com/api/reactions.add" \
+              -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+              -H "Content-Type: application/json; charset=utf-8" \
+              -d '{
+                "channel": "${{ secrets.SLACK_CHANNEL_ID }}",
+                "name": "rotating_light",
+                "timestamp": "${{ steps.find_parent.outputs.target_thread_ts }}"
+              }'
+          fi
