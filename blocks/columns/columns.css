@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,85 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns.columns3 > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 48px;
+  align-items: start;
+}
+
+/* Main columns: vertical stack, no gap between siblings */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Left column: group text/list/button and blue image tightly */
+.columns.columns3 > div > div:first-child > div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* RIGHT COLUMN: Pair image and preview section visually */
+.columns.columns3 > div > div:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* The two direct child divs of right column: stack tightly */
+.columns.columns3 > div > div:last-child > div {
+  margin-bottom: 0;
+
+  /* Remove gap to ensure preview text/button is directly under image */
+}
+
+/* Preview section: group preview text and button tightly */
+.columns.columns3 > div > div:last-child > div:last-child {
+  margin-top: 24px;   /* Only a small margin above preview section */
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+/* Remove extra margin on preview text/button */
+.columns.columns3 > div > div:last-child > div:last-child p {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+/* Ensure images fill width and no excess spacing */
+.columns.columns3 img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove extra spacing from ul and p in columns block */
+.columns.columns3 ul,
+.columns.columns3 p {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+/* Responsive: stack columns vertically */
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    grid-template-columns: 1fr;
+    gap: 32px 0;
   }
 }
