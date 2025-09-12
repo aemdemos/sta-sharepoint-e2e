@@ -25,3 +25,111 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards.cards4 {
+  max-width: 1340px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Grid layout: wider, always fills container, equal-height rows */
+.cards.cards4 > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 24px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+/* Responsive columns */
+@media (width <= 1100px) {
+  .cards.cards4 > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 700px) {
+  .cards.cards4 > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card: force equal height in grid row */
+.cards.cards4 > ul > li {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 340px;
+  box-sizing: border-box;
+  align-self: stretch;
+  list-style: none;
+}
+
+/* Card image section */
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #f5f5f5;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  overflow: hidden;
+  line-height: 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Card image: fill width, handle rounded corners */
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  display: block;
+}
+
+/* Card body/text section: slightly less horizontal padding for compact look */
+.cards.cards4 .cards-card-body {
+  flex: 1 1 auto;
+  padding: 24px 14px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Title styling: extra space below for separation */
+.cards.cards4 .cards-card-body p:first-child strong {
+  display: block;
+  font-size: 1.11rem;
+  color: #212121;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+/* Description styling */
+.cards.cards4 .cards-card-body p:last-child {
+  font-size: 0.94rem;
+  color: #616161;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Remove list markers for safety */
