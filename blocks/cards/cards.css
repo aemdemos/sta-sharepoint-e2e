@@ -25,3 +25,112 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards.cards4 {
+  margin: 0;
+  padding: 0;
+}
+
+.cards.cards4 > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
+  place-items: stretch stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Remove extra padding/margin from container if present */
+.cards.cards4,
+.cards.cards4.cards4.block,
+.cards.cards4 .cards-wrapper,
+.cards.cards4 > ul {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  max-width: 100%;
+}
+
+/* Make sure all cards show in a full grid row */
+.cards.cards4 > ul > li {
+  background: #fff;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 340px;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: hidden;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+  flex-shrink: 0;
+  flex-grow: 0;
+  background: #f3f3f3;
+}
+
+.cards.cards4 .cards-card-image picture,
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.cards.cards4 .cards-card-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px;
+  margin: 0;
+  background: #fff;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.cards.cards4 .cards-card-body p:first-child strong {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.cards.cards4 .cards-card-body p:not(:first-child) {
+  font-size: 14px;
+  color: #333;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (width <= 1024px) {
+  .cards.cards4 > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 600px) {
+  .cards.cards4 > ul {
+    grid-template-columns: 1fr;
+  }
+}
