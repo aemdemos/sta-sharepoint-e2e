@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,129 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+/* Structure: Each row as flex row, with tighter gaps and balanced image sizing */
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+
+  /* To keep columns not spanning full width, no additional styles needed */
+}
+
+/* Each row: flex row, top-aligned, tighter gap */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 28px;
+  width: 100%;
+}
+
+/* --- First row --- */
+
+/* Left column: stacked text/list/button */
+.columns.columns3 > div > div:first-child {
+  /* Ensure vertical stack of text/list/button and image */
+  align-items: flex-start;
+}
+
+.columns.columns3 > div > div:first-child > p:not(:has(picture)),
+.columns.columns3 > div > div:first-child > ul,
+.columns.columns3 > div > div:first-child > .button-container {
+  flex: 0 1 250px;
+  min-width: 180px;
+  max-width: 300px;
+  margin-right: 0;
+}
+
+.columns.columns3 > div > div:first-child > p:has(picture) {
+  flex: 1 1 0;
+  margin: 0;
+  min-width: 0;
+  max-width: 500px;
+  align-self: flex-start;
+}
+
+/* --- Second row --- */
+
+/* Left: image, right: preview text/button vertically stacked but aligned at top */
+.columns.columns3 > div > div:last-child {
+  align-items: flex-start;
+}
+
+.columns.columns3 > div > div:last-child > p:has(picture) {
+  flex: 1 1 0;
+  margin: 0;
+  min-width: 0;
+  max-width: 500px;
+  align-self: flex-start;
+}
+
+.columns.columns3 > div > div:last-child > p:not(:has(picture)),
+.columns.columns3 > div > div:last-child > .button-container {
+  flex: 0 1 250px;
+  min-width: 180px;
+  max-width: 300px;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+/* Images: fill available width, keep row balanced */
+.columns.columns3 img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+  display: block;
+  border: none;
+}
+
+/* List and text spacing */
+.columns.columns3 ul {
+  margin-left: 20px;
+  color: #222;
+  font-size: 16px;
+}
+
+.columns.columns3 p {
+  color: #222;
+  font-size: 16px;
+  margin: 0 0 10px;
+}
+
+.columns.columns3 .button-container {
+  margin-bottom: 8px;
+}
+
+/* Responsive: stack rows and stack columns within each row */
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    gap: 24px;
+  }
+
+  .columns.columns3 > div > div {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .columns.columns3 > div > div > * {
+    max-width: 100%;
+    min-width: 0;
+    flex: 1 1 0;
+  }
+
+  .columns.columns3 img {
+    max-width: 100%;
+    max-height: none;
   }
 }
