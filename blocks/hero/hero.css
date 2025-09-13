@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -33,5 +34,131 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: stretch;
+  min-height: 190px;
+  width: 100vw;
+  background: linear-gradient(90deg, #0f233d 60%, #14395a 100%);
+  padding-left: 32px;
+  box-sizing: border-box;
+  margin: 0;
+  border: none;
+  overflow: hidden;
+}
+
+/* Both main columns fill available space */
+.hero.hero2 > div {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Text column (left) */
+.hero.hero2 > div:last-child {
+  justify-content: flex-start;
+  order: 1;
+}
+
+.hero.hero2 > div:last-child > div {
+  max-width: 600px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Headline styling */
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: var(--heading-font-size-xl);
+  font-weight: 700;
+  margin: 0;
+  text-align: left;
+  line-height: 1.1;
+}
+
+/* Image column (right) */
+.hero.hero2 > div:first-child {
+  justify-content: flex-end;
+  order: 2;
+  min-width: 0;
+}
+
+/* Ensure image wrapper and image are visible and fill space */
+.hero.hero2 > div:first-child > div {
+  width: 100%;
+  max-width: 650px;
+  min-width: 300px;
+  min-height: 170px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.hero.hero2 picture {
+  width: 100%;
+  min-width: 0;
+  display: block;
+  max-width: 650px;
+}
+
+.hero.hero2 img {
+  width: 100%;
+  min-width: 0;
+  max-width: 650px;
+  min-height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Remove possible default margins to eliminate white strips */
+.hero.hero2,
+.hero.hero2 > div,
+.hero.hero2 > div > div {
+  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Responsive stacking for smaller screens */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    padding-left: 0;
+    min-height: unset;
+    width: 100vw;
+  }
+
+  .hero.hero2 > div {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero.hero2 > div:first-child > div,
+  .hero.hero2 > div:last-child > div {
+    max-width: 95vw;
+    min-width: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero.hero2 h1 {
+    text-align: center;
+    font-size: var(--heading-font-size-l);
+  }
+
+  .hero.hero2 picture,
+  .hero.hero2 img {
+    max-width: 350px;
+    min-width: 120px;
+    margin: 0 auto;
   }
 }
