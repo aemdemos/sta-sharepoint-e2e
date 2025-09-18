@@ -25,3 +25,91 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards.cards4 {
+  background: #f7f7f7;
+  padding: 32px 0;
+}
+
+/* Grid for multi-column, multi-row with tightly packed cards and perfectly equal heights */
+.cards.cards4 > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  grid-auto-rows: 1fr;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: stretch;
+}
+
+/* Responsive columns for smaller screens */
+@media (width <= 1000px) {
+  .cards.cards4 > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 600px) {
+  .cards.cards4 > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards fill grid cells and are forced to have equal height in each row */
+.cards.cards4 > ul > li {
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.8%);
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Taller image for visual balance */
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  height: 218px;
+  display: block;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Images fill available space and cover area */
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Tightest possible internal padding, left-aligned text */
+.cards.cards4 .cards-card-body {
+  padding: 8px 6px 7px;
+  margin: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Title and description hierarchy */
+.cards.cards4 .cards-card-body p {
+  margin: 0 0 5px;
+  color: #505050;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.cards.cards4 .cards-card-body p strong {
+  display: block;
+  font-size: 0.93rem;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
