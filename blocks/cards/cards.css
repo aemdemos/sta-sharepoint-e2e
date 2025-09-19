@@ -25,3 +25,121 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards.cards4 {
+  background: #f6f6f6;
+  padding: 32px 0 24px;
+  margin: 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  box-sizing: border-box;
+}
+
+/* Remove all horizontal padding for desktop grid, ensure edge-to-edge layout */
+.cards.cards4 > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  justify-content: stretch;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.cards.cards4 > ul > li {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  overflow: hidden;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+/* Slightly taller image area for stronger visual presence */
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  height: 146px;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cards.cards4 .cards-card-body {
+  padding: 20px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+
+.cards.cards4 .cards-card-body p:first-child {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 8px;
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+.cards.cards4 .cards-card-body p:not(:first-child) {
+  font-size: 15px;
+  font-weight: 400;
+  color: #333;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Responsive: two columns tablet, one mobile, adjust image height */
+@media (width <= 1000px) {
+  .cards.cards4 > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 0;
+  }
+
+  .cards.cards4 {
+    padding: 24px 0 16px;
+  }
+
+  .cards.cards4 .cards-card-image {
+    height: 120px;
+  }
+}
+
+@media (width <= 600px) {
+  .cards.cards4 > ul {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0;
+  }
+
+  .cards.cards4 {
+    padding: 12px 0 8px;
+  }
+
+  .cards.cards4 .cards-card-image {
+    height: 90px;
+  }
+}
