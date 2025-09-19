@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,101 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns.columns3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 36px 48px; /* tighter vertical gap for a more cohesive block */
+  place-items: start start;
+}
+
+/* Allow direct placement of child cells in grid */
+.columns.columns3 > div {
+  display: contents;
+}
+
+/* Top row: force both cells' content to top */
+.columns.columns3 > div:nth-child(1) > div:not(.columns-img-col),
+.columns.columns3 > div:nth-child(1) > .columns-img-col {
+  place-self: start start;
+  margin-top: 0;
+}
+
+/* Bottom row: force both cells' content to top */
+.columns.columns3 > div:nth-child(2) > .columns-img-col,
+.columns.columns3 > div:nth-child(2) > div:not(.columns-img-col) {
+  place-self: start start;
+  margin-top: 0;
+}
+
+/* Explicit grid cell placement */
+.columns.columns3 > div:nth-child(1) > div:not(.columns-img-col) {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.columns.columns3 > div:nth-child(1) > .columns-img-col {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.columns.columns3 > div:nth-child(2) > .columns-img-col {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.columns.columns3 > div:nth-child(2) > div:not(.columns-img-col) {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Remove extra top margin from immediate text elements in cells */
+.columns.columns3 > div > div > p,
+.columns.columns3 > div > div > ul,
+.columns.columns3 > div > .columns-img-col {
+  margin-top: 0;
+}
+
+/* Keep buttons and text left-aligned in bottom-right cell */
+
+/* Consistent image aspect and size */
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  height: 350px;
+  max-height: 42vw;
+  min-height: 220px;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+
+/* Responsive: Stack vertically on small screens */
+@media (width <= 900px) {
+  .columns.columns3 {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 28px 0;
+    justify-items: stretch;
+  }
+
+  .columns.columns3 > div,
+  .columns.columns3 > div > div {
+    grid-column: 1;
+    width: 100%;
+    place-self: stretch stretch;
+  }
+
+  .columns.columns3 .columns-img-col img {
+    height: auto;
+    min-height: 160px;
+    max-height: none;
   }
 }
