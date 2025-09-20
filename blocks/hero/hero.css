@@ -35,3 +35,117 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 220px;
+  width: 100vw;
+  margin: 0;
+  box-sizing: border-box;
+
+  /* Use a unified gradient background without hard color split */
+  background: linear-gradient(90deg, #0d233e 62%, rgb(25 61 104 / 92%) 76%, rgb(34 78 131 / 44%) 88%, rgb(34 78 131 / 0%) 100%);
+  overflow: hidden;
+}
+
+/* IMAGE COLUMN: DNA image on right (order: 2) */
+.hero.hero2 > div:first-child {
+  flex: 1 1 58%;
+  order: 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  min-width: 0;
+
+  /* Let image overlap slightly left for glow effect */
+  margin-left: -6vw;
+  z-index: 1;
+}
+
+.hero.hero2 picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+}
+
+.hero.hero2 img {
+  object-fit: cover;
+  object-position: right center;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  display: block;
+  min-width: 0;
+  pointer-events: none;
+}
+
+/* TEXT COLUMN: text on left (order: 1) */
+.hero.hero2 > div:last-child {
+  flex: 1 1 42%;
+  order: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  min-width: 0;
+  padding-left: 48px;
+  padding-right: 24px;
+  z-index: 2;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+  max-width: 90%;
+  text-align: left;
+  filter: drop-shadow(0 2px 8px rgb(13 35 62 / 10%));
+}
+
+/* Responsive design: Stack vertically on small screens */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 240px;
+    padding: 24px 0;
+    background: linear-gradient(180deg, #0d233e 80%, rgb(34 78 131 / 0%) 100%);
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    flex: unset;
+    width: 100%;
+    height: auto;
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+    min-width: 0;
+    margin-left: 0;
+  }
+
+  .hero.hero2 > div:last-child {
+    padding-top: 32px;
+    padding-bottom: 8px;
+    align-items: flex-start;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.4rem;
+    max-width: 100%;
+    text-align: center;
+    filter: none;
+  }
+}
+
+/* Ensure the hero wrapper spans the full width */
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
