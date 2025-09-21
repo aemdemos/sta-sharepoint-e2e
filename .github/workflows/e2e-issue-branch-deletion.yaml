@@ -5,6 +5,9 @@ on:
     - cron: '30 23 * * *'  # Run at 23:30 UTC daily
   workflow_dispatch:  # Allow manual trigger
 
+permissions:
+  contents: write   # 👈 this is required to delete branches
+
 jobs:
   cleanup:
     runs-on: ubuntu-latest
@@ -22,3 +25,4 @@ jobs:
         uses: ./.shared-actions/.github/actions/e2e-issue-branch-cleanup
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
