@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,117 @@
     flex: 1;
     order: unset;
   }
+}
+
+
+.columns.columns3 {
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+/* Main columns: side by side (row flex), responsive stack on mobile */
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 32px;
+    align-items: stretch;
+  }
+}
+
+/* Each column stacks vertically, left-aligned and tight grouping */
+.columns.columns3 > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Move the image to top of left column for horizontal image alignment */
+.columns.columns3 > div > div:first-child picture {
+  order: -1;
+}
+
+/* Picture and image sizing */
+.columns.columns3 picture {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.columns.columns3 picture img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+}
+
+/* List and paragraph spacing for visual grouping */
+.columns.columns3 ul {
+  margin: 0 0 2px;
+  padding-left: 22px;
+  color: #222;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.columns.columns3 p {
+  color: #222;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 2px;
+}
+
+/* Button container: minimal spacing */
+.columns.columns3 .button-container {
+  margin: 8px 0 0;
+}
+
+/* Button styling overrides for clarity and spacing */
+.columns.columns3 .button {
+  min-width: 92px;
+  padding: 10px 28px;
+  border-radius: 22px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  background: #36F;
+  color: #fff;
+  box-shadow: none;
+  transition: background 0.2s;
+  margin: 0;
+}
+
+.columns.columns3 .button.secondary {
+  background: #fff;
+  color: #222;
+  border: 2px solid #222;
+}
+
+.columns.columns3 .button:focus,
+.columns.columns3 .button:hover {
+  background: #2650c8;
+}
+
+.columns.columns3 .button.secondary:focus,
+.columns.columns3 .button.secondary:hover {
+  background: #f6f8ff;
+}
+
+/* For the right column, minimize extra gap between image, text, button */
+.columns.columns3 > div > div:last-child p,
+.columns.columns3 > div > div:last-child .button-container {
+  margin-top: 4px;
 }
