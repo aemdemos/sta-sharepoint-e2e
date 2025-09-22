@@ -35,3 +35,90 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: 190px;
+  width: 100%;
+  background: linear-gradient(90deg, #0c233c 60%, transparent 100%);
+  box-sizing: border-box;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Text container (left side) */
+.hero.hero2 > div:last-child {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding-left: 0;
+  margin-left: 56px;
+}
+
+/* Ensure text is left-aligned and vertically centered */
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.15;
+  text-align: left;
+}
+
+/* Image container (right side) */
+.hero.hero2 > div:first-child {
+  flex: 0 1 480px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  min-width: 340px;
+  max-width: 600px;
+}
+
+.hero.hero2 > div:first-child picture {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.hero.hero2 > div:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 320px;
+    padding: 0;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    flex: unset;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    margin-left: 0;
+  }
+
+  .hero.hero2 > div:last-child {
+    padding-top: 24px;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 0 8px;
+  }
+}
