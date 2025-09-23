@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,138 @@
     flex: 1;
     order: unset;
   }
+}
+
+
+.columns.columns3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 40px;
+  width: 100%;
+  background: var(--background-color);
+  place-items: start stretch;
+}
+
+@media (width <= 900px) {
+  .columns.columns3 {
+    grid-template-columns: 1fr;
+    grid-template-rows: unset;
+    gap: 32px;
+  }
+}
+
+/* Direct grid mapping for HTML structure */
+.columns.columns3 > div:first-child > div:first-child {
+  grid-column: 1;
+}
+.columns.columns3 > div:first-child > div:last-child {
+.columns.columns3 > div:last-child > div:first-child {
+.columns.columns3 > div:last-child > div:last-child {
+  grid-row: 2;
+  grid-column: 2;
+}
+  grid-column: 1;
+}
+  grid-column: 2;
+}
+.columns.columns3 > div:last-child > div:first-child { grid-row: 2; grid-column: 1; }
+.columns.columns3 > div:last-child > div:last-child { grid-row: 2; grid-column: 2; }
+
+/* Remove inner stacking from parent columns */
+.columns.columns3 > div {
+  display: contents;
+}
+
+/* Cell content: side and top alignment */
+
+/* Left column cells: left-align, padding-right for gap */
+.columns.columns3 > div:first-child > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 0 32px 0 8px;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Right column cells: right-align, padding-left for gap */
+.columns.columns3 > div:last-child > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 0 8px 0 32px;
+  min-width: 0;
+  min-height: 0;
+  text-align: right;
+}
+
+/* Images: crop and sizing, fill cell, no padding */
+.columns.columns3 .columns-img-col {
+  width: 100%;
+  height: 240px;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+@media (width <= 900px) {
+  .columns.columns3 .columns-img-col {
+    height: 180px;
+    min-height: 120px;
+  }
+}
+
+/* Images fill the container */
+.columns.columns3 .columns-img-col img,
+.columns.columns3 .columns-img-col picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* List, text, button spacing */
+.columns.columns3 ul {
+  margin: 0 0 12px;
+  padding-left: 24px;
+}
+
+.columns.columns3 p {
+  margin: 0 0 8px;
+  color: var(--text-color);
+  font-size: var(--body-font-size-xs);
+}
+
+.columns.columns3 .button-container {
+  margin-top: 10px;
+}
+
+.columns.columns3 .button.secondary {
+  background-color: unset;
+  border: 2px solid currentcolor;
+  color: var(--text-color);
+  font-style: italic;
+}
+
+.columns.columns3 .button {
+  min-width: 88px;
+  min-height: 34px;
+  border-radius: 24px;
+  font-size: var(--body-font-size-xs);
+  font-weight: 500;
+  text-align: center;
+  padding: 8px 24px;
+  box-sizing: border-box;
+  line-height: 1.25;
+  margin: 0;
 }
