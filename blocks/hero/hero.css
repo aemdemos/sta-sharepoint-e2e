@@ -35,3 +35,119 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 190px;
+  background: linear-gradient(110deg, #092a3d 60%, #133e5c 100%);
+  padding: 0;
+  box-sizing: border-box;
+  overflow: visible;
+  width: 100%;
+  position: relative;
+}
+
+/* TEXT COLUMN (left) */
+.hero.hero2 > div:last-child {
+  flex: 0 1 480px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-left: 36px;
+  padding-top: 32px;
+  min-width: 0;
+  max-width: 40vw;
+  z-index: 2;
+  position: relative;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: left;
+  line-height: 1.1;
+  white-space: pre-line;
+  max-width: 100%;
+  align-self: flex-start;
+}
+
+/* IMAGE COLUMN (right) */
+.hero.hero2 > div:first-child {
+  flex: 1 1 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  order: 2;
+  min-width: 0;
+  height: 100%;
+  max-width: 60vw;
+  overflow: visible;
+  position: relative;
+}
+
+/* Let the image "bleed" leftward for a more immersive effect */
+.hero.hero2 picture {
+  position: static;
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+}
+
+.hero.hero2 img {
+  display: block;
+  height: 100%;
+  width: 115%;
+  object-fit: cover;
+  margin-left: -7vw;
+  box-shadow: none;
+  max-width: unset;
+  min-width: 400px;
+}
+
+/* Remove margin on the block/hero wrapper if any */
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+/* Responsive: stack text above image on small screens */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 220px;
+  }
+
+  .hero.hero2 > div:last-child,
+  .hero.hero2 > div:first-child {
+    width: 100%;
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    align-items: center;
+    justify-content: center;
+    order: unset;
+    height: auto;
+    max-width: 100%;
+    position: static;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.4rem;
+    text-align: center;
+    padding-top: 16px;
+  }
+
+  .hero.hero2 img {
+    height: 120px;
+    max-width: 95vw;
+    margin-left: 0;
+    width: 100%;
+    min-width: 0;
+  }
+}
