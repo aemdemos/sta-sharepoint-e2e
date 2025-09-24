@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,100 @@
     flex: 1;
     order: unset;
   }
+}
+
+
+.columns.columns3 {
+  /* Two-column layout using flexbox */
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 3em;
+  width: 100%;
+}
+
+@media (width <= 900px) {
+  .columns.columns3 {
+    flex-direction: column;
+    gap: 2em;
+  }
+}
+
+/* Each column stacks children vertically, limit gap for tighter grouping */
+.columns.columns3 > div {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7em; /* reduce gap for tighter alignment and image grouping */
+  min-width: 0;
+  justify-content: flex-start;
+}
+
+/* Remove excess margin above the blue DNA image */
+.columns.columns3 > div:first-child .columns-img-col {
+  margin-top: 0;
+}
+
+/* Make sure both images are sized and aligned */
+.columns.columns3 .columns-img-col {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.columns.columns3 .columns-img-col img,
+.columns.columns3 .columns-img-col picture {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  object-fit: cover;
+}
+
+/* Reduce space above the Live button */
+.columns.columns3 .button-container {
+  margin-top: 0.4em;
+  text-align: left;
+}
+
+/* List styling for left column */
+.columns.columns3 ul {
+  margin-left: 1em;
+  padding-left: 1em;
+  list-style-type: disc;
+}
+
+/* Group preview text and button tightly in right column */
+.columns.columns3 > div:last-child > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  align-items: flex-start;
+}
+
+/* Remove extra margin between columns on mobile */
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    margin-right: 0;
+  }
+}
+
+/* Keep all text consistently left-aligned */
+.columns.columns3 p,
+.columns.columns3 ul,
+.columns.columns3 li {
+  text-align: left;
+}
+
+/* Button tweaks for spacing and to override defaults if necessary */
+.columns.columns3 .button {
+  margin-top: 0.4em;
+}
+
+.columns.columns3 .button.secondary {
+  background-color: unset;
+  border: 2px solid currentcolor;
+  color: var(--text-color);
 }
