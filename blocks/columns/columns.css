@@ -31,3 +31,128 @@
     order: unset;
   }
 }
+
+
+.columns.columns3 {
+  /* Each direct child is a row; reduce vertical gap for a more compact look */
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 0;
+  box-sizing: border-box;
+}
+
+/* Each row: side by side columns */
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* Each cell in a row: take up equal space, top-aligned */
+.columns.columns3 > div > div {
+  flex: 1 1 0;
+  box-sizing: border-box;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Images: slightly smaller so block feels less heavy and more balanced */
+.columns.columns3 .columns-img-col picture,
+.columns.columns3 .columns-img-col img {
+  display: block;
+  max-width: 370px;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/* Reduce button and section spacing for compact feel */
+.columns.columns3 .button-container {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+/* Lists: adjust vertical spacing for balance */
+.columns.columns3 ul {
+  margin-bottom: 8px;
+  padding-left: 22px;
+}
+
+.columns.columns3 .button {
+  min-width: 96px;
+  padding: 7px 24px;
+  border-radius: 22px;
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: none;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Secondary button styling */
+.columns.columns3 .button.secondary {
+  background-color: #fff;
+  border: 2px solid var(--text-color);
+  color: var(--text-color);
+  box-shadow: none;
+}
+
+.columns.columns3 .button.secondary:hover {
+  background-color: var(--text-color);
+  color: #fff;
+}
+
+/* For the preview cell, adjust alignment for visual balance */
+.columns.columns3 > div:last-child > div:last-child {
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+/* Responsive: stack cells vertically on small screens */
+@media (width <= 900px) {
+  .columns.columns3 {
+    gap: 24px;
+    max-width: 100%;
+    padding: 24px 0;
+  }
+
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .columns.columns3 > div > div {
+    width: 100%;
+  }
+
+  .columns.columns3 .columns-img-col picture,
+  .columns.columns3 .columns-img-col img {
+    max-width: 100%;
+  }
+}
+
+/* Ensure p, ul, li in block are left-aligned and spaced */
+.columns.columns3 p,
+.columns.columns3 ul,
+.columns.columns3 li {
+  text-align: left;
+  color: var(--text-color);
+  font-size: var(--body-font-size-xs);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
