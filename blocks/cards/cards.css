@@ -25,3 +25,103 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards.cards4 {
+  max-width: 1168px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+/* Use grid for multi-row, multi-column layout */
+.cards.cards4 > ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  justify-items: start;
+}
+
+/* Responsive: Reduce columns at breakpoints */
+@media (width <= 1100px) {
+  .cards.cards4 > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width <= 700px) {
+  .cards.cards4 > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card styles */
+.cards.cards4 > ul > li {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  justify-content: flex-start;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Image: always on top, fixed height, no stretch */
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  height: 160px;
+  background: #f5f5f5;
+  display: block;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Ensure image fills card image area appropriately */
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card body text area styles */
+.cards.cards4 .cards-card-body {
+  padding: 20px 16px 16px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 auto;
+  justify-content: flex-start;
+}
+
+/* Title styling */
+.cards.cards4 .cards-card-body p:first-child strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+/* Description styling */
+.cards.cards4 .cards-card-body p:not(:first-child) {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  margin: 0;
+  line-height: 1.6;
+}
