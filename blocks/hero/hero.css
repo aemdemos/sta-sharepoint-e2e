@@ -35,3 +35,126 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 243px;
+  width: 100%;
+  background: radial-gradient(ellipse at left 40%, #14324c 60%, #0d1924 100%);
+  box-sizing: border-box;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* TEXT COLUMN: left side, align text top-left */
+.hero.hero2 > div:last-child {
+  flex: 0 1 48%;
+  order: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  box-sizing: border-box;
+  padding-left: 40px;
+  padding-top: 32px;
+  z-index: 2;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: var(--heading-font-size-xl);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-align: left;
+  max-width: 98%;
+  box-sizing: border-box;
+  text-shadow: 0 2px 8px #000c;
+}
+
+/* IMAGE COLUMN: right side, make DNA image visually larger and blend with background */
+.hero.hero2 > div:first-child {
+  flex: 1 1 52%;
+  order: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+
+  /* Soft fade-in overlap for a more blended look */
+  background: linear-gradient(to left, rgb(13 25 36 / 70%) 0%, rgb(13 25 36 / 0%) 44%);
+}
+
+/* Ensure picture fills container and is not cut off */
+.hero.hero2 > div:first-child picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  margin-right: -60px; /* Overlap towards left for blending */
+}
+
+/* DNA image styling and blend */
+.hero.hero2 > div:first-child img {
+  width: 520px;
+  max-width: none;
+  min-width: 340px;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  filter: drop-shadow(0 0 22px #70c4e0aa);
+  margin-right: -100px; /* Create overlap and more prominence */
+  opacity: 0.98;
+}
+
+/* Responsive: stack, shrink image, center text */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: unset;
+    padding: 0;
+  }
+
+  .hero.hero2 > div:first-child,
+  .hero.hero2 > div:last-child {
+    flex: none;
+    min-width: unset;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    order: unset;
+  }
+
+  .hero.hero2 > div:last-child {
+    padding: 20px 0 0;
+  }
+
+  .hero.hero2 h1 {
+    font-size: var(--heading-font-size-l);
+    max-width: 98vw;
+    text-align: center;
+    padding: 0 8px;
+  }
+
+  .hero.hero2 > div:first-child img {
+    width: 80vw;
+    min-width: 0;
+    max-width: 400px;
+    margin: 0 auto 12px;
+    opacity: 1;
+  }
+
+  .hero.hero2 > div:first-child picture {
+    margin: 0;
+  }
+}
