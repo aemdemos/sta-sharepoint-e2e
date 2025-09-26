@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,77 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns.columns3 {
+  /* Use block layout for stacking rows vertically */
+  display: block;
+}
+
+/* Each row: flex layout, columns side by side, with horizontal gap */
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 48px; /* horizontal space between columns */
+  margin-bottom: 32px; /* vertical space between rows */
+}
+
+/* Last row: no bottom margin */
+.columns.columns3 > div:last-child {
+  margin-bottom: 0;
+}
+
+/* Make columns equal width and prevent vertical stretching */
+.columns.columns3 > div > div,
+.columns.columns3 > div > .columns-img-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: block;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Remove padding from text columns for flush alignment */
+.columns.columns3 > div > div:not(.columns-img-col) {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Image columns: image fills column, keeps aspect */
+.columns.columns3 .columns-img-col picture,
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  margin: 0;
+}
+
+/* List and paragraph spacing refinements */
+.columns.columns3 ul,
+.columns.columns3 ol {
+  margin-left: 1.4em;
+  margin-bottom: 1em;
+}
+
+.columns.columns3 p {
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+}
+
+/* Responsive: stack columns vertically on small screens and reset gap */
+@media (width <= 899px) {
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .columns.columns3 {
+    /* Remove bottom margin for tighter stack if needed */
   }
 }
