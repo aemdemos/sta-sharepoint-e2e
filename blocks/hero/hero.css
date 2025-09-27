@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -33,5 +34,129 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+.hero-container > .hero-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+/* Top-level hero layout: full width, flex row for alignment, but background handled via image column */
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  min-height: 180px;
+  height: 200px;
+  width: 100%;
+  position: relative;
+  background: #0a253e;
+  overflow: hidden;
+  margin-top: 0;
+  border-top: 0;
+}
+
+/* Make the image fill the block as a visual background, but also allow text to overlay */
+.hero.hero2 > div:first-of-type {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  display: block;
+}
+
+.hero.hero2 > div:first-of-type > div {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  min-width: 0;
+  pointer-events: none;
+}
+
+.hero.hero2 picture,
+.hero.hero2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: static;
+  pointer-events: none;
+}
+
+/* Improved gradient overlay for readable contrast and smooth fade */
+.hero.hero2::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #0a253ee6 18%, #0a253e99 38%, #0a253e00 65%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Text container: left align, move closer to top/left, allow more text width */
+.hero.hero2 > div:last-of-type {
+  position: relative;
+  z-index: 3;
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 36px;
+  padding-top: 12px;
+  padding-bottom: 0;
+  box-sizing: border-box;
+  min-width: 0;
+  height: 100%;
+}
+
+.hero.hero2 > div:last-of-type > div {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  margin: 0;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.18;
+  text-align: left;
+  margin: 0;
+  max-width: 98%;
+  z-index: 3;
+  letter-spacing: 0.02em;
+}
+
+/* Responsive behavior: stack, reduce padding, scale heading */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 120px;
+    height: auto;
+  }
+
+  .hero.hero2 > div:last-of-type {
+    padding-left: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    align-items: center;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.3rem;
+    text-align: center;
+    max-width: 100%;
   }
 }
