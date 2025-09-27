@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,115 @@
     flex: 1;
     order: unset;
   }
+}
+
+
+.columns.columns3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  place-items: stretch stretch;
+  min-height: 700px;
+}
+
+.columns.columns3 > div {
+  display: contents;
+}
+
+/* Ensure grid placement for quadrants */
+.columns.columns3 > div:first-child > div:first-child {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.columns.columns3 > div:first-child > div:last-child {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.columns.columns3 > div:last-child > div:first-child {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.columns.columns3 > div:last-child > div:last-child {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Top-align text/button blocks, no horizontal padding, tight spacing */
+.columns.columns3 > div > div:not(.columns-img-col) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Remove all extra spacing below the text/button */
+.columns.columns3 .button-container {
+  margin-top: 2px;
+  margin-bottom: 0;
+}
+
+/* List styling */
+.columns.columns3 ul {
+  margin: 8px 0 8px 18px;
+  padding: 0;
+}
+
+/* Image columns: fill grid area, align with text content */
+.columns.columns3 .columns-img-col {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  margin: 0;
+}
+
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  min-height: 0;
+}
+
+/* Responsive stacking for mobile */
+@media (width <= 900px) {
+  .columns.columns3 {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 12px;
+    min-height: unset;
+  }
+.columns.columns3 > div:first-child > div:first-child {
+.columns.columns3 > div:first-child > div:last-child {
+.columns.columns3 > div:last-child > div:first-child {
+.columns.columns3 > div:last-child > div:last-child {
+  grid-column: 1;
+.columns.columns3 .columns-img-col img {
+  height: auto;
+  min-height: 150px;
+}
+}
+  grid-row: 3;
+}
+  grid-row: 2;
+}
+  grid-row: 1;
+}
+  .columns.columns3 > div:first-child > div:last-child { grid-column: 1; grid-row: 2; }
+  .columns.columns3 > div:last-child > div:first-child { grid-column: 1; grid-row: 3; }
+  .columns.columns3 > div:last-child > div:last-child { grid-column: 1; grid-row: 4; }
+  .columns.columns3 > div > div:not(.columns-img-col) { padding: 0; }
+  .columns.columns3 .columns-img-col img { height: auto; min-height: 150px; }
 }
