@@ -31,3 +31,119 @@
     order: unset;
   }
 }
+
+
+.columns.columns3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 40px;
+  align-items: start;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Responsive: stack columns vertically on small screens */
+@media (width <= 900px) {
+  .columns.columns3 {
+    grid-template-columns: 1fr;
+    grid-template-rows: unset;
+    gap: 32px;
+  }
+
+  .columns.columns3 > div,
+  .columns.columns3 > div > div {
+    grid-column: unset;
+    grid-row: unset;
+  }
+}
+
+/* Make column wrappers not interfere with grid placement */
+.columns.columns3 > div {
+  display: contents;
+}
+
+/* GRID PLACEMENT FIX
+   - top-left cell: text/list/"Live" button (.columns.columns3 > div:first-child > div:first-child)
+   - top-right cell: green DNA image (.columns.columns3 > div:first-child > div:last-child)
+   - bottom-left cell: yellow DNA image (.columns.columns3 > div:last-child > div:first-child)
+   - bottom-right cell: "Preview" text/button (.columns.columns3 > div:last-child > div:last-child)
+*/
+
+/* Top-left: left column, first child (text) */
+.columns.columns3 > div:first-child > div:first-child {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Top-right: left column, second child (green DNA image) */
+.columns.columns3 > div:first-child > div:last-child {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* Bottom-left: right column, first child (yellow DNA image) */
+.columns.columns3 > div:last-child > div:first-child {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+/* Bottom-right: right column, second child ("Preview" text/button) */
+.columns.columns3 > div:last-child > div:last-child {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Image styling */
+.columns.columns3 .columns-img-col picture,
+.columns.columns3 .columns-img-col img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* Text styling for consistency */
+.columns.columns3 p,
+.columns.columns3 ul,
+.columns.columns3 li {
+  color: #222;
+  font-size: var(--body-font-size-xs);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+/* Button container spacing */
+.columns.columns3 .button-container {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+/* Primary button style (inherits most from global, just ensure colors) */
+.columns.columns3 a.button {
+  background-color: #4F53FF;
+  color: #fff;
+  border-radius: 20px;
+  padding: 10px 24px;
+  border: none;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.25;
+}
+
+/* Secondary button style */
+.columns.columns3 a.button.secondary {
+  background: transparent;
+  color: #222;
+  border: 2px solid #222;
+  border-radius: 20px;
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.25;
+}
