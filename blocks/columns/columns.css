@@ -31,3 +31,152 @@
     order: unset;
   }
 }
+
+
+.columns.columns3 {
+  display: flex;
+  flex-direction: column;
+  gap: 32px; /* Increased vertical gap for better row separation */
+  width: 100%;
+}
+
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  gap: 32px; /* Increased horizontal gap for better column separation */
+  align-items: flex-start;
+  width: 100%;
+}
+
+@media (width <= 900px) {
+  .columns.columns3 {
+    gap: 16px;
+  }
+
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.columns.columns3 > div > div {
+  flex: 1 1 0;
+  align-self: flex-start;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* Remove any left padding/margin for flush left alignment */
+.columns.columns3 > div > div:not(.columns-img-col) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 0;
+  margin-left: 0;
+  padding-top: 0;
+}
+
+/* Vertical spacing between elements in left text columns */
+.columns.columns3 > div > div:not(.columns-img-col) > * {
+  margin-bottom: 14px;
+}
+
+.columns.columns3 > div > div:not(.columns-img-col) > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Preview section: even tighter text/button grouping, top align */
+.columns.columns3 > div:last-child > div:last-child {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* Tighter grouping for preview section elements */
+.columns.columns3 > div:last-child > div:last-child > * {
+  margin-bottom: 2px;
+}
+
+.columns.columns3 > div:last-child > div:last-child > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Image columns: top-aligned, fill width */
+.columns.columns3 .columns-img-col {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* Images: always fill column */
+.columns.columns3 .columns-img-col picture,
+.columns.columns3 .columns-img-col img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove extra margin from button container */
+.columns.columns3 .button-container {
+  margin: 0;
+  padding: 0;
+}
+
+/* Scoped button styles for block context */
+.columns.columns3 .button.secondary {
+  border: 2px solid var(--text-color);
+  background: transparent;
+  color: var(--text-color);
+}
+
+.columns.columns3 .button {
+  background: var(--link-color);
+  color: var(--background-color);
+  font-size: 1rem;
+  border-radius: 2.2em;
+  padding: 0.5em 1.5em;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.columns.columns3 .button:hover,
+.columns.columns3 .button:focus {
+  background: var(--link-hover-color);
+}
+
+.columns.columns3 .button.secondary:hover,
+.columns.columns3 .button.secondary:focus {
+  background: var(--light-color);
+}
+
+/* List and paragraph tightness */
+.columns.columns3 ul {
+  margin-left: 20px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.columns.columns3 li {
+  margin-bottom: 0.25em;
+}
+
+.columns.columns3 p {
+  color: var(--text-color);
+  font-size: 1rem;
+  margin: 0;
+}
+
+@media (width <= 600px) {
+  .columns.columns3 {
+    gap: 10px;
+  }
+
+  .columns.columns3 > div {
+    gap: 10px;
+  }
+}
