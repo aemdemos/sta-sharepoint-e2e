@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,114 @@
     flex: 1;
     order: unset;
   }
+}
+
+
+.columns.columns3 {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 32px 24px; /* Tighter top, slightly less bottom */
+  background: var(--background-color);
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Much tighter vertical gap between rows */
+}
+
+/* Each row: side by side columns */
+.columns.columns3 > div {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Each column in the row gets equal width */
+.columns.columns3 > div > div,
+.columns.columns3 > div > .columns-img-col {
+  flex: 1 1 0;
+  min-width: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Ensure columns stack on mobile */
+@media (width <= 900px) {
+  .columns.columns3 {
+    padding: 12px 8px 16px;
+    gap: 8px;
+  }
+
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+/* Images fill their column but do not stretch */
+.columns.columns3 .columns-img-col img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0;
+}
+
+/* Tighten up button and text vertical rhythm in columns */
+.columns.columns3 .button-container {
+  margin-top: 16px;
+}
+
+/* List and paragraph spacing */
+.columns.columns3 ul {
+  margin-left: 1.2em;
+  padding-left: 1em;
+  color: var(--text-color);
+  font-size: var(--body-font-size-s);
+}
+
+.columns.columns3 p {
+  color: var(--text-color);
+  font-size: var(--body-font-size-s);
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+/* Button tweaks for sizing & alignment */
+.columns.columns3 .button {
+  min-width: 70px;
+  padding: 8px 24px;
+  border-radius: 999px;
+  font-size: var(--body-font-size-xs);
+  font-weight: 500;
+  line-height: 1.25;
+  box-shadow: none;
+  margin-top: 0;
+}
+
+.columns.columns3 .button.secondary {
+  background: #fff;
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
+}
+
+.columns.columns3 .button:not(.secondary) {
+  background: var(--link-color);
+  color: #fff;
+  border: 2px solid transparent;
+}
+
+/* Remove any extra unwanted space around image columns */
+.columns.columns3 .columns-img-col {
+  margin: 0;
+  padding: 0;
 }
