@@ -35,3 +35,65 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-end;
+  min-height: 190px;
+  width: 100vw;
+  background: linear-gradient(90deg, #142c43 70%, #173d5b 100%);
+  box-sizing: border-box;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero.hero2 > div {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+
+  /* No left padding, so image fills right side */
+}
+
+.hero.hero2 picture {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.hero.hero2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+}
+
+@media (width <= 900px) {
+  .hero.hero2 {
+    min-height: 160px;
+  }
+
+  .hero.hero2 > div {
+    justify-content: center;
+  }
+
+  .hero.hero2 img {
+    object-position: center center;
+  }
+}
+
+@media (width <= 600px) {
+  .hero.hero2 {
+    min-height: 120px;
+  }
+}
