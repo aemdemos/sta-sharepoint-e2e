@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,115 @@
     flex: 1;
     order: unset;
   }
+}
+
+
+.columns.columns3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: start;
+  margin: 0;
+  padding: 0;
+}
+
+@media (width >= 900px) {
+  .columns.columns3 {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+/* Each column: stack vertically, minimize gaps */
+.columns.columns3 div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+}
+
+/* Left column: left-align, tightly group text/button and image */
+.columns.columns3 div:first-child {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.columns.columns3 div:first-child .button-container {
+  text-align: left;
+  margin-top: 12px;
+}
+
+/* Reduce space between left column blocks */
+.columns.columns3 div:first-child .columns-img-col {
+  margin-top: 8px;
+}
+
+/* Right column: tightly group image and preview section */
+.columns.columns3 div:last-child {
+  align-items: center;
+  text-align: center;
+}
+
+.columns.columns3 div:last-child .columns-img-col {
+  margin-bottom: 4px;
+  margin-top: 0;
+}
+
+.columns.columns3 div:last-child div:last-child {
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+/* Button containers, minimal margin */
+.columns.columns3 .button-container {
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+.columns.columns3 div:last-child .button-container {
+  text-align: center;
+}
+
+.columns.columns3 .columns-img-col {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.columns.columns3 .columns-img-col img {
+  display: block;
+  width: 99%;
+  max-width: 700px;
+  max-height: 520px;
+  margin: 0 auto;
+  border-radius: 0;
+  object-fit: contain;
+}
+
+/* List spacing for left column */
+.columns.columns3 ul {
+  margin: 4px 0 0;
+  padding-left: 24px;
+  color: var(--text-color);
+}
+
+.columns.columns3 li {
+  margin-bottom: 3px;
+}
+
+/* Button sizing and fix for outline style */
+.columns.columns3 .button {
+  min-width: 96px;
+  font-size: 1rem;
+  box-shadow: none;
+}
+
+.columns.columns3 .button.secondary {
+  background-color: unset;
+  border: 2px solid var(--text-color);
+  color: var(--text-color);
 }
