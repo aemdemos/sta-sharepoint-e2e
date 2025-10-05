@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,135 @@
     flex: 1;
     order: unset;
   }
+}
+
+
+.columns.columns3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 3rem 2.5rem;
+  margin: 40px auto 0;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: start;
+}
+
+/* Responsive: stack columns on small screens */
+@media (width <= 900px) {
+  .columns.columns3 {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 2rem;
+  }
+}
+
+/* Layout: Place each block in correct cell using their DOM order */
+.columns.columns3 div {
+  display: contents;
+}
+
+/* Top left: text group (first child of first column) */
+.columns.columns3 div:first-child div:first-child {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  align-self: start;
+  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+  
+/* Top right: blue DNA image (first .columns-img-col of second column) */
+.columns.columns3 div:last-child .columns-img-col {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  align-self: start;
+}
+
+/* Bottom left: yellow DNA image (first .columns-img-col of first column) */
+.columns.columns3 div:first-child .columns-img-col {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  align-self: start;
+}
+
+/* Bottom right: preview group (second child of second column) */
+.columns.columns3 div:last-child div:not(.columns-img-col) {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  align-self: start;
+  gap: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Ensure images take full width of their cell */
+.columns.columns3 .columns-img-col {
+  width: 100%;
+}
+
+.columns.columns3 .columns-img-col img,
+.columns.columns3 .columns-img-col picture {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* List and paragraph spacing/tweaks */
+.columns.columns3 ul {
+  padding-left: 1.2em;
+  margin-bottom: 1.2em;
+}
+
+.columns.columns3 li {
+  margin-bottom: 0.5em;
+}
+
+.columns.columns3 p {
+  margin: 0 0 1em;
+  color: #222;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Button and secondary button tweaks */
+.columns.columns3 .button-container {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.columns.columns3 .button {
+  min-width: 80px;
+  border-radius: 1.5em;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5em 1.5em;
+  background-color: #3f51b5;
+  color: #fff;
+  border: none;
+  transition: background 0.2s;
+  margin: 0.8em 0 0;
+  box-shadow: none;
+}
+
+.columns.columns3 .button.secondary {
+  background-color: #fff;
+  color: #222;
+  border: 2px solid #222;
+  box-shadow: none;
+}
+
+.columns.columns3 .button:hover,
+.columns.columns3 .button:focus {
+  background-color: #2c387e;
+}
+
+.columns.columns3 .button.secondary:hover,
+.columns.columns3 .button.secondary:focus {
+  background-color: #eee;
+  color: #222;
+  border-color: #222;
 }
