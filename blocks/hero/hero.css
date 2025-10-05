@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
@@ -33,5 +34,124 @@
 @media (width >= 900px) {
   .hero {
     padding: 40px 32px;
+  }
+}
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: stretch;
+  min-height: 220px;
+  background: linear-gradient(90deg, #0e253a 60%, #144373 100%);
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0;
+}
+
+.hero.hero2 div {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* Make sure the image is visible in its right-side container */
+.hero.hero2 div:first-child {
+  order: 2;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.hero.hero2 div:first-child div {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.hero.hero2 picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.hero.hero2 img {
+  object-fit: cover;
+  width: 100%;
+  max-width: 470px;
+  min-width: 260px;
+  height: 180px;
+  display: block;
+  margin: 0;
+}
+
+/* Text column styles */
+.hero.hero2 div:last-child {
+  order: 1;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding-left: 32px;
+}
+
+.hero.hero2 div:last-child div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.15;
+  text-shadow: 0 2px 6px rgb(0 0 0 / 20%);
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+/* Responsive behavior: stack & vertical centering on small screens */
+@media (width <= 700px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .hero.hero2 div {
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .hero.hero2 div:first-child div,
+  .hero.hero2 div:last-child div {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+  }
+
+  .hero.hero2 img {
+    max-width: 80vw;
+    min-width: 0;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 1.3rem;
+    text-align: center;
   }
 }
