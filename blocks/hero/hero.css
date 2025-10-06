@@ -35,3 +35,111 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 160px;
+  background: linear-gradient(90deg, #0d2638 60%, #17416a 100%);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  position: relative;
+}
+
+/* Make both children fill height and avoid collapsing */
+.hero.hero2 div {
+  min-width: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Image container fills right side, uses available height */
+.hero.hero2 div:first-child {
+  flex: 1 1 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  order: 2;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Image fills container, cover mode for maximum visual impact */
+.hero.hero2 picture {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  position: static;
+  z-index: auto;
+}
+
+.hero.hero2 img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  display: block;
+  margin: 0;
+}
+
+/* Text container left, with strong left padding */
+.hero.hero2 div:last-child {
+  flex: 0 1 620px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 48px;
+  height: 100%;
+  order: 1;
+}
+
+/* Headline styling */
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.15;
+  text-align: left;
+  word-break: break-word;
+}
+
+/* Responsive: stack and resize on small screens */
+@media (width <= 700px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 220px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero.hero2 div:first-child,
+  .hero.hero2 div:last-child {
+    flex: unset;
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+    padding-top: 0;
+  }
+
+  .hero.hero2 picture,
+  .hero.hero2 img {
+    width: 140px;
+    height: 80px;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+  }
+
+  .hero.hero2 div:last-child {
+    padding-top: 12px;
+    text-align: center;
+  }
+}
