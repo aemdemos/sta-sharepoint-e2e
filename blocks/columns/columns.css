@@ -31,3 +31,129 @@
     order: unset;
   }
 }
+
+
+.columns.columns3 {
+  display: flex;
+  flex-direction: row;
+  gap: 56px;
+  align-items: flex-start;
+  background: var(--background-color);
+  padding: 64px 32px;
+  box-sizing: border-box;
+}
+
+/* Allow columns to expand equally, stack inner elements vertically */
+.columns.columns3 div {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+}
+
+/* Images fill container, have subtle rounding and shadow for depth */
+.columns.columns3 img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 2px 12px 0 rgba(60,80,120,0.06);
+  margin: 0 0 24px 0;
+  background: var(--light-color);
+}
+
+/* Headings and text are left-aligned for clarity */
+.columns.columns3 h1,
+.columns.columns3 h2,
+.columns.columns3 h3,
+.columns.columns3 h4,
+.columns.columns3 h5,
+.columns.columns3 h6 {
+  color: var(--text-color);
+  margin-bottom: 20px;
+  margin-top: 0;
+  text-align: left;
+}
+
+/* Paragraphs, lists, and list items, consistent spacing */
+.columns.columns3 p,
+.columns.columns3 ul,
+.columns.columns3 ol {
+  color: var(--text-color);
+  font-size: var(--body-font-size-m);
+  margin-bottom: 16px;
+  margin-top: 0;
+  text-align: left;
+}
+
+.columns.columns3 ul,
+.columns.columns3 ol {
+  padding-left: 1.4em;
+}
+
+.columns.columns3 li {
+  margin-bottom: 10px;
+}
+
+/* Buttons: visually prominent, pill-shaped, with spacing */
+.columns.columns3 a.button,
+.columns.columns3 button {
+  border-radius: 2.5em;
+  font-size: var(--body-font-size-s);
+  padding: 0.7em 2em;
+  margin-top: 18px;
+  min-width: 120px;
+  min-height: 44px;
+  box-shadow: none;
+  border: 2px solid transparent;
+  transition: background 0.2s, border 0.2s, color 0.2s;
+  display: inline-block;
+}
+
+/* Secondary buttons: outlined style */
+.columns.columns3 a.button.secondary,
+.columns.columns3 button.secondary {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
+}
+
+.columns.columns3 a.button:not(.secondary),
+.columns.columns3 button:not(.secondary) {
+  background-color: var(--link-color);
+  color: var(--background-color);
+  border: 2px solid var(--link-color);
+}
+
+/* Ensure buttons never overflow on narrow columns */
+.columns.columns3 a.button,
+.columns.columns3 button {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive stacking for mobile */
+@media (max-width: 900px) {
+  .columns.columns3 {
+    flex-direction: column;
+    gap: 32px;
+    padding: 40px 8px;
+  }
+  .columns.columns3 div {
+    gap: 24px;
+  }
+  .columns.columns3 img {
+    margin-bottom: 16px;
+  }
+}
+
+/* Add extra padding for large screens for visual balance */
+@media (min-width: 1200px) {
+  .columns.columns3 {
+    padding-bottom: 96px;
+    padding-top: 96px;
+  }
+}
