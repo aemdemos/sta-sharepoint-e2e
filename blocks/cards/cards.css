@@ -25,3 +25,114 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards.cards4 ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px 16px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cards.cards4 li {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgb(30 30 30 / 6%);
+  overflow: hidden;
+  height: 100%;
+  transition: box-shadow 0.16s;
+  min-width: 0;
+}
+
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.cards.cards4 .cards-card-image img,
+.cards.cards4 .cards-card-image picture {
+  display: block;
+  width: 100%;
+  height: 192px;
+  min-height: 120px;
+  max-height: 240px;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+}
+
+.cards.cards4 .cards-card-body {
+  background: #fff;
+  padding: 16px 14px 14px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.cards.cards4 .cards-card-body p:first-child {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 14px;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+.cards.cards4 .cards-card-body p:not(:first-child) {
+  font-size: 1.06rem;
+  color: #333;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.cards.cards4 li:focus-within {
+  outline: 2px solid #3b63fb;
+  outline-offset: 2px;
+}
+
+@media (width <= 1100px) {
+  .cards.cards4 ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 10px;
+  }
+
+  .cards.cards4 .cards-card-image img,
+  .cards.cards4 .cards-card-image picture {
+    height: 140px;
+  }
+
+  .cards.cards4 .cards-card-body {
+    padding: 12px 10px 10px;
+  }
+}
+
+@media (width <= 700px) {
+  .cards.cards4 ul {
+    grid-template-columns: 1fr;
+    gap: 14px 0;
+  }
+
+  .cards.cards4 .cards-card-image img,
+  .cards.cards4 .cards-card-image picture {
+    height: 100px;
+  }
+
+  .cards.cards4 .cards-card-body {
+    padding: 8px 6px 6px;
+  }
+}
