@@ -25,3 +25,100 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards.cards4 {
+  background: #fff;
+  padding: 32px 0;
+}
+
+/* Container for card grid: use CSS grid for strict multi-row, multi-column layout */
+.cards.cards4 ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-items: stretch;
+}
+
+/* Responsive grid: reduce columns on smaller screens */
+@media (max-width: 900px) {
+  .cards.cards4 ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .cards.cards4 ul {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* Card item styles: uniform height, appearance, spacing */
+.cards.cards4 li {
+  background: #fff;
+  border: 1px solid #f6f6f8;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.02);
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Card image: fixed height, top corners rounded */
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  display: block;
+  background: #f5f5f5;
+}
+
+/* Remove empty image container for cards without images */
+.cards.cards4 .cards-card-image:empty {
+  display: none;
+}
+
+/* Card body: vertical stack, compact padding */
+.cards.cards4 .cards-card-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px 16px 16px 16px;
+}
+
+/* Align text vertically for cards without images */
+.cards.cards4 li .cards-card-body {
+  padding-top: 20px;
+}
+
+/* Title styling: bold, larger, tight spacing below */
+.cards.cards4 .cards-card-body p strong {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: #18181a;
+  margin-bottom: 6px;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+}
+
+/* Description styling: regular weight, dark color, compact margin */
+.cards.cards4 .cards-card-body p {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Tighter vertical gap for stacked paragraphs */
+.cards.cards4 .cards-card-body p + p {
+  margin-top: 8px;
+}
