@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,5 +30,46 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+
+.columns.columns3 > div {
+  /* Each row: horizontal flex row */
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 32px;            /* Reduced gap for more compact block */
+  margin-bottom: 32px;  /* Moderate vertical spacing between rows */
+}
+
+.columns.columns3 > div:last-child {
+  margin-bottom: 0;
+}
+
+.columns.columns3 > div > div {
+  flex: 1 1 0;          /* Equal column widths */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.columns.columns3 img,
+.columns.columns3 picture {
+  border-radius: 14px;
+  object-fit: cover;
+  display: block;
+
+  /* Optional cap for desktop image width to prevent images from growing too wide */
+  max-width: 360px;
+}
+
+@media (width <= 900px) {
+  .columns.columns3 > div {
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 24px;
   }
 }
