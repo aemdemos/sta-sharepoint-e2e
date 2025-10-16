@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .cards > ul {
   list-style: none;
   margin: 0;
@@ -24,4 +25,129 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+
+.cards.cards4 {
+  background-color: var(--light-color);
+  padding: 40px 0;
+}
+
+/* GRID LAYOUT */
+.cards.cards4 ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  place-items: stretch stretch;
+}
+
+/* Responsive - 2 columns on medium, 1 on small screens */
+@media (width <= 1100px) {
+  .cards.cards4 ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 700px) {
+  .cards.cards4 ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CARD CONTAINER */
+.cards.cards4 li {
+  background: var(--background-color);
+  border: 1px solid #edeef0;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 240px;
+  box-shadow: none;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.cards.cards4 li:hover {
+  border-color: #c5c9d0;
+}
+
+/* CARD IMAGE AT TOP */
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #fafbfc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0;
+}
+
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* No image? Remove empty space */
+.cards.cards4 .cards-card-image:empty {
+  display: none;
+}
+
+/* CARD BODY/TEXT */
+.cards.cards4 .cards-card-body {
+  padding: 12px 14px 14px;
+  background: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+/* TITLE AND DESCRIPTION */
+.cards.cards4 .cards-card-body p {
+  margin: 0;
+  margin-bottom: 0.5em;
+  line-height: 1.4;
+  color: var(--dark-color);
+}
+
+/* First paragraph = title */
+.cards.cards4 .cards-card-body p:first-child {
+  font-weight: 600;
+  font-size: 1em;
+  color: var(--text-color);
+  margin-bottom: 6px;
+}
+
+/* Subsequent paragraphs = description */
+.cards.cards4 .cards-card-body p:not(:first-child) {
+  font-weight: 400;
+  font-size: 0.97em;
+  color: var(--dark-color);
+  margin-bottom: 0;
+  opacity: 0.96;
+}
+
+/* LINKS (inside card bodies) */
+.cards.cards4 .cards-card-body a:any-link {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.cards.cards4 .cards-card-body a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+/* Prevent unwanted overflow */
+.cards.cards4 li,
+.cards.cards4 .cards-card-image,
+.cards.cards4 .cards-card-body {
+  box-sizing: border-box;
+  overflow: hidden;
 }
