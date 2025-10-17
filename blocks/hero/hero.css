@@ -35,3 +35,116 @@
     padding: 40px 32px;
   }
 }
+
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 420px;
+  background: linear-gradient(90deg, #132D58 0%, #112C44 100%);
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+/* Ensure the picture wrapper does not interfere with stacking context */
+.hero.hero2 picture {
+  z-index: unset;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1;
+  order: 2;
+  padding-right: 0;
+
+  /* no left padding so image hugs right edge */
+  max-width: 50%;
+  height: auto;
+  box-sizing: border-box;
+}
+
+/* DNA image styling, anchored to the right, fills vertical space, not stretched */
+.hero.hero2 picture img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  object-fit: cover;
+  filter: drop-shadow(0 0 32px rgb(0 152 255 / 32%));
+  margin: 0;
+  display: block;
+}
+
+/* Text container: left side, left/top aligned, fills remaining horizontal space */
+.hero.hero2 div {
+  flex: 1;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  max-width: 50%;
+  min-width: 280px;
+  padding-left: 56px;
+  padding-top: 56px;
+
+  /* Padding-right not needed; keep text away from image by image max-width */
+  box-sizing: border-box;
+}
+
+/* Headline styling: bold, white, left-aligned, in top half */
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: var(--heading-font-size-xl);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.12;
+  text-align: left;
+  max-width: 600px;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 18%);
+  letter-spacing: 0.01em;
+  align-self: flex-start;
+  margin-bottom: 0.6em;
+}
+
+/* Responsive: stack columns vertically on small screens */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .hero.hero2 picture {
+    order: 2;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .hero.hero2 picture img {
+    max-width: 320px;
+    width: 100%;
+    margin: 32px auto 0;
+  }
+
+  .hero.hero2 div {
+    order: 1;
+    max-width: 100%;
+    min-width: 0;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 32px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .hero.hero2 h1 {
+    font-size: var(--heading-font-size-l);
+    text-align: center;
+    max-width: 100%;
+    margin-bottom: 0.5em;
+  }
+}
+
+/* Allow the hero to span the full page width if required */
