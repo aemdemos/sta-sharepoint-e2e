@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -31,3 +32,122 @@
     order: unset;
   }
 }
+
+
+/* --- MAIN LAYOUT: TWO COLUMNS, EACH STACKS CONTENT VERTICALLY --- */
+.columns.columns3 {
+  background: #fff;
+  padding: 56px 0;
+}
+
+/* The main block: two columns side-by-side, NOT a grid of four cells */
+.columns.columns3 .block.columns-2-cols {
+  display: flex;
+  flex-direction: row;
+  gap: 64px;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 48px;
+}
+
+/* Each column stacks its items vertically */
+.columns.columns3 .block.columns-2-cols div {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: flex-start;
+}
+
+/* Left column: left-align all content */
+.columns.columns3 .block.columns-2-cols div:first-of-type {
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* Right column: left-align by default, but you may center buttons if needed */
+.columns.columns3 .block.columns-2-cols div:last-of-type {
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* --- BUTTONS --- */
+.columns.columns3 .block.columns-2-cols .button {
+  border-radius: 2em;
+  padding: 10px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  background: #3b4cff;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  margin-top: 8px;
+}
+
+.columns.columns3 .block.columns-2-cols .button.secondary {
+  background: #fff;
+  color: #131313;
+  border: 2px solid #222;
+  border-radius: 2em;
+  padding: 8px 28px;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 7px;
+  box-shadow: none;
+}
+
+/* --- LIST STYLING --- */
+.columns.columns3 ul {
+  margin: 0 0 16px;
+  padding-left: 1.4em;
+  list-style: disc inside;
+}
+
+.columns.columns3 li {
+  color: #222;
+  font-size: 18px;
+  margin-bottom: 7px;
+}
+
+/* --- HEADINGS AND LABELS --- */
+.columns.columns3 h3, 
+.columns.columns3 h4,
+.columns.columns3 h5, 
+.columns.columns3 h6 {
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.columns.columns3 p {
+  color: #222;
+  font-size: 16px;
+  margin-bottom: 7px;
+}
+
+/* --- IMAGES --- */
+.columns.columns3 img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+}
+
+/* --- RESPONSIVE: STACK COLUMNS ON MOBILE --- */
+@media (width <= 900px) {
+  .columns.columns3 .block.columns-2-cols {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .columns.columns3 .block.columns-2-cols div {
+    gap: 24px;
+  }
+}
+
+/* --- OPTIONAL: ADD EXTRA SPACE BELOW BLOCK --- */
