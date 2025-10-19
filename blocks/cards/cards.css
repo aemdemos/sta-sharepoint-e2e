@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .cards > ul {
   list-style: none;
   margin: 0;
@@ -24,4 +25,64 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+
+.cards.cards4.block ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (width <= 900px) {
+  .cards.cards4.block ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width <= 600px) {
+  .cards.cards4.block ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cards.cards4.block ul > li {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* Image styles */
+.cards-card-image picture,
+.cards-card-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Body styles */
+.cards-card-body {
+  padding: 16px;
+}
+
+.cards-card-body p:first-child strong {
+  display: block;
+  font-weight: 600;
+  color: #111;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.cards-card-body p:not(:first-child) {
+  color: #444;
+  font-size: 1em;
+  line-height: 1.5;
+  margin: 0;
 }
