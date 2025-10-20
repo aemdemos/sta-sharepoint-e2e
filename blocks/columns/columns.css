@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -30,4 +31,160 @@
     flex: 1;
     order: unset;
   }
+}
+
+
+/* Columns block improved layout for .columns.columns3 */
+
+.columns.columns3 {
+  width: 100%;
+  background: var(--background-color);
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Main columns row: two columns side by side, 1:1 ratio, responsive */
+.columns.columns3 .block.columns-2-cols {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: stretch;
+  width: 100%;
+  gap: 2.5rem;
+  box-sizing: border-box;
+}
+
+/* Each column: stack children vertically */
+.columns.columns3 .block.columns-2-cols div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1.2rem;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* IMAGE STYLING: Responsive, aspect ratio, rounded corners */
+.columns.columns3 .columns-img-col img,
+.columns.columns3 .columns-img-col picture {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 1rem;
+  background: var(--light-color);
+  display: block;
+  margin: 0;
+}
+
+/* Force .columns-img-col to stretch image horizontally */
+.columns.columns3 .columns-img-col {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* List styling: subtle indentation, clear separation */
+.columns.columns3 ul,
+.columns.columns3 ol {
+  color: var(--text-color);
+  font-size: 1em;
+  margin: 0.6em 0 0.6em 1.5em;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.columns.columns3 ul li,
+.columns.columns3 ol li {
+  margin-bottom: 0.35em;
+  padding-left: 0.1em;
+}
+
+/* Headings and paragraphs: compact, left-aligned */
+.columns.columns3 h1,
+.columns.columns3 h2,
+.columns.columns3 h3,
+.columns.columns3 h4,
+.columns.columns3 h5,
+.columns.columns3 h6,
+.columns.columns3 p {
+  margin: 0.4em 0;
+  color: var(--text-color);
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+}
+
+/* Buttons: pill-shaped, bold, spacing and secondary variant */
+.columns.columns3 .button,
+.columns.columns3 button,
+.columns.columns3 a.button {
+  border-radius: 2.5em;
+  font-weight: 600;
+  font-size: 1em;
+  padding: 0.5em 2em;
+  margin: 0.3em 0;
+  background: var(--link-color);
+  color: var(--background-color);
+  border: none;
+  text-align: center;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.columns.columns3 .button.secondary,
+.columns.columns3 button.secondary,
+.columns.columns3 a.button.secondary {
+  background: unset;
+  border: 2px solid var(--text-color);
+  color: var(--text-color);
+}
+
+.columns.columns3 .button.secondary:hover,
+.columns.columns3 button.secondary:hover,
+.columns.columns3 a.button.secondary:hover {
+  background: var(--light-color);
+  color: var(--link-hover-color);
+}
+
+/* Links in columns block */
+.columns.columns3 a:any-link {
+  color: var(--link-color);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.columns.columns3 a:hover {
+  color: var(--link-hover-color);
+}
+
+/* Responsive: stack columns vertically, adjust gaps */
+@media (width <= 900px) {
+  .columns.columns3 .block.columns-2-cols {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .columns.columns3 .block.columns-2-cols div {
+    gap: 1rem;
+  }
+
+  .columns.columns3 .columns-img-col img,
+  .columns.columns3 .columns-img-col picture {
+    border-radius: 0.5rem;
+  }
+}
+
+/* Utility: remove default image margins inside block */
+.columns.columns3 img {
+  margin: 0;
+  vertical-align: middle;
+  display: block;
 }
