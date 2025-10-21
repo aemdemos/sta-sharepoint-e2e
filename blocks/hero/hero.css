@@ -35,3 +35,115 @@
     padding: 40px 32px;
   }
 }
+
+/* Remove z-index from image container if present */
+.hero.hero2 .picture {
+  z-index: unset;
+  flex: 1;
+  order: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin: 0;
+  min-width: 0;
+  height: 100%;
+}
+
+/* Remove max-width/padding from wrapper so hero can span the full viewport */
+
+/* HERO LAYOUT: side-by-side columns (text left, image right) */
+.hero.hero2 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100vw;
+  min-height: 340px;
+  background: linear-gradient(90deg, #061f47 60%, transparent 100%);
+  margin: 0;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ensure all descendant divs follow column layout inside hero */
+.hero.hero2 div {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Headline COLUMN: left, anchored top-left, with generous padding */
+.hero.hero2 h1 {
+  color: #fff;
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 1.15;
+  margin: 0;
+  padding: 64px 32px 0 72px;
+  max-width: 600px;
+  text-align: left;
+  box-sizing: border-box;
+  text-shadow: 0 2px 6px rgb(6 31 71 / 60%);
+  align-self: flex-start;
+}
+
+/* Prevent vertical centering in headline ancestor divs */
+.hero.hero2 div div {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+/* DNA IMAGE COLUMN: right side, fills available space, never overlaps text */
+
+/* DNA image fills container, maintains aspect ratio */
+.hero.hero2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  max-height: 500px;
+  min-width: 0;
+}
+
+/* Responsive: stack vertically on small screens, reduce padding/font */
+@media (width <= 900px) {
+  .hero.hero2 {
+    flex-direction: column;
+    min-height: 220px;
+  }
+
+  .hero.hero2 div {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .hero.hero2 h1 {
+    font-size: 22px;
+    padding-top: 24px;
+    padding-left: 16px;
+    padding-right: 16px;
+    max-width: 100%;
+  }
+
+  .hero.hero2 .picture,
+  .hero.hero2 img {
+    max-height: 200px;
+    min-height: 120px;
+  }
+}
+
+/* On very wide screens, increase headline max-width and padding for panoramic layout */
+@media (width >= 1400px) {
+  .hero.hero2 h1 {
+    max-width: 720px;
+    padding-left: 96px;
+    font-size: 42px;
+  }
+}
